@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './App.css';
+import './style/App.css';
 
 import ModuleList from './components/ModuleList';
 import Search from './components/Search';
