@@ -22,9 +22,7 @@ class ModuleList extends React.Component<IModuleListProps, {}> {
     const { savedModules } = this.props;
     return (
       <div className="module-list">
-        Hello
-
-        {savedModules && Object.keys(savedModules).map(key => <Module key={key} data={savedModules[key]} />)}
+        {savedModules && Object.keys(savedModules).map(key => <Module key={key} moduleData={savedModules[key]} />)}
       </div>
     )
   }

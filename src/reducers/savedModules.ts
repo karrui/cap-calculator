@@ -1,12 +1,13 @@
 import * as _ from 'lodash';
 
 import { ISaveModuleAction } from 'src/actions';
-import { IModule } from 'src/App';
 import { ADD_MOD, REMOVE_MOD } from './constants';
 
 export interface ISavedModule {
-  module: IModule,
-  grade?: number
+  ModuleTitle: string;
+  ModuleCode: string;
+  ModuleCredit: string;
+  grade?: number;
 }
 
 export interface ISavedModuleState {
