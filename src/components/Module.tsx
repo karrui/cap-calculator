@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { IModule } from 'src/App';
+import { ISavedModule } from 'src/reducers/savedModules';
 
 interface IModuleProp {
-  data: IModule;
+  data: ISavedModule;
 }
 
 class Module extends React.Component<IModuleProp> {

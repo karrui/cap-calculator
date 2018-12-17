@@ -1,5 +1,14 @@
 import * as React from "react";
+import { connect } from 'react-redux';
+
 import { IModule } from "src/App";
+import { RootState } from 'src/store/configureStore';
+import { asyncSetModuleBank } from '../actions/moduleBank';
+
+interface ISearchProps {
+  moduleBank: IModule[];
+  onSetModuleBank: any;
+}
 
 interface ISearchState {
   userInput: string;
@@ -8,29 +17,37 @@ interface ISearchState {
   showSuggestion: boolean;
 }
 
-interface ISearchProps {
-  moduleBank: IModule[] | null;
-}
+const mapStateToProps = (state: RootState) => ({
+  moduleBank: state.moduleBank
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  onSetModuleBank: () => {
+    dispatch(asyncSetModuleBank());
+  },
+});
 
 class Search extends React.Component<ISearchProps, ISearchState> {
   constructor(props: ISearchProps) {
     super(props);
+
     this.state = {
       currentHighlighted: 0,
       filteredModules: [],
       showSuggestion: false,
-      userInput: ""
-    };
+      userInput: '',
+    }
+  }
+
+  public componentDidMount() {
+    const { moduleBank, onSetModuleBank } = this.props;
+    if(moduleBank.length === 0) {
+      onSetModuleBank();
+    }
   }
 
   public render() {
-    const {
-      userInput,
-      currentHighlighted,
-      showSuggestion,
-      filteredModules
-    } = this.state;
-
+    const {showSuggestion, userInput, filteredModules, currentHighlighted} = this.state;
     let suggestionsModuleComponent;
 
     if (showSuggestion && userInput) {
@@ -135,7 +152,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   };
 
   private getModuleValue = (module: IModule) =>
-    module.ModuleCode + "|" + module.ModuleTitle;
+    module.ModuleCode + " " + module.ModuleTitle;
 }
 
-export default Search;
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

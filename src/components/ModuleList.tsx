@@ -1,24 +1,33 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+
+import Module from './Module';
 import './ModuleList.css';
 
-import { IModule } from 'src/App';
-import Module from './Module';
+import { ISavedModule } from 'src/reducers/savedModules';
+import { RootState } from 'src/store/configureStore';
 
 interface IModuleListProps {
-  modules: IModule[] | null,
+  savedModules: {
+    [ModuleCode: string]: ISavedModule
+  },
 }
+
+const mapStateToProps = (state: RootState) => ({
+  savedModules: state.savedModules
+});
 
 class ModuleList extends React.Component<IModuleListProps, {}> {
   public render() {
-    const { modules } = this.props;
+    const { savedModules } = this.props;
     return (
       <div className="module-list">
         Hello
 
-        {modules && modules.map(module => <Module key={module.ModuleCode} data={module} />)}
+        {savedModules && Object.keys(savedModules).map(key => <Module key={key} data={savedModules[key]} />)}
       </div>
     )
   }
 }
 
-export default ModuleList;
+export default connect(mapStateToProps)(ModuleList);
