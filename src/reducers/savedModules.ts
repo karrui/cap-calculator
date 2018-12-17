@@ -6,7 +6,7 @@ import { ADD_MOD, REMOVE_MOD } from './constants';
 
 export interface ISavedModule {
   module: IModule,
-  cap: number
+  grade?: number
 }
 
 export interface ISavedModuleState {
