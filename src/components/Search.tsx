@@ -9,6 +9,10 @@ import { asyncSetModuleBank } from '../actions/moduleBank';
 
 import '../style/Search.css';
 
+interface IFilteredModule extends IModule {
+  isDisabled?: boolean,
+}
+
 interface ISearchProps {
   moduleBank: IModule[];
   savedModules: { [moduleCode: string]: ISavedModule };
@@ -18,7 +22,7 @@ interface ISearchProps {
 
 interface ISearchState {
   userInput: string;
-  filteredModules: IModule[];
+  filteredModules: IFilteredModule[];
   currentHighlighted: number;
   showSuggestion: boolean;
 }
@@ -58,7 +62,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   }
 
   public render() {
-    const {showSuggestion, userInput, filteredModules, currentHighlighted} = this.state;
+    const { showSuggestion, userInput, filteredModules, currentHighlighted } = this.state;
     let suggestionsModuleComponent;
 
     if (showSuggestion && userInput) {
@@ -67,20 +71,29 @@ class Search extends React.Component<ISearchProps, ISearchState> {
         suggestionsModuleComponent = (
           <ul className="suggestions">
             {filteredModules.map((module, index) => {
-              let className;
+              let className = "";
 
               // Flag the active suggestion with a class
               if (index === currentHighlighted) {
                 className = "suggestion-active";
               }
 
+              if(module.isDisabled) {
+                className += " disabled"
+              }
+
               return (
                 <li
                   className={className}
                   key={module.ModuleCode}
-                  onClick={this.handleClick(module)}
+                  onClick={module.isDisabled ? undefined : this.handleClick(module)}
+                  onMouseEnter={module.isDisabled ? undefined : this.handleHover(index)}
                 >
                   {this.getModuleValue(module)}
+                  {module.isDisabled && <span className="alr-added">
+                    Added
+                  </span>
+                  }
                 </li>
               );
             })}
@@ -90,7 +103,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     }
 
     return (
-      <React.Fragment>
+      <div className="search-container">
         <input
           type="text"
           onChange={this.handleChange}
@@ -99,7 +112,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
           placeholder="Add Module for CAP Calculation"
         />
         {suggestionsModuleComponent}
-      </React.Fragment>
+      </div>
     );
   }
 
@@ -115,17 +128,21 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { moduleBank, savedModules } = this.props;
     const userInput = event.currentTarget.value;
-    let filteredModules: IModule[] = [];
+    let filteredModules: IFilteredModule[] = [];
 
     if (moduleBank && userInput.length >= 2) {
       // filter modules that doesn't fit input
       filteredModules = moduleBank.filter(
         module =>
-          !savedModules.hasOwnProperty(module.ModuleCode!) && (
-            module.ModuleCode!.toLowerCase().startsWith(userInput.toLowerCase()) ||
-            module.ModuleTitle!.toLowerCase().startsWith(userInput.toLowerCase())
-          )
-      ).slice(0, 6);
+          module.ModuleCode!.toLowerCase().startsWith(userInput.toLowerCase()) ||
+          module.ModuleTitle!.toLowerCase().startsWith(userInput.toLowerCase())
+      );
+
+      filteredModules.map(module => {
+        if (savedModules.hasOwnProperty(module.ModuleCode!)) {
+          module.isDisabled = true;
+        }
+      });
     }
 
     this.setState({
@@ -135,6 +152,12 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       userInput
     });
   };
+
+  private handleHover = (index: number) => (event: React.MouseEvent<HTMLLIElement>) => {
+    this.setState({
+      currentHighlighted: index
+    });
+  }
 
   private handleClick = (module: IModule) => (event: React.MouseEvent<HTMLLIElement>) => {
     const { onAddSavedModule } = this.props
@@ -148,8 +171,12 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     const { keyCode } = event;
     // enter key pressed, update input + close suggestions
     if (keyCode === 13) {
-      onAddSavedModule(filteredModules[currentHighlighted]);
-      this.resetState();
+      const module = filteredModules[currentHighlighted];
+      console.log(module)
+      if(!module.isDisabled) {
+        onAddSavedModule(filteredModules[currentHighlighted]);
+        this.resetState();
+      }
     } else if (keyCode === 38) {
       // up arrow
       if (currentHighlighted === 0) {
