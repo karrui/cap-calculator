@@ -25,12 +25,8 @@ const savedModuleReducer = (state: ISavedModuleState = defaultSavedModuleState, 
         [module!.ModuleCode!]: module
       })
     case REMOVE_MOD:
-      return Object.keys(state)
-      .filter(key => key !== module!.ModuleCode)
-      .reduce((result, current) => {
-        result[current] = state[current];
-        return result;
-    }, defaultSavedModuleState);
+      const {[module!.ModuleCode!]: removedValue, ...rest } = state;
+      return rest;
     default:
       return state;
   }
