@@ -8,25 +8,34 @@ export interface ISavedModule {
   ModuleCode: string;
   ModuleCredit: string;
   grade?: number;
+  SU?: boolean;
 }
 
 export interface ISavedModuleState {
-  [ModuleCode: string] : ISavedModule
+  [semesterNum: number] : {
+    [ModuleCode: string] : ISavedModule
+  }
 };
 
 const defaultSavedModuleState: ISavedModuleState = {};
 
 const savedModuleReducer = (state: ISavedModuleState = defaultSavedModuleState, action: ISaveModuleAction) => {
-  const { payload: module } = action;
+  const { payload } = action;
   switch(action.type) {
     case ADD_MOD:
       return ({
         ...state,
-        [module!.ModuleCode!]: module
+        [payload.semNum]: {
+          ...state[payload.semNum],
+          [payload.module.ModuleCode!]: payload.module
+        }
       })
     case REMOVE_MOD:
-      const {[module!.ModuleCode!]: removedValue, ...rest } = state;
-      return rest;
+      const {[payload.module.ModuleCode!]: removedValue, ...rest } = state[payload.semNum];
+      return {
+        ...state,
+        [payload.semNum]: rest
+      };
     default:
       return state;
   }
