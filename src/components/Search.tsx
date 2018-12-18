@@ -1,4 +1,5 @@
 import * as React from "react";
+import onClickOutside from 'react-onclickoutside';
 import { connect } from 'react-redux';
 
 import { addModule } from 'src/actions';
@@ -6,10 +7,11 @@ import { IModule } from "src/App";
 import { ISavedModule } from 'src/reducers/savedModules';
 import { RootState } from 'src/store/configureStore';
 import { asyncSetModuleBank } from '../actions/moduleBank';
+import Suggestion from './Suggestion';
 
 import '../style/Search.css';
 
-interface IFilteredModule extends IModule {
+export interface IFilteredModule extends IModule {
   isDisabled?: boolean,
 }
 
@@ -54,6 +56,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     }
   }
 
+  public handleClickOutside = (event:any) => this.resetState();
+
   public componentDidMount() {
     const { moduleBank, onSetModuleBank } = this.props;
     if(moduleBank.length === 0) {
@@ -63,45 +67,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
   public render() {
     const { showSuggestion, userInput, filteredModules, currentHighlighted } = this.state;
-    let suggestionsModuleComponent;
-
-    if (showSuggestion && userInput) {
-      // has suggestions
-      if (filteredModules.length) {
-        suggestionsModuleComponent = (
-          <ul className="suggestions">
-            {filteredModules.map((module, index) => {
-              let className = "";
-
-              // Flag the active suggestion with a class
-              if (index === currentHighlighted) {
-                className = "suggestion-active";
-              }
-
-              if(module.isDisabled) {
-                className += " disabled"
-              }
-
-              return (
-                <li
-                  className={className}
-                  key={module.ModuleCode}
-                  onClick={module.isDisabled ? undefined : this.handleClick(module)}
-                  onMouseEnter={module.isDisabled ? undefined : this.handleHover(index)}
-                >
-                  {this.getModuleValue(module)}
-                  {module.isDisabled && <span className="alr-added">
-                    Added
-                  </span>
-                  }
-                </li>
-              );
-            })}
-          </ul>
-        );
-      }
-    }
-
     return (
       <div className="search-container">
         <input
@@ -111,7 +76,14 @@ class Search extends React.Component<ISearchProps, ISearchState> {
           value={userInput}
           placeholder="Add Module for CAP Calculation"
         />
-        {suggestionsModuleComponent}
+        {showSuggestion && userInput &&
+          <Suggestion
+            filteredModules={filteredModules}
+            currentHighlighted={currentHighlighted}
+            handleClick={this.handleClick}
+            handleHover={this.handleHover}
+          />
+        }
       </div>
     );
   }
@@ -153,51 +125,57 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     });
   };
 
+  private handleClick = (module: IModule) => (event: React.MouseEvent<HTMLLIElement>) => {
+    if(event.button === 0) {
+      const { onAddSavedModule } = this.props
+      onAddSavedModule(module);
+      this.resetState();
+    }
+  }
+
   private handleHover = (index: number) => (event: React.MouseEvent<HTMLLIElement>) => {
     this.setState({
       currentHighlighted: index
     });
   }
 
-  private handleClick = (module: IModule) => (event: React.MouseEvent<HTMLLIElement>) => {
-    const { onAddSavedModule } = this.props
-    onAddSavedModule(module);
-    this.resetState();
-  }
-
   private handleKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { currentHighlighted, filteredModules } = this.state;
     const { onAddSavedModule } = this.props;
-    const { keyCode } = event;
-    // enter key pressed, update input + close suggestions
-    if (keyCode === 13) {
-      const module = filteredModules[currentHighlighted];
-      console.log(module)
-      if(!module.isDisabled) {
-        onAddSavedModule(filteredModules[currentHighlighted]);
+    const { key } = event;
+
+    switch(key) {
+      case "Enter":  {
+        const module = filteredModules[currentHighlighted];
+        if(!module.isDisabled) {
+          onAddSavedModule(filteredModules[currentHighlighted]);
+          this.resetState();
+        }
+        break;
+      }
+      case "ArrowUp": {
+        if (currentHighlighted === 0) {
+          return;
+        }
+        this.setState({
+          currentHighlighted: currentHighlighted - 1
+        });
+        break;
+      }
+      case "ArrowDown": {
+        if (currentHighlighted - 1 === filteredModules.length) {
+          return;
+        }
+        this.setState({
+          currentHighlighted: currentHighlighted + 1
+        });
+        break;
+      }
+      case "Escape": {
         this.resetState();
       }
-    } else if (keyCode === 38) {
-      // up arrow
-      if (currentHighlighted === 0) {
-        return;
-      }
-      this.setState({
-        currentHighlighted: currentHighlighted - 1
-      });
-    } else if (keyCode === 40) {
-      // down arrow
-      if (currentHighlighted - 1 === filteredModules.length) {
-        return;
-      }
-      this.setState({
-        currentHighlighted: currentHighlighted + 1
-      });
     }
   };
-
-  private getModuleValue = (module: IModule) =>
-    module.ModuleCode + " " + module.ModuleTitle;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(mapStateToProps, mapDispatchToProps)(onClickOutside(Search));

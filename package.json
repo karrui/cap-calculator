@@ -8,6 +8,7 @@
     "react": "^16.6.3",
     "react-autocomplete": "^1.8.1",
     "react-dom": "^16.6.3",
+    "react-onclickoutside": "^6.7.1",
     "react-redux": "^6.0.0",
     "react-scripts-ts": "3.1.0",
     "redux": "^4.0.1",
@@ -23,12 +24,13 @@
   },
   "devDependencies": {
     "@types/jest": "^23.3.10",
+    "@types/lodash": "^4.14.119",
     "@types/node": "^10.12.11",
     "@types/react": "^16.7.11",
-    "@types/react-dom": "^16.0.11",
-    "typescript": "^3.2.1",
-    "@types/lodash": "^4.14.119",
     "@types/react-autocomplete": "^1.8.4",
-    "@types/react-redux": "^6.0.11"
+    "@types/react-dom": "^16.0.11",
+    "@types/react-onclickoutside": "^6.7.0",
+    "@types/react-redux": "^6.0.11",
+    "typescript": "^3.2.1"
   }
 }
