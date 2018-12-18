@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { addModule } from 'src/actions';
 import { IModule } from "src/App";
-import { ISavedModule } from 'src/reducers/savedModules';
+import { ISavedModuleState } from 'src/reducers/savedModules';
 import { RootState } from 'src/store/configureStore';
 import { asyncSetModuleBank } from '../actions/moduleBank';
 import Suggestion from './Suggestion';
@@ -16,10 +16,11 @@ export interface IFilteredModule extends IModule {
 }
 
 interface ISearchProps {
+  currSemNum: string;
   moduleBank: IModule[];
-  savedModules: { [moduleCode: string]: ISavedModule };
+  savedModules: ISavedModuleState;
   onSetModuleBank: () => void;
-  onAddSavedModule: (module: IModule) => void;
+  onAddSavedModule: (module: IModule, semNum: string) => void;
 }
 
 interface ISearchState {
@@ -30,6 +31,7 @@ interface ISearchState {
 }
 
 const mapStateToProps = (state: RootState) => ({
+  currSemNum: state.misc.currSemester,
   moduleBank: state.moduleBank,
   savedModules: state.savedModules,
 })
@@ -39,8 +41,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(asyncSetModuleBank());
   },
 
-  onAddSavedModule: (module: IModule) => {
-    dispatch(addModule(module));
+  onAddSavedModule: (module: IModule, semNum: string) => {
+    dispatch(addModule(module, semNum));
   }
 });
 
@@ -98,7 +100,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   };
 
   private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { moduleBank, savedModules } = this.props;
+    const { moduleBank, savedModules, currSemNum } = this.props;
     const userInput = event.currentTarget.value;
     let filteredModules: IFilteredModule[] = [];
 
@@ -110,8 +112,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
           module.ModuleTitle!.toLowerCase().startsWith(userInput.toLowerCase())
       );
 
-      filteredModules.map(module => {
-        if (savedModules.hasOwnProperty(module.ModuleCode!)) {
+      filteredModules.forEach(module => {
+        if (savedModules[currSemNum].hasOwnProperty(module.ModuleCode!)) {
           module.isDisabled = true;
         }
       });
@@ -127,8 +129,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
   private handleClick = (module: IModule) => (event: React.MouseEvent<HTMLLIElement>) => {
     if(event.button === 0) {
-      const { onAddSavedModule } = this.props
-      onAddSavedModule(module);
+      const { onAddSavedModule, currSemNum } = this.props
+      onAddSavedModule(module, currSemNum);
       this.resetState();
     }
   }
@@ -141,14 +143,14 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
   private handleKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { currentHighlighted, filteredModules } = this.state;
-    const { onAddSavedModule } = this.props;
+    const { onAddSavedModule, currSemNum } = this.props;
     const { key } = event;
 
     switch(key) {
       case "Enter":  {
         const module = filteredModules[currentHighlighted];
         if(!module.isDisabled) {
-          onAddSavedModule(filteredModules[currentHighlighted]);
+          onAddSavedModule(filteredModules[currentHighlighted], currSemNum);
           this.resetState();
         }
         break;

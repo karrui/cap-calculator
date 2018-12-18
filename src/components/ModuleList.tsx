@@ -8,24 +8,40 @@ import { ISavedModule } from 'src/reducers/savedModules';
 import { RootState } from 'src/store/configureStore';
 
 interface IModuleListProps {
-  savedModules: {
-    [ModuleCode: string]: ISavedModule
-  },
+  semesterSavedModules: {
+    [ModuleCode: string] : ISavedModule,
+  };
+  semNum: string;
 }
 
-const mapStateToProps = (state: RootState) => ({
-  savedModules: state.savedModules
-});
+interface IModuleListState {
+  totalMc: number;
+  currentCap: number;
+}
 
-class ModuleList extends React.Component<IModuleListProps, {}> {
+class ModuleList extends React.Component<IModuleListProps, IModuleListState> {
+  constructor(props: IModuleListProps) {
+    super(props);
+
+    this.state = {
+      currentCap: 0,
+      totalMc: 0,
+    }
+  }
+
   public render() {
-    const { savedModules } = this.props;
+    const { semesterSavedModules, semNum } = this.props;
     return (
       <div className="module-list">
-        {savedModules && Object.keys(savedModules).map(key => <Module key={key} moduleData={savedModules[key]} />)}
+        Total MCs so far: {this.state.totalMc}
+        {semesterSavedModules &&
+          Object.keys(semesterSavedModules).map(
+            key => <Module key={key} semNum={semNum} moduleData={semesterSavedModules[key]} />
+          )
+        }
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps)(ModuleList);
+export default ModuleList;
