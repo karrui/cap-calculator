@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as _ from "lodash";
 import reactOnclickoutside from "react-onclickoutside";
 import { connect } from "react-redux";
 
@@ -41,7 +42,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(asyncSetModuleBank());
   },
 
-  onAddSavedModule: (module: IModule, semNum: string) => {
+  onAddSavedModule: (module: IFilteredModule, semNum: string) => {
     dispatch(addModule(module, semNum));
   },
 });
@@ -111,15 +112,20 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
     if (moduleBank && userInput.length >= 2) {
       // filter modules that doesn't fit input
-      filteredModules = moduleBank.filter(
-        module =>
-          module
-            .ModuleCode!.toLowerCase()
-            .startsWith(userInput.toLowerCase()) ||
-          module.ModuleTitle!.toLowerCase().startsWith(userInput.toLowerCase())
+      filteredModules = _.cloneDeep(
+        _.filter(
+          moduleBank,
+          module =>
+            module
+              .ModuleCode!.toLowerCase()
+              .startsWith(userInput.toLowerCase()) ||
+            module
+              .ModuleTitle!.toLowerCase()
+              .startsWith(userInput.toLowerCase())
+        )
       );
 
-      filteredModules.forEach(module => {
+      filteredModules.map(module => {
         if (savedModules[currSemNum].hasOwnProperty(module.ModuleCode!)) {
           module.isDisabled = true;
         }

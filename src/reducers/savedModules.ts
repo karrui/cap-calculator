@@ -30,7 +30,11 @@ const savedModuleReducer = (
         ...state,
         [payload.semNum]: {
           ...state[payload.semNum],
-          [payload.module.ModuleCode!]: payload.module,
+          [payload.module.ModuleCode!]: {
+            ModuleTitle: payload.module.ModuleTitle,
+            ModuleCode: payload.module.ModuleCode,
+            ModuleCredit: payload.module.ModuleCredit,
+          },
         },
       };
     case REMOVE_MOD:

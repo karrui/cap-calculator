@@ -1,10 +1,10 @@
 import { action } from "typesafe-actions";
 
-import { IModule } from "src/App";
 import { ADD_MOD, REMOVE_MOD } from "src/reducers/constants";
+import { IFilteredModule } from "src/components/Search";
 
-export const addModule = (module: IModule, semNum: string) =>
+export const addModule = (module: IFilteredModule, semNum: string) =>
   action(ADD_MOD, { module, semNum });
 
-export const removeModule = (module: IModule, semNum: string) =>
+export const removeModule = (module: IFilteredModule, semNum: string) =>
   action(REMOVE_MOD, { module, semNum });

@@ -10,9 +10,11 @@ const moduleBankReducer = (
   state: IModule[] = defaultModuleBankState,
   action: IModuleBankAction
 ) => {
-  switch (action.type) {
+  const { type, payload } = action;
+
+  switch (type) {
     case SET_MODULE_BANK:
-      return action.payload;
+      return payload;
     case CLEAR_MODULE_BANK:
       return defaultModuleBankState;
     default:
