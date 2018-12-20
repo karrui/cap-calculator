@@ -1,18 +1,18 @@
 import * as React from "react";
-import onClickOutside from 'react-onclickoutside';
-import { connect } from 'react-redux';
+import reactOnclickoutside from "react-onclickoutside";
+import { connect } from "react-redux";
 
-import { addModule } from 'src/actions';
-import { IModule } from "src/App";
-import { ISavedModuleState } from 'src/reducers/savedModules';
-import { RootState } from 'src/store/configureStore';
-import { asyncSetModuleBank } from '../actions/moduleBank';
-import Suggestion from './Suggestion';
+import { addModule } from "../actions";
+import { IModule } from "../App";
+import { ISavedModuleState } from "../reducers/savedModules";
+import { RootState } from "../store/configureStore";
+import { asyncSetModuleBank } from "../actions/moduleBank";
+import Suggestion from "./Suggestion";
 
-import '../style/Search.css';
+import "../style/Search.css";
 
 export interface IFilteredModule extends IModule {
-  isDisabled?: boolean,
+  isDisabled?: boolean;
 }
 
 interface ISearchProps {
@@ -34,7 +34,7 @@ const mapStateToProps = (state: RootState) => ({
   currSemNum: state.misc.currSemester,
   moduleBank: state.moduleBank,
   savedModules: state.savedModules,
-})
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   onSetModuleBank: () => {
@@ -43,7 +43,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 
   onAddSavedModule: (module: IModule, semNum: string) => {
     dispatch(addModule(module, semNum));
-  }
+  },
 });
 
 class Search extends React.Component<ISearchProps, ISearchState> {
@@ -54,21 +54,26 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       currentHighlighted: 0,
       filteredModules: [],
       showSuggestion: false,
-      userInput: '',
-    }
+      userInput: "",
+    };
   }
 
-  public handleClickOutside = (event:any) => this.resetState();
+  public handleClickOutside = (event: any) => this.resetState();
 
   public componentDidMount() {
     const { moduleBank, onSetModuleBank } = this.props;
-    if(moduleBank.length === 0) {
+    if (moduleBank.length === 0) {
       onSetModuleBank();
     }
   }
 
   public render() {
-    const { showSuggestion, userInput, filteredModules, currentHighlighted } = this.state;
+    const {
+      showSuggestion,
+      userInput,
+      filteredModules,
+      currentHighlighted,
+    } = this.state;
     return (
       <div className="search-container">
         <input
@@ -78,14 +83,14 @@ class Search extends React.Component<ISearchProps, ISearchState> {
           value={userInput}
           placeholder="Add Module for CAP Calculation"
         />
-        {showSuggestion && userInput &&
+        {showSuggestion && userInput && (
           <Suggestion
             filteredModules={filteredModules}
             currentHighlighted={currentHighlighted}
             handleClick={this.handleClick}
             handleHover={this.handleHover}
           />
-        }
+        )}
       </div>
     );
   }
@@ -95,7 +100,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       currentHighlighted: 0,
       filteredModules: [],
       showSuggestion: false,
-      userInput: ''
+      userInput: "",
     });
   };
 
@@ -108,7 +113,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       // filter modules that doesn't fit input
       filteredModules = moduleBank.filter(
         module =>
-          module.ModuleCode!.toLowerCase().startsWith(userInput.toLowerCase()) ||
+          module
+            .ModuleCode!.toLowerCase()
+            .startsWith(userInput.toLowerCase()) ||
           module.ModuleTitle!.toLowerCase().startsWith(userInput.toLowerCase())
       );
 
@@ -120,36 +127,40 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     }
 
     this.setState({
-      currentHighlighted: 0,
       filteredModules,
+      userInput,
+      currentHighlighted: 0,
       showSuggestion: true,
-      userInput
     });
   };
 
-  private handleClick = (module: IModule) => (event: React.MouseEvent<HTMLLIElement>) => {
-    if(event.button === 0) {
-      const { onAddSavedModule, currSemNum } = this.props
+  private handleClick = (module: IModule) => (
+    event: React.MouseEvent<HTMLLIElement>
+  ) => {
+    if (event.button === 0) {
+      const { onAddSavedModule, currSemNum } = this.props;
       onAddSavedModule(module, currSemNum);
       this.resetState();
     }
-  }
+  };
 
-  private handleHover = (index: number) => (event: React.MouseEvent<HTMLLIElement>) => {
+  private handleHover = (index: number) => (
+    event: React.MouseEvent<HTMLLIElement>
+  ) => {
     this.setState({
-      currentHighlighted: index
+      currentHighlighted: index,
     });
-  }
+  };
 
   private handleKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { currentHighlighted, filteredModules } = this.state;
     const { onAddSavedModule, currSemNum } = this.props;
     const { key } = event;
 
-    switch(key) {
-      case "Enter":  {
+    switch (key) {
+      case "Enter": {
         const module = filteredModules[currentHighlighted];
-        if(!module.isDisabled) {
+        if (!module.isDisabled) {
           onAddSavedModule(filteredModules[currentHighlighted], currSemNum);
           this.resetState();
         }
@@ -160,7 +171,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
           return;
         }
         this.setState({
-          currentHighlighted: currentHighlighted - 1
+          currentHighlighted: currentHighlighted - 1,
         });
         break;
       }
@@ -169,7 +180,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
           return;
         }
         this.setState({
-          currentHighlighted: currentHighlighted + 1
+          currentHighlighted: currentHighlighted + 1,
         });
         break;
       }
@@ -180,4 +191,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(onClickOutside(Search));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(reactOnclickoutside(Search));

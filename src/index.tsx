@@ -1,13 +1,13 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
-import App from './App';
-import './style/index.css';
+import App from "./App";
+import "./style/index.css";
 
-import registerServiceWorker from './registerServiceWorker';
-import configureStore from './store/configureStore';
+import registerServiceWorker from "./registerServiceWorker";
+import configureStore from "./store/configureStore";
 
 const { store, persistor } = configureStore();
 
@@ -17,6 +17,6 @@ ReactDOM.render(
       <App />
     </PersistGate>
   </Provider>,
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 registerServiceWorker();

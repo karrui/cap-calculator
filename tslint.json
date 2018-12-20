@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "extends": ["tslint-config-airbnb", "tslint-config-prettier"],
   "linterOptions": {
     "exclude": [
       "config/**/*.js",
@@ -8,6 +8,8 @@
     ]
   },
   "rules": {
-    "no-console": false
+    "no-console": false,
+    "no-boolean-literal-compare": true,
+    "variable-name": false
   }
 }

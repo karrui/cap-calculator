@@ -1,15 +1,13 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
-import miscReducer from './misc';
-import moduleBankReducer from './moduleBank';
-import savedModuleReducer from './savedModules';
-
-
+import misc from "./misc";
+import moduleBank from "./moduleBank";
+import savedModules from "./savedModules";
 
 const rootReducer = combineReducers({
-  misc: miscReducer,
-  moduleBank: moduleBankReducer,
-  savedModules: savedModuleReducer,
+  misc,
+  moduleBank,
+  savedModules,
 });
 
 export default rootReducer;

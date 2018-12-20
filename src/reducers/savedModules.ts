@@ -1,7 +1,7 @@
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
-import { ISaveModuleAction } from 'src/actions';
-import { ADD_MOD, REMOVE_MOD } from './constants';
+import { ISaveModuleAction } from "src/actions";
+import { ADD_MOD, REMOVE_MOD } from "./constants";
 
 export interface ISavedModule {
   ModuleTitle: string;
@@ -12,33 +12,38 @@ export interface ISavedModule {
 }
 
 export interface ISavedModuleState {
-  [semesterNum: number] : {
-    [ModuleCode: string] : ISavedModule
-  }
-};
+  [semesterNum: number]: {
+    [ModuleCode: string]: ISavedModule;
+  };
+}
 
 const defaultSavedModuleState: ISavedModuleState = {};
 
-const savedModuleReducer = (state: ISavedModuleState = defaultSavedModuleState, action: ISaveModuleAction) => {
+const savedModuleReducer = (
+  state: ISavedModuleState = defaultSavedModuleState,
+  action: ISaveModuleAction
+) => {
   const { payload } = action;
-  switch(action.type) {
+  switch (action.type) {
     case ADD_MOD:
-      return ({
+      return {
         ...state,
         [payload.semNum]: {
           ...state[payload.semNum],
-          [payload.module.ModuleCode!]: payload.module
-        }
-      })
+          [payload.module.ModuleCode!]: payload.module,
+        },
+      };
     case REMOVE_MOD:
-      const {[payload.module.ModuleCode!]: removedValue, ...rest } = state[payload.semNum];
+      const { [payload.module.ModuleCode!]: removedValue, ...rest } = state[
+        payload.semNum
+      ];
       return {
         ...state,
-        [payload.semNum]: rest
+        [payload.semNum]: rest,
       };
     default:
       return state;
   }
-}
+};
 
 export default savedModuleReducer;

@@ -1,14 +1,14 @@
-import { IModule } from 'src/App';
-import { setCurrentSemester } from './misc';
-import { asyncSetModuleBank, clearModuleBank } from './moduleBank';
-import { addModule, removeModule } from './savedModules';
+import { IModule } from "src/App";
+import { setCurrentSemester } from "./misc";
+import { asyncSetModuleBank, clearModuleBank } from "./moduleBank";
+import { addModule, removeModule } from "./savedModules";
 
 export interface ISaveModuleAction {
   type: string;
   payload: {
     module: IModule;
     semNum: string;
-  }
+  };
 }
 
 export interface IModuleBankAction {
@@ -21,4 +21,10 @@ export interface IMiscAction {
   payload: string;
 }
 
-export { addModule, removeModule, asyncSetModuleBank, clearModuleBank, setCurrentSemester };
+export {
+  addModule,
+  removeModule,
+  asyncSetModuleBank,
+  clearModuleBank,
+  setCurrentSemester,
+};

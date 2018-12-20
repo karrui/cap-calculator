@@ -1,5 +1,5 @@
-import { IMiscAction } from 'src/actions';
-import { SET_CURR_SEMESTER } from './constants';
+import { IMiscAction } from "src/actions";
+import { SET_CURR_SEMESTER } from "./constants";
 
 const defaultMiscState: IMiscState = {
   currSemester: "1",
@@ -10,14 +10,14 @@ interface IMiscState {
 }
 
 const miscReducer = (state = defaultMiscState, action: IMiscAction) => {
-  switch(action.type) {
+  switch (action.type) {
     case SET_CURR_SEMESTER:
-      return ({
+      return {
         currSemester: action.payload,
-      });
+      };
     default:
       return state;
   }
-}
+};
 
 export default miscReducer;

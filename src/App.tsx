@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
+import * as React from "react";
+import { connect } from "react-redux";
 
-import './style/App.css';
+import "./style/App.css";
 
-import ModuleList from './components/ModuleList';
-import SavedTable from './components/SavedTable';
-import Search from './components/Search';
-import { ISavedModuleState } from './reducers/savedModules';
-import { RootState } from './store/configureStore';
+import ModuleList from "./components/ModuleList";
+import SavedTable from "./components/SavedTable";
+import Search from "./components/Search";
+import { ISavedModuleState } from "./reducers/savedModules";
+import { RootState } from "./store/configureStore";
 
 // follows NUSMod's API
 export interface IModule {
@@ -36,10 +36,13 @@ class App extends React.Component<IAppProps, {}> {
         <SavedTable />
         <Search />
         {savedModules &&
-          Object.keys(savedModules).map(sem =>
-            <ModuleList key={sem} semNum={sem} semesterSavedModules={savedModules[sem]} />
-          )
-        }
+          Object.keys(savedModules).map(sem => (
+            <ModuleList
+              key={sem}
+              semNum={sem}
+              semesterSavedModules={savedModules[sem]}
+            />
+          ))}
       </div>
     );
   }
