@@ -1,15 +1,19 @@
 import * as React from "react";
-import { connect } from "react-redux";
+import { ISavedModule } from "src/reducers/savedModules";
 import { Dispatch } from "redux";
-
-import { removeModule } from "../actions";
-import { ISavedModule } from "../reducers/savedModules";
+import { removeModule } from "src/actions";
+import { RootState } from "src/store/configureStore";
+import { connect } from "react-redux";
 
 interface IModuleProp {
-  moduleData: ISavedModule;
-  semNum: string;
-  onRemoveModule: any;
+  module: ISavedModule;
+  currSem: string;
+  onRemoveModule: (module: ISavedModule, semNum: string) => void;
 }
+
+const mapStateToProps = (state: RootState) => ({
+  currSem: state.misc.currSemester,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onRemoveModule: (module: ISavedModule, semNum: string) => {
@@ -17,30 +21,31 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 });
 
-class Module extends React.Component<IModuleProp> {
-  public render() {
-    const { moduleData } = this.props;
-
-    return (
-      <div className="module-details" onClick={this.handleClick(moduleData)}>
-        <div className="module-name">
-          <span className="module-code">{moduleData.ModuleCode} </span>
-          <span className="module-title">{moduleData.ModuleTitle}</span>
-        </div>
-        <span className="module-mc">{moduleData.ModuleCredit} MCs</span>
-      </div>
-    );
-  }
-
-  private handleClick = (module: ISavedModule) => (
+const Module: React.FunctionComponent<IModuleProp> = ({
+  module,
+  onRemoveModule,
+  currSem,
+}) => {
+  const handleClick = (module: ISavedModule) => (
     event: React.MouseEvent<HTMLElement>
   ) => {
-    const { onRemoveModule, semNum } = this.props;
-    onRemoveModule(module, semNum);
+    onRemoveModule(module, currSem);
   };
-}
+  return (
+    <tr>
+      <td>
+        {module.ModuleCode} {module.ModuleTitle}
+      </td>
+      <td>{module.ModuleCredit}</td>
+      <td>TODO GRADE</td>
+      <td>
+        <button onClick={handleClick(module)}>Delete</button>
+      </td>
+    </tr>
+  );
+};
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Module);
