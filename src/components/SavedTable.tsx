@@ -2,7 +2,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { RootState } from "../store/configureStore";
-import Search from "./Search";
 import { ISavedModuleState } from "src/reducers/savedModules";
 import Module from "./Module";
 

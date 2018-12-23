@@ -54,3 +54,10 @@
   color: #fff;
   background-color: #17a2b8;
 }
+
+.suggestions mark {
+  padding: 0;
+  font-weight: 700;
+  color: currentColor;
+  background-color: transparent;
+}

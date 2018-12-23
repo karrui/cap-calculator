@@ -1,10 +1,14 @@
 import * as React from "react";
+// @ts-ignore
+import reactStringReplace from "react-string-replace";
+
 import { IModule } from "src/App";
 import { IFilteredModule } from "./Search";
 
 import "../style/Suggestion.css";
 
 interface ISuggestionProps {
+  userInput: string;
   filteredModules: IFilteredModule[];
   currentHighlighted: number;
   handleClick: (
@@ -24,6 +28,7 @@ const Suggestion: React.SFC<ISuggestionProps> = props => {
     currentHighlighted,
     handleClick,
     handleHover,
+    userInput,
   } = props;
 
   return (
@@ -38,6 +43,8 @@ const Suggestion: React.SFC<ISuggestionProps> = props => {
           className += " disabled";
         }
 
+        const regexInput = new RegExp(userInput, "g");
+
         return (
           <li
             className={className}
@@ -45,7 +52,15 @@ const Suggestion: React.SFC<ISuggestionProps> = props => {
             onMouseDown={module.isDisabled ? undefined : handleClick(module)}
             onMouseEnter={module.isDisabled ? undefined : handleHover(index)}
           >
-            {getModuleValue(module)}
+            <span>
+              {reactStringReplace(
+                getModuleValue(module),
+                userInput,
+                (match: string, i: number) => (
+                  <mark>{match}</mark>
+                )
+              )}
+            </span>
             {module.isDisabled && <span className="alr-added">Added</span>}
           </li>
         );

@@ -86,6 +86,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
         />
         {showSuggestion && userInput && (
           <Suggestion
+            userInput={userInput}
             filteredModules={filteredModules}
             currentHighlighted={currentHighlighted}
             handleClick={this.handleClick}
@@ -118,10 +119,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
           module =>
             module
               .ModuleCode!.toLowerCase()
-              .startsWith(userInput.toLowerCase()) ||
-            module
-              .ModuleTitle!.toLowerCase()
-              .startsWith(userInput.toLowerCase())
+              .includes(userInput.toLowerCase()) ||
+            module.ModuleTitle!.toLowerCase().includes(userInput.toLowerCase())
         )
       );
 
@@ -136,7 +135,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       filteredModules,
       userInput,
       currentHighlighted: 0,
-      showSuggestion: true,
+      showSuggestion: filteredModules.length !== 0,
     });
   };
 
