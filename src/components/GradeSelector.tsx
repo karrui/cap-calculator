@@ -1,5 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { IGradeObject, setGrade } from "src/actions/savedModules";
+import { RootState } from "src/store/configureStore";
+import { Dispatch } from "redux";
 
 interface IGradeSelectorState {
   currentValue: string;
@@ -8,7 +11,8 @@ interface IGradeSelectorState {
 interface IGradeSelectorProps {
   currSem: string;
   moduleCode: string;
-  onSetGrade: (newGrade: string) => void;
+  currentValue: string;
+  onSetGrade: (gradeObj: IGradeObject) => void;
 }
 
 class GradeSelector extends React.Component<
@@ -19,7 +23,7 @@ class GradeSelector extends React.Component<
     super(props);
 
     this.state = {
-      currentValue: "",
+      currentValue: this.props.currentValue,
     };
   }
 
@@ -47,21 +51,32 @@ class GradeSelector extends React.Component<
   }
 
   private handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { onSetGrade, currSem, moduleCode } = this.props;
     const newValue = event.target.value;
     this.setState({
       currentValue: newValue,
     });
 
-    this.props.onSetGrade(newValue);
+    onSetGrade({ moduleCode, semester: currSem, grade: newValue });
   };
 }
 
-const mapDispatchToProps = () => ({
-  onSetGrade: (newGrade: string) =>
-    console.log(`setting mock grade: ${newGrade}`),
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onSetGrade: (gradeObj: IGradeObject) => dispatch(setGrade(gradeObj)),
 });
 
+const mapStateToProps = (
+  state: RootState,
+  ownProps: { moduleCode: string }
+) => {
+  const currSem = state.misc.currSemester;
+  return {
+    currSem,
+    currentValue: state.savedModules[currSem][ownProps.moduleCode].grade,
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(GradeSelector);

@@ -1,7 +1,7 @@
 import { IModule } from "src/App";
 import { setCurrentSemester } from "./misc";
 import { asyncSetModuleBank, clearModuleBank } from "./moduleBank";
-import { addModule, removeModule } from "./savedModules";
+import { addModule, removeModule, IGradeObject } from "./savedModules";
 
 export interface ISaveModuleAction {
   type: string;
@@ -9,6 +9,11 @@ export interface ISaveModuleAction {
     module: IModule;
     semNum: string;
   };
+}
+
+export interface ISetGradeAction {
+  type: string;
+  payload: IGradeObject;
 }
 
 export interface IModuleBankAction {
