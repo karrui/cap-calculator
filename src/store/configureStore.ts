@@ -1,3 +1,4 @@
+import reduxLogger from "redux-logger";
 import { applyMiddleware, compose, createStore } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -23,7 +24,7 @@ const composeEnhancers =
 export default () => {
   const store = createStore(
     persistedReducer,
-    composeEnhancers(applyMiddleware(reduxThunk))
+    composeEnhancers(applyMiddleware(reduxThunk, reduxLogger))
   );
   const persistor = persistStore(store);
   return { store, persistor };
