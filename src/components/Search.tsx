@@ -121,7 +121,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
               .ModuleCode!.toLowerCase()
               .includes(userInput.toLowerCase()) ||
             module.ModuleTitle!.toLowerCase().includes(userInput.toLowerCase())
-        )
+        ).slice(0, 40)
       );
 
       filteredModules.map(module => {

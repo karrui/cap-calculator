@@ -2,6 +2,7 @@ import { action } from "typesafe-actions";
 
 import { ADD_MOD, REMOVE_MOD, SET_GRADE } from "src/reducers/constants";
 import { IFilteredModule } from "src/components/Search";
+import { ISavedModule } from "src/reducers/savedModules";
 
 export const addModule = (module: IFilteredModule, semNum: string) =>
   action(ADD_MOD, { module, semNum });
@@ -10,9 +11,8 @@ export const removeModule = (module: IFilteredModule, semNum: string) =>
   action(REMOVE_MOD, { module, semNum });
 
 export interface IGradeObject {
-  mc: string;
+  module: ISavedModule;
   semester: string;
-  moduleCode: string;
   grade: string;
   prevGrade: string;
 }

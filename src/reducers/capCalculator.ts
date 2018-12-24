@@ -26,25 +26,6 @@ const capCalculatorReducer = (
 ) => {
   const { type, payload } = action;
   switch (type) {
-    case ADD_MOD: {
-      // assert no duplicate modules since front end already blocks
-      const { semNum, module } = payload;
-      let newSemesterMcs;
-      if (state.semesterMcs && state.semesterMcs[semNum]) {
-        newSemesterMcs =
-          state.semesterMcs[semNum] + parseInt(module.ModuleCredit!, 10);
-      } else {
-        newSemesterMcs = parseInt(module.ModuleCredit!, 10);
-      }
-      return {
-        ...state,
-        totalMcs: state.totalMcs + parseInt(module.ModuleCredit!, 10),
-        semesterMcs: {
-          ...state.semesterMcs,
-          [semNum]: newSemesterMcs,
-        },
-      };
-    }
     case REMOVE_MOD: {
       const { semNum, module } = payload;
       // since it is remove mod, must have current semesterMcs
@@ -70,9 +51,11 @@ const capCalculatorReducer = (
       };
     }
     case SET_GRADE: {
-      const { semester, mc, grade, prevGrade = "" } = payload;
-      const prevGradePoint = GRADE_DICT[prevGrade] * parseInt(mc, 10);
-      const newGradePoint = GRADE_DICT[grade] * parseInt(mc, 10);
+      const { semester, module, grade, prevGrade = "" } = payload;
+      const prevGradePoint =
+        GRADE_DICT[prevGrade] * parseInt(module.ModuleCredit, 10);
+      const newGradePoint =
+        GRADE_DICT[grade] * parseInt(module.ModuleCredit, 10);
       let newSemesterGradePoint;
       if (state.semesterGradePoint && state.semesterGradePoint[semester]) {
         newSemesterGradePoint =
@@ -81,12 +64,34 @@ const capCalculatorReducer = (
         newSemesterGradePoint = newGradePoint;
       }
 
+      let newSemesterMcs;
+      let newTotalMcs;
+
+      const currSemesterMcs =
+        state.semesterMcs && state.semesterMcs[semester]
+          ? state.semesterMcs[semester]
+          : 0;
+      if (prevGrade === "") {
+        newTotalMcs = state.totalMcs + parseInt(module.ModuleCredit, 10);
+        newSemesterMcs = currSemesterMcs + parseInt(module.ModuleCredit, 10);
+      } else if (grade === "") {
+        newTotalMcs = state.totalMcs - parseInt(module.ModuleCredit, 10);
+        newSemesterMcs = currSemesterMcs - parseInt(module.ModuleCredit, 10);
+      } else {
+        newTotalMcs = state.totalMcs;
+        newSemesterMcs = currSemesterMcs;
+      }
       const newTotalGradePoint =
         state.totalGradePoint - prevGradePoint + newGradePoint;
+
       return {
         ...state,
+        totalMcs: newTotalMcs,
         semesterGradePoint: {
           [semester]: newSemesterGradePoint,
+        },
+        semesterMcs: {
+          [semester]: newSemesterMcs,
         },
         totalGradePoint: newTotalGradePoint,
       };

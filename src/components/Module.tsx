@@ -39,7 +39,7 @@ const Module: React.FunctionComponent<IModuleProp> = ({
       </td>
       <td>{module.ModuleCredit}</td>
       <td>
-        <GradeSelector moduleCode={module.ModuleCode} />
+        <GradeSelector module={module} />
       </td>
       <td>
         <button onClick={handleClick(module)}>Delete</button>

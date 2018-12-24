@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { IGradeObject, setGrade } from "src/actions/savedModules";
 import { RootState } from "src/store/configureStore";
 import { Dispatch } from "redux";
+import { ISavedModule } from "src/reducers/savedModules";
 
 interface IGradeSelectorState {
   currentValue: string;
@@ -10,9 +11,8 @@ interface IGradeSelectorState {
 
 interface IGradeSelectorProps {
   currSem: string;
-  moduleCode: string;
+  module: ISavedModule;
   currentValue: string;
-  mc: string;
   onSetGrade: (gradeObj: IGradeObject) => void;
 }
 
@@ -52,7 +52,7 @@ class GradeSelector extends React.Component<
   }
 
   private handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { onSetGrade, currSem, moduleCode, mc } = this.props;
+    const { onSetGrade, currSem, module } = this.props;
     const prevValue = this.state.currentValue;
     const newValue = event.target.value;
     this.setState({
@@ -60,8 +60,7 @@ class GradeSelector extends React.Component<
     });
 
     onSetGrade({
-      mc,
-      moduleCode,
+      module,
       semester: currSem,
       grade: newValue,
       prevGrade: prevValue,
@@ -75,13 +74,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const mapStateToProps = (
   state: RootState,
-  ownProps: { moduleCode: string }
+  ownProps: { module: ISavedModule }
 ) => {
   const currSem = state.misc.currSemester;
   return {
     currSem,
-    currentValue: state.savedModules[currSem][ownProps.moduleCode].grade,
-    mc: state.savedModules[currSem][ownProps.moduleCode].ModuleCredit,
+    currentValue: ownProps.module.grade!,
   };
 };
 

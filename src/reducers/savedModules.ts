@@ -7,8 +7,8 @@ export interface ISavedModule {
   ModuleTitle: string;
   ModuleCode: string;
   ModuleCredit: string;
-  grade?: number;
-  SU?: boolean;
+  grade?: string;
+  gradePoint?: number;
 }
 
 export interface ISavedModuleState {
@@ -46,16 +46,20 @@ const savedModuleReducer = (
         [payload.semNum]: rest,
       };
     case SET_GRADE:
-      const { semester, moduleCode, grade } = payload;
+      const {
+        semester,
+        grade,
+        module: { ModuleCode },
+      } = payload;
       return {
         ...state,
         [semester]: {
           ...state[semester],
-          [moduleCode]: {
-            ...state[semester][moduleCode],
+          [ModuleCode]: {
+            ...state[semester][ModuleCode],
             grade,
             gradePoint:
-              parseInt(state[semester][moduleCode].ModuleCredit, 10) *
+              parseInt(state[semester][ModuleCode].ModuleCredit, 10) *
               GRADE_DICT[grade],
           },
         },
