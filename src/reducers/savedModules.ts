@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 
 import { ISaveModuleAction, ISetGradeAction } from "src/actions";
-import { ADD_MOD, REMOVE_MOD, SET_GRADE } from "./constants";
+import { ADD_MOD, REMOVE_MOD, SET_GRADE, GRADE_DICT } from "./constants";
 
 export interface ISavedModule {
   ModuleTitle: string;
@@ -56,29 +56,13 @@ const savedModuleReducer = (
             grade,
             gradePoint:
               parseInt(state[semester][moduleCode].ModuleCredit, 10) *
-              gradeDict[grade],
+              GRADE_DICT[grade],
           },
         },
       };
     default:
       return state;
   }
-};
-
-const gradeDict = {
-  "A+": 5,
-  A: 5,
-  "A-": 4.5,
-  "B+": 4,
-  B: 3.5,
-  "B-": 3,
-  "C+": 2.5,
-  C: 2,
-  "D+": 1.5,
-  D: 1,
-  F: 0,
-  S: 0,
-  U: 0,
 };
 
 export default savedModuleReducer;
