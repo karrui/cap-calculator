@@ -10,8 +10,10 @@ export const removeModule = (module: IFilteredModule, semNum: string) =>
   action(REMOVE_MOD, { module, semNum });
 
 export interface IGradeObject {
+  mc: string;
   semester: string;
   moduleCode: string;
   grade: string;
+  prevGrade: string;
 }
 export const setGrade = (gradeObj: IGradeObject) => action(SET_GRADE, gradeObj);

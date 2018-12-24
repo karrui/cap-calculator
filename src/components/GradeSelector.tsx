@@ -12,6 +12,7 @@ interface IGradeSelectorProps {
   currSem: string;
   moduleCode: string;
   currentValue: string;
+  mc: string;
   onSetGrade: (gradeObj: IGradeObject) => void;
 }
 
@@ -51,13 +52,20 @@ class GradeSelector extends React.Component<
   }
 
   private handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { onSetGrade, currSem, moduleCode } = this.props;
+    const { onSetGrade, currSem, moduleCode, mc } = this.props;
+    const prevValue = this.state.currentValue;
     const newValue = event.target.value;
     this.setState({
       currentValue: newValue,
     });
 
-    onSetGrade({ moduleCode, semester: currSem, grade: newValue });
+    onSetGrade({
+      mc,
+      moduleCode,
+      semester: currSem,
+      grade: newValue,
+      prevGrade: prevValue,
+    });
   };
 }
 
@@ -73,6 +81,7 @@ const mapStateToProps = (
   return {
     currSem,
     currentValue: state.savedModules[currSem][ownProps.moduleCode].grade,
+    mc: state.savedModules[currSem][ownProps.moduleCode].ModuleCredit,
   };
 };
 
