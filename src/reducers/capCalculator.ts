@@ -3,12 +3,14 @@ import { ADD_MOD, REMOVE_MOD, SET_GRADE, GRADE_DICT } from "./constants";
 
 const defaultCapCalcState: ICapCalcState = {
   totalMcs: 0,
+  totalGradePoint: 0,
   semesterMcs: {},
   semesterGradePoint: {},
 };
 
 interface ICapCalcState {
   totalMcs: number;
+  totalGradePoint: number;
   semesterMcs: {
     [semester: string]: number;
   };
@@ -51,6 +53,9 @@ const capCalculatorReducer = (
       const newSemesterGradePoint = module.gradePoint
         ? state.semesterGradePoint[semNum] - module.gradePoint
         : state.semesterGradePoint[semNum];
+      const newTotalGradePoint = module.gradePoint
+        ? state.totalGradePoint - module.gradePoint
+        : state.totalGradePoint;
       return {
         ...state,
         totalMcs: state.totalMcs - parseInt(module.ModuleCredit!, 10),
@@ -61,24 +66,29 @@ const capCalculatorReducer = (
         semesterGradePoint: {
           [semNum]: newSemesterGradePoint,
         },
+        totalGradePoint: newTotalGradePoint,
       };
     }
     case SET_GRADE: {
       const { semester, mc, grade, prevGrade = "" } = payload;
+      const prevGradePoint = GRADE_DICT[prevGrade] * parseInt(mc, 10);
+      const newGradePoint = GRADE_DICT[grade] * parseInt(mc, 10);
       let newSemesterGradePoint;
       if (state.semesterGradePoint && state.semesterGradePoint[semester]) {
         newSemesterGradePoint =
-          state.semesterGradePoint[semester] -
-          GRADE_DICT[prevGrade] * parseInt(mc, 10) +
-          GRADE_DICT[grade] * parseInt(mc, 10);
+          state.semesterGradePoint[semester] - prevGradePoint + newGradePoint;
       } else {
-        newSemesterGradePoint = GRADE_DICT[grade] * parseInt(mc, 10);
+        newSemesterGradePoint = newGradePoint;
       }
+
+      const newTotalGradePoint =
+        state.totalGradePoint - prevGradePoint + newGradePoint;
       return {
         ...state,
         semesterGradePoint: {
           [semester]: newSemesterGradePoint,
         },
+        totalGradePoint: newTotalGradePoint,
       };
     }
     default:
