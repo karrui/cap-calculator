@@ -31,9 +31,10 @@ const SavedTable: React.FunctionComponent<ISavedTableProps> = ({
     <table className="table">
       <SavedTableHeader />
       <tbody>
-        {Object.keys(savedModules).map(moduleCode => (
-          <Module key={moduleCode} module={savedModules[moduleCode]} />
-        ))}
+        {savedModules &&
+          Object.keys(savedModules).map(moduleCode => (
+            <Module key={moduleCode} module={savedModules[moduleCode]} />
+          ))}
       </tbody>
     </table>
   );

@@ -125,7 +125,10 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       );
 
       filteredModules.map(module => {
-        if (savedModules[currSemNum].hasOwnProperty(module.ModuleCode!)) {
+        if (
+          Object.keys(savedModules).length !== 0 &&
+          savedModules[currSemNum].hasOwnProperty(module.ModuleCode!)
+        ) {
           module.isDisabled = true;
         }
       });
