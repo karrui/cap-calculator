@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { IGradeObject, setGrade } from "src/actions/savedModules";
+import { IGradeObject, setGrade, setSU } from "src/actions/savedModules";
 import { RootState } from "src/store/configureStore";
 import { Dispatch } from "redux";
 import { ISavedModule } from "src/reducers/savedModules";
@@ -14,6 +14,7 @@ interface IGradeSelectorProps {
   module: ISavedModule;
   currentValue: string;
   onSetGrade: (gradeObj: IGradeObject) => void;
+  onSetSU: (gradeObj: IGradeObject) => void;
 }
 
 class GradeSelector extends React.Component<
@@ -52,24 +53,31 @@ class GradeSelector extends React.Component<
   }
 
   private handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { onSetGrade, currSem, module } = this.props;
+    const { onSetGrade, onSetSU, currSem, module } = this.props;
     const prevValue = this.state.currentValue;
     const newValue = event.target.value;
     this.setState({
       currentValue: newValue,
     });
 
-    onSetGrade({
+    const gradeObj = {
       module,
       semester: currSem,
       grade: newValue,
       prevGrade: prevValue,
-    });
+    };
+
+    onSetGrade(gradeObj);
+
+    if (newValue === "S" || newValue === "U") {
+      onSetSU(gradeObj);
+    }
   };
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onSetGrade: (gradeObj: IGradeObject) => dispatch(setGrade(gradeObj)),
+  onSetSU: (gradeObj: IGradeObject) => dispatch(setSU(gradeObj)),
 });
 
 const mapStateToProps = (

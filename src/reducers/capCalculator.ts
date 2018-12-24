@@ -1,5 +1,11 @@
 import { ISaveModuleAction, ISetGradeAction } from "src/actions";
-import { ADD_MOD, REMOVE_MOD, SET_GRADE, GRADE_DICT } from "./constants";
+import {
+  ADD_MOD,
+  REMOVE_MOD,
+  SET_GRADE,
+  GRADE_DICT,
+  SET_SU,
+} from "./constants";
 
 const defaultCapCalcState: ICapCalcState = {
   totalMcs: 0,
@@ -30,16 +36,23 @@ const capCalculatorReducer = (
       const { semNum, module } = payload;
       // since it is remove mod, must have current semesterMcs
       const newSemesterMcs =
-        state.semesterMcs[semNum] - parseInt(module.ModuleCredit!, 10);
+        module.gradePoint && module.gradePoint !== 0
+          ? state.semesterMcs[semNum] - parseInt(module.ModuleCredit!, 10)
+          : state.semesterMcs[semNum];
       const newSemesterGradePoint = module.gradePoint
         ? state.semesterGradePoint[semNum] - module.gradePoint
         : state.semesterGradePoint[semNum];
       const newTotalGradePoint = module.gradePoint
         ? state.totalGradePoint - module.gradePoint
         : state.totalGradePoint;
+
+      const newTotalMcs =
+        module.gradePoint && module.gradePoint !== 0
+          ? state.totalMcs - parseInt(module.ModuleCredit!, 10)
+          : state.totalMcs;
       return {
         ...state,
-        totalMcs: state.totalMcs - parseInt(module.ModuleCredit!, 10),
+        totalMcs: newTotalMcs,
         semesterMcs: {
           ...state.semesterMcs,
           [semNum]: newSemesterMcs,
@@ -71,7 +84,7 @@ const capCalculatorReducer = (
         state.semesterMcs && state.semesterMcs[semester]
           ? state.semesterMcs[semester]
           : 0;
-      if (prevGrade === "") {
+      if (prevGrade === "" || prevGrade === "S" || prevGrade === "U") {
         newTotalMcs = state.totalMcs + parseInt(module.ModuleCredit, 10);
         newSemesterMcs = currSemesterMcs + parseInt(module.ModuleCredit, 10);
       } else if (grade === "") {
@@ -94,6 +107,27 @@ const capCalculatorReducer = (
           [semester]: newSemesterMcs,
         },
         totalGradePoint: newTotalGradePoint,
+      };
+    }
+    case SET_SU: {
+      const { semester, module, grade, prevGrade = "" } = payload;
+
+      const currSemesterMcs =
+        state.semesterMcs && state.semesterMcs[semester]
+          ? state.semesterMcs[semester]
+          : 0;
+
+      // minus MCs
+      const newTotalMcs = state.totalMcs - parseInt(module.ModuleCredit, 10);
+      const newSemesterMcs =
+        currSemesterMcs - parseInt(module.ModuleCredit, 10);
+
+      return {
+        ...state,
+        totalMcs: newTotalMcs,
+        semesterMcs: {
+          [semester]: newSemesterMcs,
+        },
       };
     }
     default:
