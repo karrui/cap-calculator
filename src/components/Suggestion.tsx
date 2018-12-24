@@ -57,7 +57,7 @@ const Suggestion: React.SFC<ISuggestionProps> = props => {
                 getModuleValue(module),
                 userInput,
                 (match: string, i: number) => (
-                  <mark>{match}</mark>
+                  <mark key={i}>{match}</mark>
                 )
               )}
             </span>
