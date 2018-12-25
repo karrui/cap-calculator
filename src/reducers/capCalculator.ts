@@ -96,7 +96,6 @@ const capCalculatorReducer = (
       }
       const newTotalGradePoint =
         state.totalGradePoint - prevGradePoint + newGradePoint;
-
       return {
         ...state,
         totalMcs: newTotalMcs,
@@ -128,6 +127,7 @@ const capCalculatorReducer = (
         ...state,
         totalMcs: newTotalMcs,
         semesterMcs: {
+          ...state.semesterMcs,
           [semester]: newSemesterMcs,
         },
       };
