@@ -8,13 +8,9 @@ import GradeSelector from "./GradeSelector";
 
 interface IModuleProp {
   module: ISavedModule;
-  currSem: string;
+  semester: number;
   onRemoveModule: (module: ISavedModule, semNum: string) => void;
 }
-
-const mapStateToProps = (state: RootState) => ({
-  currSem: state.misc.currSemester,
-});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onRemoveModule: (module: ISavedModule, semNum: string) => {
@@ -25,12 +21,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const Module: React.FunctionComponent<IModuleProp> = ({
   module,
   onRemoveModule,
-  currSem,
+  semester,
 }) => {
   const handleClick = (module: ISavedModule) => (
     event: React.MouseEvent<HTMLElement>
   ) => {
-    onRemoveModule(module, currSem);
+    onRemoveModule(module, semester.toString());
   };
   return (
     <tr>
@@ -49,6 +45,6 @@ const Module: React.FunctionComponent<IModuleProp> = ({
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(Module);
