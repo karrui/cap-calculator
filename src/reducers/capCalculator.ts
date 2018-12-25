@@ -5,6 +5,7 @@ import {
   SET_GRADE,
   GRADE_DICT,
   SET_SU,
+  REMOVE_SEMESTER,
 } from "./constants";
 
 const defaultCapCalcState: ICapCalcState = {
@@ -14,7 +15,7 @@ const defaultCapCalcState: ICapCalcState = {
   semesterGradePoint: {},
 };
 
-interface ICapCalcState {
+export interface ICapCalcState {
   totalMcs: number;
   totalGradePoint: number;
   semesterMcs: {
@@ -58,6 +59,7 @@ const capCalculatorReducer = (
           [semNum]: newSemesterMcs,
         },
         semesterGradePoint: {
+          ...state.semesterGradePoint,
           [semNum]: newSemesterGradePoint,
         },
         totalGradePoint: newTotalGradePoint,
@@ -101,9 +103,11 @@ const capCalculatorReducer = (
         ...state,
         totalMcs: newTotalMcs,
         semesterGradePoint: {
+          ...state.semesterGradePoint,
           [semester]: newSemesterGradePoint,
         },
         semesterMcs: {
+          ...state.semesterMcs,
           [semester]: newSemesterMcs,
         },
         totalGradePoint: newTotalGradePoint,
@@ -128,6 +132,35 @@ const capCalculatorReducer = (
         semesterMcs: {
           [semester]: newSemesterMcs,
         },
+      };
+    }
+    case REMOVE_SEMESTER: {
+      const semesterToRemove = Object.keys(state.semesterMcs).length;
+      let mcsToRemove = state.semesterMcs[semesterToRemove];
+      let gradePointsToRemove = state.semesterGradePoint[semesterToRemove];
+
+      if (!mcsToRemove) {
+        mcsToRemove = 0;
+      }
+
+      if (!gradePointsToRemove) {
+        gradePointsToRemove = 0;
+      }
+
+      const {
+        [semesterToRemove]: removedValueGP,
+        ...restGradePoint
+      } = state.semesterGradePoint;
+      const {
+        [semesterToRemove]: removedValueMcs,
+        ...restMcs
+      } = state.semesterMcs;
+      return {
+        ...state,
+        totalMcs: state.totalMcs - mcsToRemove,
+        totalGradePoint: state.totalGradePoint - gradePointsToRemove,
+        semesterGradePoint: restGradePoint,
+        semesterMcs: restMcs,
       };
     }
     default:

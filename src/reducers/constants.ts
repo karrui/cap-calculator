@@ -7,6 +7,8 @@ export const SET_MODULE_BANK = "SET_MODULE_BANK";
 export const CLEAR_MODULE_BANK = "CLEAR_MODULE_BANK";
 
 export const SET_CURR_SEMESTER = "SET_CURR_SEMESTER";
+export const ADD_SEMESTER = "ADD_SEMESTER";
+export const REMOVE_SEMESTER = "REMOVE_SEMESTER";
 
 export const GRADE_DICT = {
   "A+": 5,

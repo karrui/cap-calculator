@@ -11,6 +11,7 @@ import { asyncSetModuleBank } from "../actions/moduleBank";
 import Suggestion from "./Suggestion";
 
 import "../style/Search.css";
+import SemesterSelector from "./SemesterSelector";
 
 export interface IFilteredModule extends IModule {
   isDisabled?: boolean;
@@ -93,6 +94,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
             handleHover={this.handleHover}
           />
         )}
+        <SemesterSelector />
       </div>
     );
   }
@@ -127,6 +129,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       filteredModules.map(module => {
         if (
           Object.keys(savedModules).length !== 0 &&
+          savedModules[currSemNum] &&
           savedModules[currSemNum].hasOwnProperty(module.ModuleCode!)
         ) {
           module.isDisabled = true;
@@ -168,7 +171,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     switch (key) {
       case "Enter": {
         const module = filteredModules[currentHighlighted];
-        if (!module.isDisabled) {
+        if (module && !module.isDisabled) {
           onAddSavedModule(filteredModules[currentHighlighted], currSemNum);
           this.resetState();
         }

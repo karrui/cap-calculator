@@ -1,7 +1,13 @@
 import * as _ from "lodash";
 
 import { ISaveModuleAction, ISetGradeAction } from "src/actions";
-import { ADD_MOD, REMOVE_MOD, SET_GRADE, GRADE_DICT } from "./constants";
+import {
+  ADD_MOD,
+  REMOVE_MOD,
+  SET_GRADE,
+  GRADE_DICT,
+  REMOVE_SEMESTER,
+} from "./constants";
 
 export interface ISavedModule {
   ModuleTitle: string;
@@ -23,21 +29,23 @@ const savedModuleReducer = (
   state: ISavedModuleState = defaultSavedModuleState,
   action: any
 ) => {
-  const { payload } = action;
-  switch (action.type) {
-    case ADD_MOD:
+  const { payload, type } = action;
+  switch (type) {
+    case ADD_MOD: {
+      const { semNum, module } = payload;
       return {
         ...state,
-        [payload.semNum]: {
-          ...state[payload.semNum],
-          [payload.module.ModuleCode!]: {
-            ModuleTitle: payload.module.ModuleTitle,
-            ModuleCode: payload.module.ModuleCode,
-            ModuleCredit: payload.module.ModuleCredit,
+        [semNum]: {
+          ...state[semNum],
+          [module.ModuleCode!]: {
+            ModuleTitle: module.ModuleTitle,
+            ModuleCode: module.ModuleCode,
+            ModuleCredit: module.ModuleCredit,
           },
         },
       };
-    case REMOVE_MOD:
+    }
+    case REMOVE_MOD: {
       const { [payload.module.ModuleCode!]: removedValue, ...rest } = state[
         payload.semNum
       ];
@@ -45,7 +53,13 @@ const savedModuleReducer = (
         ...state,
         [payload.semNum]: rest,
       };
-    case SET_GRADE:
+    }
+    case REMOVE_SEMESTER: {
+      const semesterToRemove = Object.keys(state).length;
+      const { [semesterToRemove]: removedSemester, ...rest } = state;
+      return rest;
+    }
+    case SET_GRADE: {
       const {
         semester,
         grade,
@@ -64,6 +78,7 @@ const savedModuleReducer = (
           },
         },
       };
+    }
     default:
       return state;
   }
