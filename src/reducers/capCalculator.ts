@@ -1,6 +1,4 @@
-import { ISaveModuleAction, ISetGradeAction } from "src/actions";
 import {
-  ADD_MOD,
   REMOVE_MOD,
   SET_GRADE,
   GRADE_DICT,
@@ -135,7 +133,7 @@ const capCalculatorReducer = (
       };
     }
     case REMOVE_SEMESTER: {
-      const semesterToRemove = Object.keys(state.semesterMcs).length;
+      const semesterToRemove = payload;
       let mcsToRemove = state.semesterMcs[semesterToRemove];
       let gradePointsToRemove = state.semesterGradePoint[semesterToRemove];
 

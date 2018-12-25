@@ -13,10 +13,11 @@ interface ICapHeaderProps {
   currSem: string;
 
   onAddSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onRemoveSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleRemoveSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
+  numSemesters: state.misc.numSemesters,
   currSem: state.misc.currSemester,
   totalMcs: state.capCalculator.totalMcs,
   totalGradePoint: state.capCalculator.totalGradePoint,
@@ -26,7 +27,29 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onAddSemester: () => dispatch(addSemester()),
-  onRemoveSemester: () => dispatch(removeSemester()),
+  onRemoveSemester: (semester: number) => dispatch(removeSemester(semester)),
+});
+
+const mergeProps = (
+  {
+    numSemesters,
+    currSem,
+    totalMcs,
+    totalGradePoint,
+    fullSemesterMcs,
+    fullSemesterGradePoint,
+  }: any,
+  { onAddSemester, onRemoveSemester }: any
+) => ({
+  currSem,
+  totalMcs,
+  totalGradePoint,
+  fullSemesterGradePoint,
+  fullSemesterMcs,
+  onAddSemester,
+  handleRemoveSemester: (event: React.MouseEvent<HTMLButtonElement>) => {
+    onRemoveSemester(numSemesters);
+  },
 });
 
 const CapHeader: React.FunctionComponent<ICapHeaderProps> = ({
@@ -35,7 +58,7 @@ const CapHeader: React.FunctionComponent<ICapHeaderProps> = ({
   totalGradePoint,
   totalMcs,
   onAddSemester,
-  onRemoveSemester,
+  handleRemoveSemester,
   currSem,
 }) => {
   return (
@@ -51,12 +74,13 @@ const CapHeader: React.FunctionComponent<ICapHeaderProps> = ({
       ) : null}
 
       <button onClick={onAddSemester}>Add Semester</button>
-      <button onClick={onRemoveSemester}>Remove Semester</button>
+      <button onClick={handleRemoveSemester}>Remove Semester</button>
     </div>
   );
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps
 )(CapHeader);

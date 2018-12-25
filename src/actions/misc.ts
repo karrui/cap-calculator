@@ -11,4 +11,5 @@ export const setCurrentSemester = (semNum: string) =>
 
 export const addSemester = () => action(ADD_SEMESTER);
 
-export const removeSemester = () => action(REMOVE_SEMESTER);
+export const removeSemester = (semester: number) =>
+  action(REMOVE_SEMESTER, semester);
