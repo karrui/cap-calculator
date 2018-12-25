@@ -7,8 +7,8 @@ import { action } from "typesafe-actions";
 import { IModule } from "src/App";
 import { CLEAR_MODULE_BANK, SET_MODULE_BANK } from "src/reducers/constants";
 
-const API_URL_SEM_1 = "http://api.nusmods.com/2018-2019/1/modules.json";
-const API_URL_SEM_2 = "http://api.nusmods.com/2018-2019/2/modules.json";
+const API_URL_SEM_1 = "https://api.nusmods.com/2018-2019/1/modules.json";
+const API_URL_SEM_2 = "https://api.nusmods.com/2018-2019/2/modules.json";
 
 export const asyncSetModuleBank: ActionCreator<
   ThunkAction<any, any, any, any>
