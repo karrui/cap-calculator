@@ -21,6 +21,7 @@ const miscReducer = (state = defaultMiscState, action: IMiscAction) => {
     case ADD_SEMESTER: {
       return {
         ...state,
+        currSemester: state.numSemesters + 1,
         numSemesters: state.numSemesters + 1,
       };
     }

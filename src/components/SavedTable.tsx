@@ -46,19 +46,21 @@ const SavedTable: React.FunctionComponent<ISavedTableProps> = ({
           Semester CAP:{" "}
           {semesterMcs[i] ? semesterGradePoint[i] / semesterMcs[i] : "--"}
         </div>
-        <table className="table">
-          <SavedTableHeader />
-          <tbody>
-            {savedModules[i] &&
-              Object.keys(savedModules[i]).map(moduleCode => (
-                <Module
-                  key={moduleCode}
-                  semester={i}
-                  module={savedModules[i][moduleCode]}
-                />
-              ))}
-          </tbody>
-        </table>
+        <div className="table-responsive">
+          <table className="table">
+            <SavedTableHeader />
+            <tbody>
+              {savedModules[i] &&
+                Object.keys(savedModules[i]).map(moduleCode => (
+                  <Module
+                    key={moduleCode}
+                    semester={i}
+                    module={savedModules[i][moduleCode]}
+                  />
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }
