@@ -6,6 +6,8 @@ import { ISavedModuleState } from "src/reducers/savedModules";
 import Module from "./Module";
 import { ICapCalcState } from "src/reducers/capCalculator";
 
+import "../style/SavedTable.css";
+
 const SavedTableHeader: React.FunctionComponent = () => (
   <thead>
     <tr>
@@ -41,12 +43,15 @@ const SavedTable: React.FunctionComponent<ISavedTableProps> = ({
   for (let i = numSemesters; i > 0; i = i - 1) {
     savedSemesterModules.push(
       <div className="sem-table" key={i}>
-        Semester {i}
-        <div className="sem-cap">
-          Semester CAP:{" "}
-          {semesterMcs[i] ? semesterGradePoint[i] / semesterMcs[i] : "--"}
+        <div className="sem-header-details">
+          Semester {i}
+          <div className="sem-cap">
+            {semesterMcs[i]
+              ? `Semester CAP: ${semesterGradePoint[i] / semesterMcs[i]}`
+              : ""}
+          </div>
         </div>
-        <div className="table-responsive">
+        <div className="sem-table-wrapper table-responsive">
           <table className="table">
             <SavedTableHeader />
             <tbody>

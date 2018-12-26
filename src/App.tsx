@@ -19,9 +19,9 @@ const App: React.FunctionComponent = () => {
     <div className="App container">
       <header className="App-header">
         <h1 className="App-title">CAP Calculator</h1>
+        <CapHeader />
+        <Search />
       </header>
-      <CapHeader />
-      <Search />
       <SavedTable />
     </div>
   );
