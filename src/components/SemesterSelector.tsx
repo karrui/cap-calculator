@@ -33,7 +33,7 @@ const mergeProps = (
     }
   },
   handlePrevSem: () => {
-    const { currSemester, numSemesters } = state;
+    const { currSemester } = state;
     if (parseInt(currSemester, 10) > 1) {
       onSetSemester((parseInt(currSemester, 10) - 1).toString());
     }

@@ -111,7 +111,7 @@ const capCalculatorReducer = (
       };
     }
     case SET_SU: {
-      const { semester, module, grade, prevGrade = "" } = payload;
+      const { semester, module } = payload;
 
       const currSemesterMcs =
         state.semesterMcs && state.semesterMcs[semester]

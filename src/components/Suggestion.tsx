@@ -43,8 +43,6 @@ const Suggestion: React.FunctionComponent<ISuggestionProps> = props => {
           className += " disabled";
         }
 
-        const regexInput = new RegExp(userInput, "g");
-
         return (
           <li
             className={className}

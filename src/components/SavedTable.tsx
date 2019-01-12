@@ -47,7 +47,9 @@ const SavedTable: React.FunctionComponent<ISavedTableProps> = ({
           Semester {i}
           <div className="sem-cap">
             {semesterMcs[i]
-              ? `Semester CAP: ${semesterGradePoint[i] / semesterMcs[i]}`
+              ? `Semester CAP: ${(
+                  semesterGradePoint[i] / semesterMcs[i]
+                ).toFixed(2)}`
               : ""}
           </div>
         </div>

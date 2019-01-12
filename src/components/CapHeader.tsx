@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RootState } from "src/store/configureStore";
 import { connect } from "react-redux";
-import { Dispatch, Action } from "redux";
+import { Dispatch } from "redux";
 import { addSemester, removeSemester } from "src/actions/misc";
 
 import "../style/CapHeader.css";

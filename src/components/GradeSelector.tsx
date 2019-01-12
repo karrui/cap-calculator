@@ -1,7 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IGradeObject, setGrade, setSU } from "src/actions/savedModules";
-import { RootState } from "src/store/configureStore";
 import { Dispatch } from "redux";
 import { ISavedModule } from "src/reducers/savedModules";
 
