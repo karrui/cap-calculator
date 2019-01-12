@@ -55,7 +55,7 @@ const savedModuleReducer = (
       };
     }
     case REMOVE_SEMESTER: {
-      const semesterToRemove = Object.keys(state).length;
+      const semesterToRemove = payload;
       const { [semesterToRemove]: removedSemester, ...rest } = state;
       return rest;
     }

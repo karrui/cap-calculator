@@ -22,7 +22,7 @@ interface ISuggestionProps {
 const getModuleValue = (module: IModule) =>
   `${module.ModuleCode} ${module.ModuleTitle}`;
 
-const Suggestion: React.SFC<ISuggestionProps> = props => {
+const Suggestion: React.FunctionComponent<ISuggestionProps> = props => {
   const {
     filteredModules,
     currentHighlighted,

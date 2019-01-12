@@ -10,9 +10,8 @@ interface IGradeSelectorState {
 }
 
 interface IGradeSelectorProps {
-  currSem: string;
+  semester: string;
   module: ISavedModule;
-  currentValue: string;
   onSetGrade: (gradeObj: IGradeObject) => void;
   onSetSU: (gradeObj: IGradeObject) => void;
 }
@@ -25,7 +24,7 @@ class GradeSelector extends React.Component<
     super(props);
 
     this.state = {
-      currentValue: this.props.currentValue,
+      currentValue: this.props.module.grade!,
     };
   }
 
@@ -53,7 +52,7 @@ class GradeSelector extends React.Component<
   }
 
   private handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { onSetGrade, onSetSU, currSem, module } = this.props;
+    const { onSetGrade, onSetSU, semester, module } = this.props;
     const prevValue = this.state.currentValue;
     const newValue = event.target.value;
     this.setState({
@@ -62,7 +61,7 @@ class GradeSelector extends React.Component<
 
     const gradeObj = {
       module,
-      semester: currSem,
+      semester,
       grade: newValue,
       prevGrade: prevValue,
     };
@@ -80,18 +79,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   onSetSU: (gradeObj: IGradeObject) => dispatch(setSU(gradeObj)),
 });
 
-const mapStateToProps = (
-  state: RootState,
-  ownProps: { module: ISavedModule }
-) => {
-  const currSem = state.misc.currSemester;
-  return {
-    currSem,
-    currentValue: ownProps.module.grade!,
-  };
-};
-
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(GradeSelector);

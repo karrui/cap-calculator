@@ -2,7 +2,6 @@ import * as React from "react";
 import { ISavedModule } from "src/reducers/savedModules";
 import { Dispatch } from "redux";
 import { removeModule } from "src/actions";
-import { RootState } from "src/store/configureStore";
 import { connect } from "react-redux";
 import GradeSelector from "./GradeSelector";
 
@@ -35,7 +34,7 @@ const Module: React.FunctionComponent<IModuleProp> = ({
       </td>
       <td>{module.ModuleCredit}</td>
       <td>
-        <GradeSelector module={module} />
+        <GradeSelector semester={semester.toString()} module={module} />
       </td>
       <td>
         <button onClick={handleClick(module)}>Delete</button>
