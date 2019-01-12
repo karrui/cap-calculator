@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Dispatch, Action } from "redux";
 import { addSemester, removeSemester } from "src/actions/misc";
 
+import "../style/CapHeader.css";
 interface ICapHeaderProps {
   totalMcs: number;
   totalGradePoint: number;
@@ -43,11 +44,13 @@ const CapHeader: React.FunctionComponent<ICapHeaderProps> = ({
 }) => {
   return (
     <div className="cap-header">
-      <div className="total-cap">
-        CAP: {totalGradePoint ? totalGradePoint / totalMcs : "--"}
-      </div>
+      {totalGradePoint ? (
+        <div className="total-cap">
+          Total CAP: {(totalGradePoint / totalMcs).toFixed(2)}
+        </div>
+      ) : null}
       <button onClick={onAddSemester}>Add Semester</button>
-      <button onClick={handleRemoveSemester}>Remove Semester</button>
+      <button onClick={handleRemoveSemester}>Remove LATEST Semester</button>
     </div>
   );
 };

@@ -21,3 +21,15 @@ input:focus {
   outline: none;
   border-color: #ffc0b8;
 }
+
+.arrow-right,
+.arrow-left {
+  color: #ff5138;
+  cursor: pointer;
+}
+
+.arrow-right.disabled,
+.arrow-left.disabled {
+  color: #6c757d;
+  pointer-events: none;
+}

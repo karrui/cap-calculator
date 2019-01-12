@@ -83,7 +83,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
           onChange={this.handleChange}
           onKeyDown={this.handleKeydown}
           value={userInput}
-          placeholder="Add Module for CAP Calculation"
+          placeholder="Add module to selected semester for CAP calculation"
         />
         {showSuggestion && userInput && (
           <Suggestion
