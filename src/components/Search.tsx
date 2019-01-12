@@ -76,14 +76,16 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       filteredModules,
       currentHighlighted,
     } = this.state;
+    const { currSemNum } = this.props;
     return (
       <div className="search-container">
+        <SemesterSelector />
         <input
           type="text"
           onChange={this.handleChange}
           onKeyDown={this.handleKeydown}
           value={userInput}
-          placeholder="Add module to selected semester for CAP calculation"
+          placeholder={`Add module to Semester ${currSemNum}`}
         />
         {showSuggestion && userInput && (
           <Suggestion
@@ -94,7 +96,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
             handleHover={this.handleHover}
           />
         )}
-        <SemesterSelector />
       </div>
     );
   }

@@ -11,7 +11,7 @@ const ArrowLeftSvg: React.FunctionComponent<IArrowLeftProps> = ({
 }) => (
   <svg
     onClick={handleClick}
-    className={`arrow-left ${disabled ? "disabled" : ""}`}
+    className={`arrow-svg ${disabled ? "disabled" : ""}`}
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"

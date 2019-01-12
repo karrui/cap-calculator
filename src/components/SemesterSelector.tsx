@@ -4,6 +4,8 @@ import { RootState } from "src/store/configureStore";
 import { setCurrentSemester, IMiscAction } from "src/actions";
 import { connect } from "react-redux";
 
+import "../style/SemesterSelector.css";
+
 import ArrowLeftSvg from "../svgs/ArrowLeftSvg";
 import ArrowRightSvg from "../svgs/ArrowRightSvg";
 
@@ -75,7 +77,11 @@ class SemesterSelector extends React.Component<ISemesterSelectorProps, {}> {
           handleClick={arrowLeftDisabled ? undefined : handlePrevSem}
           disabled={arrowLeftDisabled}
         />
-        <select onChange={handleChange} value={currSemester}>
+        <select
+          className="sem-select"
+          onChange={handleChange}
+          value={currSemester}
+        >
           {options}
         </select>
         <ArrowRightSvg

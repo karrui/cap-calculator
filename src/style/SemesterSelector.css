@@ -1,0 +1,43 @@
+.semester-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.arrow-svg {
+  color: #ff5138;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.arrow-svg:hover {
+  color: #eb1d00;
+}
+
+.arrow-svg.disabled {
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.sem-select {
+  color: #69707a;
+  outline: none;
+  background: none;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  min-width: 130px;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  text-align: center;
+  text-align-last: center;
+  font-size: 1.2rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.sem-select:hover {
+  cursor: pointer;
+  color: #ff5138;
+}
