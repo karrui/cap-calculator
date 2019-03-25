@@ -7,7 +7,7 @@ import { addModule } from "../actions";
 import { IModule } from "../App";
 import { ISavedModuleState } from "../reducers/savedModules";
 import { RootState } from "../store/configureStore";
-import { asyncSetModuleBank } from "../actions/moduleBank";
+import { setModuleBank } from "../actions/moduleBank";
 import Suggestion from "./Suggestion";
 
 import "../style/Search.css";
@@ -40,7 +40,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   onSetModuleBank: () => {
-    dispatch(asyncSetModuleBank());
+    dispatch(setModuleBank());
   },
 
   onAddSavedModule: (module: IFilteredModule, semNum: string) => {

@@ -1,6 +1,6 @@
 import { IModule } from "src/App";
 import { setCurrentSemester } from "./misc";
-import { asyncSetModuleBank, clearModuleBank } from "./moduleBank";
+import { setModuleBank, clearModuleBank } from "./moduleBank";
 import { addModule, removeModule, IGradeObject } from "./savedModules";
 
 export interface ISaveModuleAction {
@@ -29,7 +29,7 @@ export interface IMiscAction {
 export {
   addModule,
   removeModule,
-  asyncSetModuleBank,
+  setModuleBank,
   clearModuleBank,
   setCurrentSemester,
 };
