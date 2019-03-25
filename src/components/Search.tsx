@@ -30,6 +30,7 @@ interface ISearchState {
   filteredModules: IFilteredModule[];
   currentHighlighted: number;
   showSuggestion: boolean;
+  scroll: boolean;
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -57,6 +58,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       filteredModules: [],
       showSuggestion: false,
       userInput: "",
+      scroll: false,
     };
   }
 
@@ -75,10 +77,11 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       userInput,
       filteredModules,
       currentHighlighted,
+      scroll,
     } = this.state;
     const { currSemNum } = this.props;
     return (
-      <div className="search-container">
+      <div onMouseMove={this.handleOnMouseMove} className="search-container">
         <SemesterSelector />
         <input
           type="text"
@@ -89,6 +92,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
         />
         {showSuggestion && userInput && (
           <Suggestion
+            scroll={scroll}
             userInput={userInput}
             filteredModules={filteredModules}
             currentHighlighted={currentHighlighted}
@@ -106,6 +110,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       filteredModules: [],
       showSuggestion: false,
       userInput: "",
+      scroll: false,
     });
   };
 
@@ -165,8 +170,16 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   private handleHover = (index: number) => (
     event: React.MouseEvent<HTMLLIElement>
   ) => {
+    if (this.state.scroll) return;
     this.setState({
       currentHighlighted: index,
+      scroll: false,
+    });
+  };
+
+  private handleOnMouseMove = () => {
+    this.setState({
+      scroll: false,
     });
   };
 
@@ -190,6 +203,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
         }
         this.setState({
           currentHighlighted: currentHighlighted - 1,
+          scroll: true,
         });
         break;
       }
@@ -199,6 +213,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
         }
         this.setState({
           currentHighlighted: currentHighlighted + 1,
+          scroll: true,
         });
         break;
       }

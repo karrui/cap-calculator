@@ -19,8 +19,7 @@
   color: #69707a;
 }
 
-.suggestions li.suggestion-active,
-.suggestions li:hover {
+.suggestions li.suggestion-active {
   color: #eb1d00;
   background-color: #f3f5f8;
   cursor: pointer;
