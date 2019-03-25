@@ -37,7 +37,13 @@ const Module: React.FunctionComponent<IModuleProp> = ({
         <GradeSelector semester={semester.toString()} module={module} />
       </td>
       <td>
-        <button onClick={handleClick(module)}>Delete</button>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={handleClick(module)}
+        >
+          Delete
+        </button>
       </td>
     </tr>
   );

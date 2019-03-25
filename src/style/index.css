@@ -3,3 +3,14 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.btn-outline-primary {
+  color: #ff5138;
+  border-color: #ff5138;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #ff5138;
+  border-color: #ff5138;
+}
