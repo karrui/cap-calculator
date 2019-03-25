@@ -21,15 +21,7 @@
     "typescript": "^3.3.4000",
     "tslint-config-airbnb": "^5.11.1",
     "typesafe-actions": "^2.0.4",
-    "typescript-tslint-plugin": "^0.2.1"
-  },
-  "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
-  },
-  "devDependencies": {
+    "typescript-tslint-plugin": "^0.2.1",
     "@types/jest": "^23.3.10",
     "@types/lodash": "^4.14.119",
     "@types/node": "^10.12.11",
@@ -40,5 +32,12 @@
     "@types/react-redux": "^6.0.11",
     "@types/react-select": "^2.0.10",
     "@types/redux-logger": "^3.0.6"
-  }
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  },
+  "devDependencies": {}
 }
