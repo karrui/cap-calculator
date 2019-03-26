@@ -4,6 +4,8 @@ import { IGradeObject, setGrade, setSU } from "src/actions/savedModules";
 import { Dispatch } from "redux";
 import { ISavedModule } from "src/reducers/savedModules";
 
+import "../style/GradeSelector.css";
+
 interface IGradeSelectorState {
   currentValue: string;
 }
@@ -30,7 +32,11 @@ class GradeSelector extends React.Component<
   public render() {
     const { currentValue } = this.state;
     return (
-      <select onChange={this.handleChange} value={currentValue}>
+      <select
+        className="form-control form-control-sm grade-selector"
+        onChange={this.handleChange}
+        value={currentValue}
+      >
         <option value="" />
         <option value="A+">A+</option>
         <option value="A">A</option>

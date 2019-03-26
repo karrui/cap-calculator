@@ -9,8 +9,22 @@ body {
   border-color: #ff5138;
 }
 
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
 .btn-outline-primary:hover {
-  color: #fff;
-  background-color: #ff5138;
+  color: #fff !important;
+  background-color: #ff5138 !important;
+  border-color: #ff5138 !important;
+}
+
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  box-shadow: 0 0 0 0.2rem rgba(255, 81, 56, 0.5) !important;
+}
+
+.form-control:focus {
   border-color: #ff5138;
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(255, 81, 56, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(255, 81, 56, 0.25);
 }

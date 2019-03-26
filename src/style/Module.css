@@ -1,0 +1,12 @@
+.mod-mc {
+  font-size: 87%;
+}
+
+.btn-trash {
+  border: none;
+}
+
+.module-row {
+  display: flex;
+  align-items: center;
+}

@@ -9,14 +9,12 @@ import { ICapCalcState } from "src/reducers/capCalculator";
 import "../style/SavedTable.css";
 
 const SavedTableHeader: React.FunctionComponent = () => (
-  <thead>
-    <tr>
-      <th scope="col">Module Name</th>
-      <th scope="col">MCs</th>
-      <th scope="col">Grade</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
+  <div className="row no-gutters sem-row-header">
+    <div className="col-6">Module Name</div>
+    <div className="col-2">MCs</div>
+    <div className="col-2">Grade</div>
+    <div className="col-2">Delete</div>
+  </div>
 );
 
 const mapStateToProps = (state: RootState) => ({
@@ -44,29 +42,27 @@ const SavedTable: React.FunctionComponent<ISavedTableProps> = ({
     savedSemesterModules.push(
       <div className="sem-table" key={i}>
         <div className="sem-header-details">
-          Semester {i}
-          <div className="sem-cap">
-            {semesterMcs[i]
-              ? `Semester CAP: ${(
-                  semesterGradePoint[i] / semesterMcs[i]
-                ).toFixed(2)}`
-              : ""}
+          <div className="sem-info">
+            <div>Semester {i}</div>
+            <div className="sem-cap">
+              {semesterMcs[i]
+                ? `Semester CAP: ${(
+                    semesterGradePoint[i] / semesterMcs[i]
+                  ).toFixed(2)}`
+                : ""}
+            </div>
           </div>
+          <SavedTableHeader />
         </div>
-        <div className="sem-table-wrapper table-responsive">
-          <table className="table">
-            <SavedTableHeader />
-            <tbody>
-              {savedModules[i] &&
-                Object.keys(savedModules[i]).map(moduleCode => (
-                  <Module
-                    key={moduleCode}
-                    semester={i}
-                    module={savedModules[i][moduleCode]}
-                  />
-                ))}
-            </tbody>
-          </table>
+        <div className="sem-table-wrapper">
+          {savedModules[i] &&
+            Object.keys(savedModules[i]).map(moduleCode => (
+              <Module
+                key={moduleCode}
+                semester={i}
+                module={savedModules[i][moduleCode]}
+              />
+            ))}
         </div>
       </div>
     );

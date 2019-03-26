@@ -1,6 +1,5 @@
 .suggestions {
   background: #fff;
-  border: 1px solid #d3d6db;
   border-top-width: 0;
   list-style: none;
   max-height: 50vh;
@@ -8,8 +7,11 @@
   padding-left: 0;
   align-items: center;
   position: absolute;
-  width: calc(70% - 28px);
-  margin-top: 5.4rem;
+  width: calc(100% - 70px);
+  border-width: 1px;
+  border: 1px solid #d3d6db;
+  border-top: 0 solid #d3d6db;
+  border-radius: 0 0 0.25rem 0.25rem;
 }
 
 .suggestions li {
@@ -25,10 +27,6 @@
   cursor: pointer;
 }
 
-/*
-.suggestions li:not(:last-of-type) {
-  border-bottom: 1px solid #999;
-} */
 .suggestions li.disabled {
   color: #aeb1b5;
 }

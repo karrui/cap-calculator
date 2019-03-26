@@ -49,20 +49,22 @@ const CapHeader: React.FunctionComponent<ICapHeaderProps> = ({
           Total CAP: {(totalGradePoint / totalMcs).toFixed(2)}
         </div>
       ) : null}
-      <button
-        type="button"
-        className="btn btn-outline-primary"
-        onClick={onAddSemester}
-      >
-        Add Semester
-      </button>
-      <button
-        type="button"
-        className="btn btn-outline-primary"
-        onClick={handleRemoveSemester}
-      >
-        Remove LATEST Semester
-      </button>
+      <div className="sem-buttons-wrapper">
+        <button
+          type="button"
+          className="btn btn-outline-primary sem-btn"
+          onClick={onAddSemester}
+        >
+          Add Sem
+        </button>
+        <button
+          type="button"
+          className="btn btn-outline-primary sem-btn"
+          onClick={handleRemoveSemester}
+        >
+          Remove latest Sem
+        </button>
+      </div>
     </div>
   );
 };

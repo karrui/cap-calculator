@@ -4,20 +4,3 @@
   width: 70%;
   margin: auto;
 }
-
-input {
-  align-items: center;
-  border: 1px solid #d3d6db;
-  border-radius: 4px;
-  padding: 0.5rem;
-  line-height: 1.5;
-  font-size: 1rem;
-
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out,
-    -webkit-box-shadow 0.15s ease-in-out;
-}
-
-input:focus {
-  outline: none;
-  border-color: #ffc0b8;
-}

@@ -4,6 +4,9 @@ import { Dispatch } from "redux";
 import { removeModule } from "src/actions";
 import { connect } from "react-redux";
 import GradeSelector from "./GradeSelector";
+import TrashSvg from "src/svgs/TrashSvg";
+
+import "../style/Module.css";
 
 interface IModuleProp {
   module: ISavedModule;
@@ -28,24 +31,20 @@ const Module: React.FunctionComponent<IModuleProp> = ({
     onRemoveModule(module, semester.toString());
   };
   return (
-    <tr>
-      <td>
+    <div className="row no-gutters module-row">
+      <div className="col-6 mod-title">
         {module.ModuleCode} {module.ModuleTitle}
-      </td>
-      <td>{module.ModuleCredit}</td>
-      <td>
+      </div>
+      <div className="col-2 mod-mc">{module.ModuleCredit} MCs</div>
+      <div className="col-2 grade-selector-wrapper">
         <GradeSelector semester={semester.toString()} module={module} />
-      </td>
-      <td>
-        <button
-          type="button"
-          className="btn btn-outline-primary"
-          onClick={handleClick(module)}
-        >
-          Delete
+      </div>
+      <div className="col-2">
+        <button className="btn btn-outline-secondary btn-trash">
+          <TrashSvg handleClick={handleClick(module)} />
         </button>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 };
 

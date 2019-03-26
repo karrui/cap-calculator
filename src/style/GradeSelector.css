@@ -1,0 +1,9 @@
+.grade-selector-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grade-selector {
+  max-width: 3rem;
+}
