@@ -42,9 +42,9 @@ class Suggestion extends React.Component<ISuggestionProps, {}> {
             } = this.props;
 
             const active = currentHighlighted === index;
-            let className = "";
+            let className = "suggestion";
             if (active) {
-              className = "suggestion-active";
+              className += " suggestion-active";
             }
 
             if (module.isDisabled) {

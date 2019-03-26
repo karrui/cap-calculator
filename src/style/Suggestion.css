@@ -17,6 +17,8 @@
 .suggestions li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  text-align: left;
   padding: 0.5rem;
   color: #69707a;
 }
@@ -43,6 +45,7 @@
   font-size: 75%;
   font-weight: 700;
   line-height: 1;
+  height: 18px;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
