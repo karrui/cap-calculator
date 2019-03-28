@@ -192,38 +192,33 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     const { onAddSavedModule, currSemNum } = this.props;
     const { key } = event;
 
-    switch (key) {
-      case "Enter": {
-        const module = filteredModules[currentHighlighted];
-        if (module && !module.isDisabled) {
-          onAddSavedModule(filteredModules[currentHighlighted], currSemNum);
-          this.resetState();
-        }
-        break;
-      }
-      case "ArrowUp": {
-        if (currentHighlighted === 0) {
-          return;
-        }
-        this.setState({
-          currentHighlighted: currentHighlighted - 1,
-          scroll: true,
-        });
-        break;
-      }
-      case "ArrowDown": {
-        if (currentHighlighted - 1 === filteredModules.length) {
-          return;
-        }
-        this.setState({
-          currentHighlighted: currentHighlighted + 1,
-          scroll: true,
-        });
-        break;
-      }
-      case "Escape": {
+    if (key === "Enter") {
+      const module = filteredModules[currentHighlighted];
+      if (module && !module.isDisabled) {
+        onAddSavedModule(filteredModules[currentHighlighted], currSemNum);
         this.resetState();
       }
+    }
+
+    if (key === "ArrowUp" && currentHighlighted > 0) {
+      this.setState(prevState => ({
+        currentHighlighted: prevState.currentHighlighted - 1,
+        scroll: true,
+      }));
+    }
+
+    if (
+      key === "ArrowDown" &&
+      currentHighlighted < filteredModules.length - 1
+    ) {
+      this.setState(prevState => ({
+        currentHighlighted: prevState.currentHighlighted + 1,
+        scroll: true,
+      }));
+    }
+
+    if (key === "Escape") {
+      this.resetState();
     }
   };
 }
