@@ -38,7 +38,7 @@ const Footer: React.FunctionComponent<{}> = () => {
         title="Send me an email at karrui.lau@gmail.com if your module cannot be found!"
         position="top"
       >
-        <p>Data correct as of 28 March 2019.</p>
+        <p>Data updated on 28 March 2019.</p>
       </Tooltip>
     </footer>
   );
