@@ -1,0 +1,10 @@
+.footer {
+  background-color: #f3f5f8;
+  margin-top: 5rem;
+  padding: 1rem;
+  font-size: 0.85rem;
+}
+
+.footer .links a {
+  padding: 0 1rem;
+}

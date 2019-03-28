@@ -5,6 +5,7 @@ import "./style/App.css";
 import SavedTable from "./components/SavedTable";
 import Search from "./components/Search";
 import CapHeader from "./components/CapHeader";
+import Footer from "./components/Footer";
 
 // follows NUSMod's API
 export interface IModule {
@@ -16,13 +17,16 @@ export interface IModule {
 
 const App: React.FunctionComponent = () => {
   return (
-    <div className="App container">
+    <div className="App">
       <header className="App-header">
         <h1 className="App-title">CAP Calculator</h1>
         <CapHeader />
         <Search />
       </header>
-      <SavedTable />
+      <div className="container">
+        <SavedTable />
+      </div>
+      <Footer />
     </div>
   );
 };

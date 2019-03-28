@@ -71,15 +71,16 @@ class SavedTable extends React.Component<ISavedTableProps, {}> {
               </div>
               <SavedTableHeader />
             </div>
-            <div className="sem-table-wrapper" />
-            {savedModules[i] &&
-              Object.keys(savedModules[i]).map(moduleCode => (
-                <Module
-                  key={moduleCode}
-                  semester={i}
-                  module={savedModules[i][moduleCode]}
-                />
-              ))}
+            <div className="sem-table-wrapper">
+              {savedModules[i] &&
+                Object.keys(savedModules[i]).map(moduleCode => (
+                  <Module
+                    key={moduleCode}
+                    semester={i}
+                    module={savedModules[i][moduleCode]}
+                  />
+                ))}
+            </div>
           </div>
         </div>
       );

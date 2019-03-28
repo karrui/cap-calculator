@@ -81,13 +81,10 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     } = this.state;
     const { currSemNum } = this.props;
     return (
-      <div
-        onMouseMove={this.handleOnMouseMove}
-        className="container-fluid no-gutter"
-      >
+      <div onMouseMove={this.handleOnMouseMove} className="container no-gutter">
         <SemesterSelector />
         <input
-          className="form-control"
+          className="form-control search-bar"
           type="text"
           onChange={this.handleChange}
           onKeyDown={this.handleKeydown}

@@ -16,6 +16,8 @@
 
 .sem-table-wrapper {
   border-top: 1px solid #ddd;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
 }
 
 .sem-header-details {
@@ -26,7 +28,8 @@
 
 .sem-info {
   padding: 0.5rem 1rem;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: bold;
   display: flex;
   justify-content: space-between;
 }
