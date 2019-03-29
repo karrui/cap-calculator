@@ -8,6 +8,8 @@ import Module from "./Module";
 import { ICapCalcState } from "src/reducers/capCalculator";
 
 import "../style/SavedTable.css";
+import { Dispatch } from "redux";
+import { setCurrentSemester } from "src/actions";
 
 const SavedTableHeader: React.FunctionComponent = () => (
   <div className="row no-gutters sem-row-header">
@@ -26,17 +28,26 @@ const mapStateToProps = (state: RootState) => ({
   semesterMcs: state.capCalculator.semesterMcs,
 });
 
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onSetSemester: (semester: string) => dispatch(setCurrentSemester(semester)),
+});
+
 interface ISavedTableProps {
   savedModules: ISavedModuleState;
   numSemesters: number;
   currSemester: string;
   semesterGradePoint: ICapCalcState["semesterGradePoint"];
   semesterMcs: ICapCalcState["semesterMcs"];
+  onSetSemester: (semNum: string) => void;
 }
 
 class SavedTable extends React.Component<ISavedTableProps, {}> {
   constructor(props: ISavedTableProps) {
     super(props);
+  }
+
+  private handleClick(semNum: number) {
+    this.props.onSetSemester(semNum.toString());
   }
 
   public render() {
@@ -57,7 +68,10 @@ class SavedTable extends React.Component<ISavedTableProps, {}> {
           key={i}
           ref={isCurrSem ? "currSemRef" : ""}
         >
-          <div className={`saved-table ${isCurrSem ? "curr-sem" : ""}`}>
+          <div
+            className={`saved-table ${isCurrSem ? "curr-sem" : ""}`}
+            onClick={() => this.handleClick(i)}
+          >
             <div className="sem-header-details">
               <div className="sem-info">
                 <div>Semester {i}</div>
@@ -126,42 +140,7 @@ class SavedTable extends React.Component<ISavedTableProps, {}> {
   }
 }
 
-// const SavedTable: React.FunctionComponent<ISavedTableProps> = ({
-//   savedModules,
-//   numSemesters,
-//   semesterGradePoint,
-//   semesterMcs,
-// }) => {
-//   const savedSemesterModules: JSX.Element[] = [];
-//   for (let i = numSemesters; i > 0; i = i - 1) {
-//     savedSemesterModules.push(
-//       <div className="sem-table" key={i}>
-//         <div className="sem-header-details">
-//           <div className="sem-info">
-//             <div>Semester {i}</div>
-//             <div className="sem-cap">
-//               {semesterMcs[i]
-//                 ? `SAP: ${(semesterGradePoint[i] / semesterMcs[i]).toFixed(2)}`
-//                 : ""}
-//             </div>
-//           </div>
-//           <SavedTableHeader />
-//         </div>
-//         <div className="sem-table-wrapper">
-//           {savedModules[i] &&
-//             Object.keys(savedModules[i]).map(moduleCode => (
-//               <Module
-//                 key={moduleCode}
-//                 semester={i}
-//                 module={savedModules[i][moduleCode]}
-//               />
-//             ))}
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   return <div className="saved-tables">{savedSemesterModules}</div>;
-// };
-
-export default connect(mapStateToProps)(SavedTable);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SavedTable);

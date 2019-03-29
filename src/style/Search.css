@@ -8,3 +8,7 @@
 .search-bar {
   box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.search-wrapper {
+  position: relative;
+}

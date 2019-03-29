@@ -1,13 +1,14 @@
 .saved-table-wrapper {
   /* for scrollIntoView hackiness */
-  padding-top: 16rem;
-  margin-top: -16rem;
+  padding-top: 15rem;
+  margin-top: -15rem;
 }
 
 .saved-table {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
   margin: 1rem 0;
   border-radius: 3.25px;
+  z-index: 99;
 }
 
 .saved-table.curr-sem {

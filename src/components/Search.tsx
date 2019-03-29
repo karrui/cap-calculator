@@ -81,7 +81,10 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     } = this.state;
     const { currSemNum } = this.props;
     return (
-      <div onMouseMove={this.handleOnMouseMove} className="container no-gutter">
+      <div
+        onMouseMove={this.handleOnMouseMove}
+        className="search-wrapper container no-gutter"
+      >
         <SemesterSelector />
         <input
           className="form-control search-bar"
