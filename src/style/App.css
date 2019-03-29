@@ -17,3 +17,19 @@
 .App-title {
   font-size: 2.5em;
 }
+
+.logo {
+  font-family: "Libre Baskerville", serif;
+  display: inline;
+  font-size: 2em;
+  letter-spacing: -2px;
+  /* padding-right: 4px; */
+  margin: auto 0;
+  padding: 4px 8.3px 4px 4.3px;
+  /* border: double 5px #444c5c; */
+  color: #ff5138;
+}
+
+.logo:before {
+  content: "cap calculator.";
+}

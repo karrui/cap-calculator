@@ -46,7 +46,7 @@ const CapHeader: React.FunctionComponent<ICapHeaderProps> = ({
     <div className="cap-header">
       {totalGradePoint ? (
         <div className="total-cap">
-          Total CAP: {(totalGradePoint / totalMcs).toFixed(2)}
+          Current CAP: {(totalGradePoint / totalMcs).toFixed(2)}
         </div>
       ) : null}
       <div className="sem-buttons-wrapper">
