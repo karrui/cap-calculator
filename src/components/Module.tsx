@@ -40,8 +40,11 @@ const Module: React.FunctionComponent<IModuleProp> = ({
         <GradeSelector semester={semester.toString()} module={module} />
       </div>
       <div className="col-2">
-        <button className="btn btn-outline-secondary btn-trash">
-          <TrashSvg handleClick={handleClick(module)} />
+        <button
+          onClick={handleClick(module)}
+          className="btn btn-outline-secondary btn-trash"
+        >
+          <TrashSvg />
         </button>
       </div>
     </div>

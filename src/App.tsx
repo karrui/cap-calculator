@@ -3,7 +3,6 @@ import * as React from "react";
 import "./style/App.css";
 
 import SavedTable from "./components/SavedTable";
-import Search from "./components/Search";
 import CapHeader from "./components/CapHeader";
 import Footer from "./components/Footer";
 
@@ -18,11 +17,7 @@ export interface IModule {
 const App: React.FunctionComponent = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <span className="logo" />
-        <CapHeader />
-        <Search />
-      </header>
+      <CapHeader />
       <div className="app-body container">
         <SavedTable />
       </div>

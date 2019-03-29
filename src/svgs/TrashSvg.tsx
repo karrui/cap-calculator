@@ -1,12 +1,7 @@
 import * as React from "react";
 
-interface ITrashProps {
-  handleClick: any;
-}
-
-const TrashSvg: React.FunctionComponent<ITrashProps> = ({ handleClick }) => (
+const TrashSvg: React.FunctionComponent<{}> = () => (
   <svg
-    onClick={handleClick}
     className="trash-svg"
     xmlns="http://www.w3.org/2000/svg"
     width="24"

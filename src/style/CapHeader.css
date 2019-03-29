@@ -1,7 +1,39 @@
-.cap-header .total-cap {
-  font-size: 1.5rem;
+.App-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1700;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+  padding-bottom: 1rem;
 }
 
-.sem-btn {
-  margin: 0 0.5rem;
+.total-cap {
+  font-size: 1.8rem;
+}
+
+.nav {
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+.logo {
+  font-family: "Libre Baskerville", serif;
+  display: inline;
+  font-size: 2em;
+  letter-spacing: -2px;
+  /* padding-right: 4px; */
+  margin: auto 0;
+  padding: 4px 8.3px 4px 4.3px;
+  /* border: double 5px #444c5c; */
+  color: #ff5138;
+}
+
+.logo:before {
+  content: "cap calculator.";
+}
+
+.sem-btn:first-child {
+  margin-right: 0.5rem;
 }
