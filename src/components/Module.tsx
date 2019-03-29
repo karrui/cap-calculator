@@ -33,7 +33,13 @@ const Module: React.FunctionComponent<IModuleProp> = ({
   return (
     <div className="row no-gutters module-row">
       <div className="col-6 mod-title">
-        {module.ModuleCode} {module.ModuleTitle}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`https://nusmods.com/modules/${module.ModuleCode}`}
+        >
+          {module.ModuleCode} {module.ModuleTitle}
+        </a>
       </div>
       <div className="col-2 mod-mc">{module.ModuleCredit} MCs</div>
       <div className="col-2 grade-selector-wrapper">
