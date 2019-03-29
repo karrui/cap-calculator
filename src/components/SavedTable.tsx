@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import { connect } from "react-redux";
 
 import { RootState } from "../store/configureStore";
-import { ISavedModuleState } from "src/reducers/savedModules";
+import { ISavedModuleState, ISavedModule } from "src/reducers/savedModules";
 import Module from "./Module";
 import { ICapCalcState } from "src/reducers/capCalculator";
 
@@ -72,14 +72,9 @@ class SavedTable extends React.Component<ISavedTableProps, {}> {
               <SavedTableHeader />
             </div>
             <div className="sem-table-wrapper">
-              {savedModules[i] &&
-                Object.keys(savedModules[i]).map(moduleCode => (
-                  <Module
-                    key={moduleCode}
-                    semester={i}
-                    module={savedModules[i][moduleCode]}
-                  />
-                ))}
+              {savedModules[i]
+                ? this.showSemesterModules(savedModules[i], i)
+                : this.showEmptyTable(i)}
             </div>
           </div>
         </div>
@@ -87,6 +82,27 @@ class SavedTable extends React.Component<ISavedTableProps, {}> {
     }
 
     return <div className="saved-tables">{savedSemesterModules}</div>;
+  }
+
+  showSemesterModules(
+    semesterModules: { [ModuleCode: string]: ISavedModule },
+    semester: number
+  ) {
+    return Object.keys(semesterModules).map(moduleCode => (
+      <Module
+        key={moduleCode}
+        semester={semester}
+        module={semesterModules[moduleCode]}
+      />
+    ));
+  }
+
+  showEmptyTable(semester: number) {
+    return (
+      <div className="sem-empty">
+        No modules added yet for Semester {semester}
+      </div>
+    );
   }
 
   componentDidUpdate(prevProps: ISavedTableProps) {
