@@ -2,6 +2,9 @@
   text-align: center;
   color: #69707a;
   font-size: 0.95rem;
+  height: 100vh;
+  display: flex;
+  flex-flow: column;
 }
 
 .App-header {
@@ -32,4 +35,8 @@
 
 .logo:before {
   content: "cap calculator.";
+}
+
+.app-body {
+  flex: 1 1 auto;
 }

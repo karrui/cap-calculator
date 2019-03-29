@@ -23,7 +23,7 @@ const App: React.FunctionComponent = () => {
         <CapHeader />
         <Search />
       </header>
-      <div className="container">
+      <div className="app-body container">
         <SavedTable />
       </div>
       <Footer />
