@@ -4,7 +4,7 @@ import { Dispatch } from "redux";
 import { removeModule } from "src/actions";
 import { connect } from "react-redux";
 import GradeSelector from "./GradeSelector";
-import TrashSvg from "src/svgs/TrashSvg";
+import TrashSvg from "./svgs/TrashSvg";
 
 import "../style/Module.css";
 
