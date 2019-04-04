@@ -4,6 +4,8 @@ export const SET_GRADE = "SET_GRADE";
 export const SET_SU = "SET_SU";
 export const SET_SAVED_MODULES = "SET_SAVED_MODULES";
 
+export const RESET_CAP_CALC = "RESET_CAP_CALC";
+
 export const SET_MODULE_BANK = "SET_MODULE_BANK";
 export const CLEAR_MODULE_BANK = "CLEAR_MODULE_BANK";
 

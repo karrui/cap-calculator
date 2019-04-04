@@ -8,16 +8,21 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import "../style/CapHeader.css";
 
 import { addSemester, removeSemester, setNumSemester } from "src/actions/misc";
-import { setSavedModules } from "src/actions/savedModules";
+import {
+  setSavedModules,
+  setGrade,
+  IGradeObject,
+} from "src/actions/savedModules";
 
 import Search from "./Search";
 import { IImportedModulesState } from "src/App";
+import { resetCapCalculator } from "src/actions/capCalculator";
 
 interface ICapHeaderProps extends ICapHeaderStateProps, ICapHeaderOwnProps {
   onAddSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
   handleRemoveSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
   handleImportModules: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onBackToSavedModules: () => void;
+  handleBackToSavedModules: () => void;
 }
 
 interface ICapHeaderOwnProps extends RouteComponentProps {
@@ -49,8 +54,30 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   onAddSemester: () => dispatch(addSemester()),
   onRemoveSemester: (semester: number) => dispatch(removeSemester(semester)),
   onImportModules: (importedModules: IImportedModulesState) => {
-    dispatch(setSavedModules(importedModules.savedModules));
-    dispatch(setNumSemester(importedModules.numSemesters));
+    const { savedModules, numSemesters } = importedModules;
+
+    // reset cap calc
+    dispatch(resetCapCalculator());
+
+    dispatch(setSavedModules(savedModules));
+    dispatch(setNumSemester(numSemesters));
+
+    // process cap calculation :O
+    // pretty hacky, but you do not need to do it that often so should be fine
+    Object.keys(savedModules).map((semNum: string) => {
+      Object.keys(savedModules[semNum]).map((moduleCode: string) => {
+        const module = savedModules[semNum][moduleCode];
+        if (module.grade) {
+          const gradeObj: IGradeObject = {
+            module,
+            semester: semNum,
+            grade: module.grade,
+            prevGrade: "",
+          };
+          dispatch(setGrade(gradeObj));
+        }
+      });
+    });
   },
 });
 
@@ -73,20 +100,25 @@ const mergeProps = (
     handleRemoveSemester: () => {
       onRemoveSemester(numSemesters);
     },
-    onBackToSavedModules: () => {
+    handleBackToSavedModules: () => {
       history.push("/");
     },
   };
 };
 
 const CapHeader: React.FunctionComponent<ICapHeaderProps> = props => {
-  const { isImport, history, handleImportModules, ...other } = props;
+  const {
+    isImport,
+    handleBackToSavedModules,
+    handleImportModules,
+    ...other
+  } = props;
   return (
     <header className="App-header">
       {isImport ? (
         <ImportHeader
+          handleBackToSavedModules={handleBackToSavedModules}
           handleImportModules={handleImportModules}
-          history={history}
         />
       ) : (
         <DefaultHeader {...other} />
@@ -96,7 +128,7 @@ const CapHeader: React.FunctionComponent<ICapHeaderProps> = props => {
 };
 
 const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
-  onBackToSavedModules,
+  handleBackToSavedModules,
   handleImportModules,
 }) => {
   return (
@@ -125,7 +157,7 @@ const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
                 Import
               </button>
               <button
-                onClick={onBackToSavedModules}
+                onClick={handleBackToSavedModules}
                 className="btn btn-outline-primary"
                 type="button"
               >
