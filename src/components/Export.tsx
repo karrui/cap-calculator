@@ -63,11 +63,11 @@ class Export extends React.Component<IExportProps, IExportState> {
     return (
       <div className="export-wrapper">
         <button
-          className="btn btn-outline-primary share-btn"
+          className="btn btn-outline-primary export-sync-btn"
           onClick={this.handleOpenModal}
         >
           <ShareSvg />
-          Share/Sync
+          <span>Share/Sync</span>
         </button>
         <ReactModal
           isOpen={this.state.showModal}

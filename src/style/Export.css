@@ -1,5 +1,8 @@
 .export-wrapper {
   margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .export-overlay {
@@ -110,12 +113,15 @@ button.close-btn {
   left: 0;
 }
 
-.share-btn {
+.export-sync-btn {
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.share-btn .share-svg {
+.export-sync-btn .share-svg {
   width: 1.1rem;
   margin-right: 0.2rem;
   flex: 0 0 auto;
