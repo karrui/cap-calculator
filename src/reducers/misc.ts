@@ -1,5 +1,10 @@
 import { IMiscAction } from "src/actions";
-import { SET_CURR_SEMESTER, ADD_SEMESTER, REMOVE_SEMESTER } from "./constants";
+import {
+  SET_CURR_SEMESTER,
+  ADD_SEMESTER,
+  REMOVE_SEMESTER,
+  SET_NUM_SEMESTER,
+} from "./constants";
 
 const defaultMiscState: IMiscState = {
   currSemester: "1",
@@ -23,6 +28,13 @@ const miscReducer = (state = defaultMiscState, action: IMiscAction) => {
         ...state,
         currSemester: (state.numSemesters + 1).toString(),
         numSemesters: state.numSemesters + 1,
+      };
+    }
+    case SET_NUM_SEMESTER: {
+      return {
+        ...state,
+        currSemester: action.payload.toString(),
+        numSemesters: action.payload,
       };
     }
     case REMOVE_SEMESTER: {

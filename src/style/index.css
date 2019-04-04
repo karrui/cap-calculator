@@ -25,6 +25,10 @@ p {
   border-color: #ff5138;
 }
 
+.btn:first-child {
+  margin-left: 0;
+}
+
 .btn {
   margin-left: 0.5rem;
 }

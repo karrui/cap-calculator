@@ -4,38 +4,15 @@ import Module from "./Module";
 import { SavedTableHeader } from "./SavedTable";
 
 interface IImportTableProps {
-  encodedImports: string;
-}
-
-interface IImportTableState {
   importedModules: {
     savedModules: ISavedModuleState;
     numSemesters: number;
   };
 }
 
-class ImportTable extends React.Component<
-  IImportTableProps,
-  IImportTableState
-> {
-  constructor(props: IImportTableProps) {
-    super(props);
-
-    this.state = {
-      importedModules: { savedModules: {}, numSemesters: 0 },
-    };
-  }
-
-  componentDidMount() {
-    this.setState({
-      importedModules: JSON.parse(
-        decodeURIComponent(this.props.encodedImports)
-      ),
-    });
-  }
-
+class ImportTable extends React.Component<IImportTableProps, {}> {
   render() {
-    const { numSemesters, savedModules } = this.state.importedModules;
+    const { numSemesters, savedModules } = this.props.importedModules;
 
     const importedSemesterModules: JSX.Element[] = [];
 

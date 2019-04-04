@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import Export from "./components/Export";
 import { RouteComponentProps } from "react-router";
 import ImportTable from "./components/ImportTable";
+import { ISavedModuleState } from "./reducers/savedModules";
 
 // follows NUSMod's API
 export interface IModule {
@@ -18,9 +19,14 @@ export interface IModule {
   ModuleLink?: string;
 }
 
+export interface IImportedModulesState {
+  savedModules: ISavedModuleState;
+  numSemesters: number;
+}
+
 interface IAppState {
   isImport: boolean;
-  encodedImports: string;
+  importedModules: IImportedModulesState;
 }
 
 class App extends React.Component<RouteComponentProps, IAppState> {
@@ -29,34 +35,38 @@ class App extends React.Component<RouteComponentProps, IAppState> {
 
     this.state = {
       isImport: false,
-      encodedImports: "",
+      importedModules: { savedModules: {}, numSemesters: 0 },
     };
   }
 
   componentDidMount() {
-    this.setState({
-      isImport: this.props.location.pathname === "/import",
-      encodedImports: this.props.location.search,
-    });
+    const encodedImports = this.props.location.search.slice(1);
+    const isImport = this.props.location.pathname === "/import";
+
+    if (isImport) {
+      this.setState({
+        isImport,
+        importedModules: JSON.parse(decodeURIComponent(encodedImports)),
+      });
+    }
   }
 
   componentDidUpdate(prevProps: RouteComponentProps) {
     if (this.props.location !== prevProps.location) {
       this.setState({
         isImport: this.props.location.pathname === "/import",
-        encodedImports: this.props.location.search,
       });
     }
   }
 
   render() {
-    const { isImport, encodedImports } = this.state;
+    const { isImport, importedModules } = this.state;
     return (
       <div className="App">
-        <CapHeader isImport={isImport} />
+        <CapHeader importedModules={importedModules} isImport={isImport} />
         <div className="app-body container">
           {isImport ? (
-            <ImportTable encodedImports={encodedImports.slice(1)} />
+            <ImportTable importedModules={importedModules} />
           ) : (
             <SavedTable />
           )}

@@ -7,19 +7,22 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import "../style/CapHeader.css";
 
-import { addSemester, removeSemester } from "src/actions/misc";
+import { addSemester, removeSemester, setNumSemester } from "src/actions/misc";
+import { setSavedModules } from "src/actions/savedModules";
 
 import Search from "./Search";
+import { IImportedModulesState } from "src/App";
 
 interface ICapHeaderProps extends ICapHeaderStateProps, ICapHeaderOwnProps {
   onAddSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
   handleRemoveSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleImportModules: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onBackToSavedModules: () => void;
 }
 
 interface ICapHeaderOwnProps extends RouteComponentProps {
   isImport: boolean;
-  importedTotalGradePoint?: number;
-  importedTotalMcs?: number;
+  importedModules: IImportedModulesState;
 }
 
 interface ICapHeaderStateProps {
@@ -33,6 +36,7 @@ interface ICapHeaderDispatchProps {
   onRemoveSemester: (
     semester: number
   ) => PayloadAction<"REMOVE_SEMESTER", number>;
+  onImportModules: (importedModules: IImportedModulesState) => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -44,6 +48,10 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onAddSemester: () => dispatch(addSemester()),
   onRemoveSemester: (semester: number) => dispatch(removeSemester(semester)),
+  onImportModules: (importedModules: IImportedModulesState) => {
+    dispatch(setSavedModules(importedModules.savedModules));
+    dispatch(setNumSemester(importedModules.numSemesters));
+  },
 });
 
 const mergeProps = (
@@ -52,24 +60,34 @@ const mergeProps = (
   ownProps: ICapHeaderOwnProps
 ) => {
   const { numSemesters } = stateProps;
-  const { onAddSemester } = dispatchProps;
+  const { history } = ownProps;
+  const { onAddSemester, onRemoveSemester, onImportModules } = dispatchProps;
   return {
     ...stateProps,
     ...ownProps,
     onAddSemester,
+    handleImportModules: () => {
+      onImportModules(ownProps.importedModules);
+      history.push("/");
+    },
     handleRemoveSemester: () => {
-      dispatchProps.onRemoveSemester(numSemesters);
+      onRemoveSemester(numSemesters);
+    },
+    onBackToSavedModules: () => {
+      history.push("/");
     },
   };
 };
 
 const CapHeader: React.FunctionComponent<ICapHeaderProps> = props => {
-  const { isImport, history, ...other } = props;
-
+  const { isImport, history, handleImportModules, ...other } = props;
   return (
     <header className="App-header">
       {isImport ? (
-        <ImportHeader history={history} />
+        <ImportHeader
+          handleImportModules={handleImportModules}
+          history={history}
+        />
       ) : (
         <DefaultHeader {...other} />
       )}
@@ -78,11 +96,9 @@ const CapHeader: React.FunctionComponent<ICapHeaderProps> = props => {
 };
 
 const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
-  history,
+  onBackToSavedModules,
+  handleImportModules,
 }) => {
-  const onBackToSavedModules = () => {
-    history!.push("/");
-  };
   return (
     <React.Fragment>
       <nav className="nav container">
@@ -91,7 +107,7 @@ const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
       <div className="import-banner container">
         <div className="alert alert-success">
           <div className="row">
-            <div className="col">
+            <div className="col banner-wrapper">
               <h3 className="banner-title">
                 These shared modules are pending import.
               </h3>
@@ -100,8 +116,12 @@ const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
                 with the ones below.
               </p>
             </div>
-            <div className="col-md-auto">
-              <button className="btn btn-success" type="button">
+            <div className="col-md-auto import-btns-wrapper">
+              <button
+                onClick={handleImportModules}
+                className="btn btn-success"
+                type="button"
+              >
                 Import
               </button>
               <button

@@ -40,6 +40,12 @@
   text-align: left;
 }
 
+@media (max-width: 767.98px) {
+  .import-btns-wrapper {
+    margin-top: 0.5rem;
+  }
+}
+
 .banner-title {
   margin-bottom: 0.2rem;
   font-size: 1rem;
