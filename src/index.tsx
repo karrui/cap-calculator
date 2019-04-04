@@ -15,7 +15,7 @@ const { store, persistor } = configureStore();
 
 export const HOME_URL =
   process.env.NODE_ENV === "production"
-    ? "https://cap.karrui.me"
+    ? "https://cap.karrui.me/"
     : "http://localhost:3000/";
 
 // Initialize ReactModal
