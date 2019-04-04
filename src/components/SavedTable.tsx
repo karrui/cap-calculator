@@ -11,7 +11,7 @@ import "../style/SavedTable.css";
 import { Dispatch } from "redux";
 import { setCurrentSemester } from "src/actions";
 
-const SavedTableHeader: React.FunctionComponent = () => (
+export const SavedTableHeader: React.FunctionComponent = () => (
   <div className="row no-gutters sem-row-header">
     <div className="col-6">Module Name</div>
     <div className="col-2">MCs</div>

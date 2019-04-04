@@ -6,8 +6,8 @@ import { connect } from "react-redux";
 
 import "../style/SemesterSelector.css";
 
-import ArrowLeftSvg from "../svgs/ArrowLeftSvg";
-import ArrowRightSvg from "../svgs/ArrowRightSvg";
+import ArrowLeftSvg from "./svgs/ArrowLeftSvg";
+import ArrowRightSvg from "./svgs/ArrowRightSvg";
 
 const mapStateToProps = (state: RootState) => ({
   currSemester: state.misc.currSemester,

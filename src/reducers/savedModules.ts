@@ -6,6 +6,7 @@ import {
   SET_GRADE,
   GRADE_DICT,
   REMOVE_SEMESTER,
+  SET_SAVED_MODULES,
 } from "./constants";
 
 export interface ISavedModule {
@@ -77,6 +78,10 @@ const savedModuleReducer = (
           },
         },
       };
+    }
+    case SET_SAVED_MODULES: {
+      // payload itself is going to be saved modules
+      return payload;
     }
     default:
       return state;

@@ -4,6 +4,7 @@ import {
   GRADE_DICT,
   SET_SU,
   REMOVE_SEMESTER,
+  RESET_CAP_CALC,
 } from "./constants";
 
 const defaultCapCalcState: ICapCalcState = {
@@ -160,6 +161,9 @@ const capCalculatorReducer = (
         semesterGradePoint: restGradePoint,
         semesterMcs: restMcs,
       };
+    }
+    case RESET_CAP_CALC: {
+      return defaultCapCalcState;
     }
     default:
       return state;

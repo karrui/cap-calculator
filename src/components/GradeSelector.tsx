@@ -11,6 +11,7 @@ interface IGradeSelectorState {
 }
 
 interface IGradeSelectorProps {
+  disabled: boolean;
   semester: string;
   module: ISavedModule;
   onSetGrade: (gradeObj: IGradeObject) => void;
@@ -33,6 +34,7 @@ class GradeSelector extends React.Component<
     const { currentValue } = this.state;
     return (
       <select
+        disabled={this.props.disabled}
         className="form-control form-control-sm grade-selector"
         onChange={this.handleChange}
         value={currentValue}
