@@ -8,6 +8,7 @@ import CapHeader from "./components/CapHeader";
 import Footer from "./components/Footer";
 import Export from "./components/Export";
 import { RouteComponentProps } from "react-router";
+import ImportTable from "./components/ImportTable";
 
 // follows NUSMod's API
 export interface IModule {
@@ -19,6 +20,7 @@ export interface IModule {
 
 interface IAppState {
   isImport: boolean;
+  encodedImports: string;
 }
 
 class App extends React.Component<RouteComponentProps, IAppState> {
@@ -27,12 +29,14 @@ class App extends React.Component<RouteComponentProps, IAppState> {
 
     this.state = {
       isImport: false,
+      encodedImports: "",
     };
   }
 
   componentDidMount() {
     this.setState({
       isImport: this.props.location.pathname === "/import",
+      encodedImports: this.props.location.search,
     });
   }
 
@@ -40,18 +44,24 @@ class App extends React.Component<RouteComponentProps, IAppState> {
     if (this.props.location !== prevProps.location) {
       this.setState({
         isImport: this.props.location.pathname === "/import",
+        encodedImports: this.props.location.search,
       });
     }
   }
 
   render() {
+    const { isImport, encodedImports } = this.state;
     return (
       <div className="App">
-        <CapHeader isImport={this.state.isImport} />
+        <CapHeader isImport={isImport} />
         <div className="app-body container">
-          <SavedTable />
+          {isImport ? (
+            <ImportTable encodedImports={encodedImports.slice(1)} />
+          ) : (
+            <SavedTable />
+          )}
         </div>
-        <Export />
+        {!isImport && <Export />}
         <Footer />
       </div>
     );

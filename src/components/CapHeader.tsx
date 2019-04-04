@@ -10,7 +10,6 @@ import "../style/CapHeader.css";
 import { addSemester, removeSemester } from "src/actions/misc";
 
 import Search from "./Search";
-import SemesterSelector from "./SemesterSelector";
 
 interface ICapHeaderProps extends ICapHeaderStateProps, ICapHeaderOwnProps {
   onAddSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -116,7 +115,6 @@ const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
           </div>
         </div>
       </div>
-      <SemesterSelector />
     </React.Fragment>
   );
 };

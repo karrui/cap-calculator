@@ -1,0 +1,23 @@
+.export-overlay {
+  z-index: 100;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: hsla(0, -2%, 100%, 0.7);
+}
+
+.export-modal {
+  position: absolute;
+  top: 25%;
+  right: 1rem;
+  left: 1rem;
+  max-width: 40rem;
+  max-height: calc(100% - 2rem);
+  padding: 1rem;
+  margin: 0 auto;
+  background: white;
+  -webkit-box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
