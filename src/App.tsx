@@ -36,6 +36,14 @@ class App extends React.Component<RouteComponentProps, IAppState> {
     });
   }
 
+  componentDidUpdate(prevProps: RouteComponentProps) {
+    if (this.props.location !== prevProps.location) {
+      this.setState({
+        isImport: this.props.location.pathname === "/import",
+      });
+    }
+  }
+
   render() {
     return (
       <div className="App">

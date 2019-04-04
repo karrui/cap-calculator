@@ -2,11 +2,14 @@ import * as React from "react";
 import { RootState } from "src/store/configureStore";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { addSemester, removeSemester } from "src/actions/misc";
+import { EmptyAction, PayloadAction } from "typesafe-actions/dist/types";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import "../style/CapHeader.css";
+
+import { addSemester, removeSemester } from "src/actions/misc";
+
 import Search from "./Search";
-import { EmptyAction, PayloadAction } from "typesafe-actions/dist/types";
 import SemesterSelector from "./SemesterSelector";
 
 interface ICapHeaderProps extends ICapHeaderStateProps, ICapHeaderOwnProps {
@@ -14,7 +17,7 @@ interface ICapHeaderProps extends ICapHeaderStateProps, ICapHeaderOwnProps {
   handleRemoveSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-interface ICapHeaderOwnProps {
+interface ICapHeaderOwnProps extends RouteComponentProps {
   isImport: boolean;
   importedTotalGradePoint?: number;
   importedTotalMcs?: number;
@@ -62,16 +65,25 @@ const mergeProps = (
 };
 
 const CapHeader: React.FunctionComponent<ICapHeaderProps> = props => {
-  const { isImport, ...other } = props;
+  const { isImport, history, ...other } = props;
 
   return (
     <header className="App-header">
-      {isImport ? <ImportHeader /> : <DefaultHeader {...other} />}
+      {isImport ? (
+        <ImportHeader history={history} />
+      ) : (
+        <DefaultHeader {...other} />
+      )}
     </header>
   );
 };
 
-const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = () => {
+const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
+  history,
+}) => {
+  const onBackToSavedModules = () => {
+    history!.push("/");
+  };
   return (
     <React.Fragment>
       <nav className="nav container">
@@ -93,7 +105,11 @@ const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = () => {
               <button className="btn btn-success" type="button">
                 Import
               </button>
-              <button className="btn btn-outline-primary" type="button">
+              <button
+                onClick={onBackToSavedModules}
+                className="btn btn-outline-primary"
+                type="button"
+              >
                 Back to saved modules
               </button>
             </div>
@@ -144,8 +160,10 @@ const DefaultHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(CapHeader);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+    mergeProps
+  )(CapHeader)
+);
