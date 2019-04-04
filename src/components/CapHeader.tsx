@@ -12,6 +12,7 @@ import {
   setSavedModules,
   setGrade,
   IGradeObject,
+  setSU,
 } from "src/actions/savedModules";
 
 import Search from "./Search";
@@ -75,6 +76,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
             prevGrade: "",
           };
           dispatch(setGrade(gradeObj));
+
+          if (module.grade === "S" || module.grade === "U") {
+            dispatch(setSU(gradeObj));
+          }
         }
       });
     });
