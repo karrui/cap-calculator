@@ -13,6 +13,11 @@ import configureStore from "./store/configureStore";
 
 const { store, persistor } = configureStore();
 
+export const HOME_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://cap.karrui.me"
+    : "http://localhost:3000/";
+
 // Initialize ReactModal
 ReactModal.setAppElement("#root");
 
