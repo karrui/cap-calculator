@@ -1,10 +1,13 @@
 import * as React from "react";
+// import * as qs from "query-string";
 
 import "./style/App.css";
 
 import SavedTable from "./components/SavedTable";
 import CapHeader from "./components/CapHeader";
 import Footer from "./components/Footer";
+import Export from "./components/Export";
+import { RouteComponentProps } from "react-router";
 
 // follows NUSMod's API
 export interface IModule {
@@ -14,16 +17,37 @@ export interface IModule {
   ModuleLink?: string;
 }
 
-const App: React.FunctionComponent = () => {
-  return (
-    <div className="App">
-      <CapHeader />
-      <div className="app-body container">
-        <SavedTable />
+interface IAppState {
+  isImport: boolean;
+}
+
+class App extends React.Component<RouteComponentProps, IAppState> {
+  constructor(props: RouteComponentProps) {
+    super(props);
+
+    this.state = {
+      isImport: false,
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      isImport: this.props.location.pathname === "/import",
+    });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <CapHeader isImport={this.state.isImport} />
+        <div className="app-body container">
+          <SavedTable />
+        </div>
+        <Export />
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default App;
