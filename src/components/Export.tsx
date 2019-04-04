@@ -61,12 +61,13 @@ class Export extends React.Component<IExportProps, IExportState> {
     const exportUrl = `${HOME_URL}import?${this.state.serializedModules}`;
 
     return (
-      <div>
+      <div className="export-wrapper">
         <button
-          className="btn btn-outline-primary"
+          className="btn btn-outline-primary share-btn"
           onClick={this.handleOpenModal}
         >
-          Trigger Modal
+          <ShareSvg />
+          Share/Sync
         </button>
         <ReactModal
           isOpen={this.state.showModal}

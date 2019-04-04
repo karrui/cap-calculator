@@ -1,3 +1,7 @@
+.export-wrapper {
+  margin: 1rem 0;
+}
+
 .export-overlay {
   z-index: 100;
   position: fixed;
@@ -41,7 +45,7 @@
   text-decoration: line-through;
 }
 
-.share-svg {
+.export-header .share-svg {
   width: 5rem;
   height: 5rem;
   color: #28a745;
@@ -104,4 +108,15 @@ button.close-btn {
   position: absolute;
   right: 0;
   left: 0;
+}
+
+.share-btn {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.share-btn .share-svg {
+  width: 1.1rem;
+  margin-right: 0.2rem;
+  flex: 0 0 auto;
 }
