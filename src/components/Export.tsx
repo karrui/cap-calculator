@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactModal from "react-modal";
+import * as qs from "query-string";
 import { connect } from "react-redux";
 import * as CopyToClipboard from "react-copy-to-clipboard";
 
@@ -28,6 +29,11 @@ const mapStateToProps = (state: RootState) => ({
   numSemesters: state.misc.numSemesters,
 });
 
+interface ISerializedModule {
+  numSemesters?: number;
+  [semNum: number]: [];
+}
+
 class Export extends React.Component<IExportProps, IExportState> {
   constructor(props: IExportProps) {
     super(props);
@@ -44,17 +50,30 @@ class Export extends React.Component<IExportProps, IExportState> {
   handleOpenModal() {
     this.setState({
       showModal: true,
-      serializedModules: encodeURI(
-        JSON.stringify({
-          savedModules: this.props.savedModules,
-          numSemesters: this.props.numSemesters,
-        })
-      ),
+      serializedModules: this.serializeExportModules(),
     });
   }
 
   handleCloseModal() {
     this.setState({ showModal: false, copied: false });
+  }
+
+  serializeExportModules() {
+    const { savedModules } = this.props;
+    const serializedObj: ISerializedModule = {};
+    serializedObj.numSemesters = this.props.numSemesters;
+    Object.keys(savedModules).map((semNum: string) => {
+      serializedObj[semNum] = [];
+      Object.keys(savedModules[semNum]).map((moduleCode: string) => {
+        serializedObj[semNum].push([
+          moduleCode,
+          savedModules[semNum][moduleCode].grade,
+        ]);
+      });
+    });
+    return qs.stringify(serializedObj, {
+      arrayFormat: "bracket",
+    });
   }
 
   render() {
