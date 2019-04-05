@@ -31,7 +31,6 @@ export interface IImportedModulesState {
 interface IAppState {
   isImport: boolean;
   importedModules: IImportedModulesState;
-  importError: boolean;
 }
 
 interface IAppProps extends RouteComponentProps {
@@ -42,15 +41,16 @@ const mapStateToProps = (state: RootState) => ({
   moduleBank: state.moduleBank,
 });
 
+const defaultAppState: IAppState = {
+  isImport: false,
+  importedModules: { savedModules: {}, numSemesters: 0 },
+};
+
 class App extends React.Component<IAppProps, IAppState> {
   constructor(props: IAppProps) {
     super(props);
 
-    this.state = {
-      isImport: false,
-      importedModules: { savedModules: {}, numSemesters: 0 },
-      importError: false,
-    };
+    this.state = defaultAppState;
   }
 
   componentDidMount() {
@@ -82,9 +82,7 @@ class App extends React.Component<IAppProps, IAppState> {
           importedModules: this.deserializeImports(encodedImports),
         });
       } else {
-        this.setState({
-          isImport,
-        });
+        this.setState(defaultAppState);
       }
     }
   }
@@ -106,9 +104,6 @@ class App extends React.Component<IAppProps, IAppState> {
         const retrievedModule = this.retrieveModule(moduleCode);
 
         if (!retrievedModule) {
-          this.setState({
-            importError: true,
-          });
           return;
         }
 
