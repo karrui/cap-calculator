@@ -93,9 +93,9 @@ class App extends React.Component<IAppProps, IAppState> {
     // rebuild saved modules from encoding
     const importedModules = {};
     for (let semNum = 1; semNum <= numSemesters; semNum += 1) {
-      importedModules[semNum] = {};
       const semesterModules: [] = encodedImports[semNum];
       if (!semesterModules) continue;
+      importedModules[semNum] = {};
       // encodedStr -> "CS1010, B+"
       semesterModules.map((encodedStr: string) => {
         const encodedSplitStr = encodedStr.split(",");
