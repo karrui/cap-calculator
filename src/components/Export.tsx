@@ -1,10 +1,16 @@
 import * as React from "react";
 import * as ReactModal from "react-modal";
 import * as qs from "query-string";
+import * as md5 from "md5";
+// tslint:disable-next-line: import-name
+import ReactLoading from "react-loading";
+
 import { connect } from "react-redux";
 import * as CopyToClipboard from "react-copy-to-clipboard";
 
 import "../style/Export.css";
+
+import firestore, { FS_COLLECTION_LINKS } from "../data/firestore";
 import { RootState } from "src/store/configureStore";
 import { ISavedModuleState } from "src/reducers/savedModules";
 import { HOME_URL } from "src";
@@ -15,8 +21,9 @@ import CrossSvg from "./svgs/CrossSvg";
 
 interface IExportState {
   showModal: boolean;
-  serializedModules: string;
+  shortenedLink: string;
   copied: boolean;
+  loading: boolean;
 }
 
 interface IExportProps {
@@ -39,8 +46,9 @@ class Export extends React.Component<IExportProps, IExportState> {
     super(props);
     this.state = {
       showModal: false,
+      loading: false,
       copied: false,
-      serializedModules: "",
+      shortenedLink: "",
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -48,10 +56,27 @@ class Export extends React.Component<IExportProps, IExportState> {
   }
 
   handleOpenModal() {
+    // activate load state
     this.setState({
+      loading: true,
       showModal: true,
-      serializedModules: this.serializeExportModules(),
     });
+
+    const serializedModules = this.serializeExportModules();
+    const shortenedLink = md5(serializedModules).slice(0, 7);
+
+    firestore
+      .collection(FS_COLLECTION_LINKS)
+      .doc(shortenedLink)
+      .set({
+        fullLink: serializedModules,
+      })
+      .then(() => {
+        this.setState({
+          shortenedLink,
+          loading: false,
+        });
+      });
   }
 
   handleCloseModal() {
@@ -77,7 +102,8 @@ class Export extends React.Component<IExportProps, IExportState> {
   }
 
   render() {
-    const exportUrl = `${HOME_URL}import?${this.state.serializedModules}`;
+    const exportUrl = `${HOME_URL}import?${this.state.shortenedLink}`;
+    const { loading } = this.state;
 
     return (
       <div className="export-wrapper">
@@ -109,31 +135,40 @@ class Export extends React.Component<IExportProps, IExportState> {
               to yourself to keep your saved modules synced on all devices.
             </p>
           </div>
-          <div className="input-wrapper">
-            <div className="input-group input-group-lg">
-              <input
-                className="form-control"
-                readOnly
-                value={exportUrl}
-                type="text"
-              />
-              <div className="input-group-append">
-                <CopyToClipboard
-                  text={exportUrl}
-                  onCopy={() => this.setState({ copied: true })}
-                >
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    aria-label="Copy URL"
+          {loading ? (
+            <ReactLoading
+              className="loading-spinner"
+              height={80}
+              color="#ff5138"
+              type="bubbles"
+            />
+          ) : (
+            <div className="input-wrapper">
+              <div className="input-group input-group-lg">
+                <input
+                  className="form-control"
+                  readOnly
+                  value={exportUrl}
+                  type="text"
+                />
+                <div className="input-group-append">
+                  <CopyToClipboard
+                    text={exportUrl}
+                    onCopy={() => this.setState({ copied: true })}
                   >
-                    <CopySvg />
-                  </button>
-                </CopyToClipboard>
+                    <button
+                      className="btn btn-primary"
+                      type="button"
+                      aria-label="Copy URL"
+                    >
+                      <CopySvg />
+                    </button>
+                  </CopyToClipboard>
+                </div>
               </div>
+              {this.state.copied && <p className="copy-msg">Link copied!</p>}
             </div>
-            {this.state.copied && <p className="copy-msg">Link copied!</p>}
-          </div>
+          )}
         </ReactModal>
       </div>
     );
