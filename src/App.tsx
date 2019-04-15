@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as qs from "query-string";
 import { find } from "lodash";
+// tslint:disable-next-line: import-name
+import ReactLoading from "react-loading";
 
 import "./style/App.css";
 
@@ -14,6 +16,8 @@ import { ISavedModuleState } from "./reducers/savedModules";
 import { RootState } from "./store/configureStore";
 import { connect } from "react-redux";
 import { GRADE_DICT } from "./reducers/constants";
+
+import firestore, { FS_COLLECTION_LINKS } from "./data/firestore";
 
 // follows NUSMod's API
 export interface IModule {
@@ -31,6 +35,8 @@ export interface IImportedModulesState {
 interface IAppState {
   isImport: boolean;
   importedModules: IImportedModulesState;
+  isImportError: boolean;
+  isLoading: boolean;
 }
 
 interface IAppProps extends RouteComponentProps {
@@ -43,6 +49,8 @@ const mapStateToProps = (state: RootState) => ({
 
 const defaultAppState: IAppState = {
   isImport: false,
+  isImportError: false,
+  isLoading: false,
   importedModules: { savedModules: {}, numSemesters: 0 },
 };
 
@@ -54,37 +62,62 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   componentDidMount() {
-    const encodedImportString = this.props.location.search.slice(1);
+    const shortenedLink = this.props.location.search.slice(1);
     const isImport = this.props.location.pathname === "/import";
 
+    this.setState({
+      isImport,
+    });
+
     if (isImport) {
-      const encodedImports = qs.parse(encodedImportString, {
-        arrayFormat: "bracket",
-      });
-      this.setState({
-        isImport,
-        importedModules: this.deserializeImports(encodedImports),
-      });
+      this.performImport(shortenedLink);
     }
   }
 
   componentDidUpdate(prevProps: RouteComponentProps) {
     if (this.props.location !== prevProps.location) {
-      const encodedImportString = this.props.location.search.slice(1);
+      const shortenedLink = this.props.location.search.slice(1);
       const isImport = this.props.location.pathname === "/import";
 
+      this.setState({
+        isImport,
+      });
+
       if (isImport) {
-        const encodedImports = qs.parse(encodedImportString, {
-          arrayFormat: "bracket",
-        });
-        this.setState({
-          isImport,
-          importedModules: this.deserializeImports(encodedImports),
-        });
+        this.performImport(shortenedLink);
       } else {
         this.setState(defaultAppState);
       }
     }
+  }
+
+  performImport(shortenedLink: string) {
+    this.setState({
+      isLoading: true,
+    });
+    firestore
+      .collection(FS_COLLECTION_LINKS)
+      .doc(shortenedLink)
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          const encodedImportString = doc.data()!.fullLink;
+          const encodedImports = qs.parse(encodedImportString, {
+            arrayFormat: "bracket",
+          });
+          this.setState({
+            importedModules: this.deserializeImports(encodedImports),
+            isImportError: false,
+            isLoading: false,
+          });
+        } else {
+          // doc.data() will be undefined in this case
+          this.setState({
+            isImportError: true,
+            isLoading: false,
+          });
+        }
+      });
   }
 
   deserializeImports(encodedImports: any) {
@@ -129,13 +162,21 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   render() {
-    const { isImport, importedModules } = this.state;
+    const { isImport, isLoading, importedModules } = this.state;
     return (
       <div className="App">
         <CapHeader importedModules={importedModules} isImport={isImport} />
         <div className="app-body container">
           {isImport ? (
-            <ImportTable importedModules={importedModules} />
+            isLoading ? (
+              <ReactLoading
+                className="loading-spinner"
+                color="#ff5138"
+                type="bubbles"
+              />
+            ) : (
+              <ImportTable importedModules={importedModules} />
+            )
           ) : (
             <SavedTable />
           )}
