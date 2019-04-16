@@ -50,3 +50,10 @@
   font-size: 0.9rem;
   padding: 1rem 0;
 }
+
+.table-empty {
+  display: flex;
+  height: 50vh;
+  justify-content: center;
+  align-items: center;
+}

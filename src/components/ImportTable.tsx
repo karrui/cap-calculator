@@ -36,7 +36,11 @@ class ImportTable extends React.Component<IImportTableProps, {}> {
       );
     }
 
-    return <div className="saved-tables">{importedSemesterModules}</div>;
+    if (importedSemesterModules.length > 0) {
+      return <div className="saved-tables">{importedSemesterModules}</div>;
+    }
+
+    return <div className="table-empty">No modules to import.</div>;
   }
 
   showSemesterModules(
