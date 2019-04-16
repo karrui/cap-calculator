@@ -10,7 +10,6 @@ import "./style/index.css";
 
 import registerServiceWorker from "./registerServiceWorker";
 import configureStore from "./store/configureStore";
-
 const { store, persistor } = configureStore();
 
 export const HOME_URL =
