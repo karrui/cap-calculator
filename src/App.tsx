@@ -162,10 +162,14 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   render() {
-    const { isImport, isLoading, importedModules } = this.state;
+    const { isImport, isImportError, isLoading, importedModules } = this.state;
     return (
       <div className="App">
-        <CapHeader importedModules={importedModules} isImport={isImport} />
+        <CapHeader
+          importedModules={importedModules}
+          isImport={isImport}
+          isImportError={isImportError}
+        />
         <div className="app-body container">
           {isImport ? (
             isLoading ? (

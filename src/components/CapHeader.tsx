@@ -28,6 +28,7 @@ interface ICapHeaderProps extends ICapHeaderStateProps, ICapHeaderOwnProps {
 
 interface ICapHeaderOwnProps extends RouteComponentProps {
   isImport: boolean;
+  isImportError: boolean;
   importedModules: IImportedModulesState;
 }
 
@@ -114,6 +115,7 @@ const mergeProps = (
 const CapHeader: React.FunctionComponent<ICapHeaderProps> = props => {
   const {
     isImport,
+    isImportError,
     handleBackToSavedModules,
     handleImportModules,
     ...other
@@ -121,14 +123,56 @@ const CapHeader: React.FunctionComponent<ICapHeaderProps> = props => {
   return (
     <header className="App-header">
       {isImport ? (
-        <ImportHeader
-          handleBackToSavedModules={handleBackToSavedModules}
-          handleImportModules={handleImportModules}
-        />
+        isImportError ? (
+          <ImportErrorHeader
+            handleBackToSavedModules={handleBackToSavedModules}
+          />
+        ) : (
+          <ImportHeader
+            handleBackToSavedModules={handleBackToSavedModules}
+            handleImportModules={handleImportModules}
+          />
+        )
       ) : (
         <DefaultHeader {...other} />
       )}
     </header>
+  );
+};
+
+const ImportErrorHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
+  handleBackToSavedModules,
+}) => {
+  return (
+    <React.Fragment>
+      <nav className="nav container">
+        <span className="logo" />
+      </nav>
+      <div className="import-banner container">
+        <div className="alert alert-danger">
+          <div className="row">
+            <div className="col banner-wrapper">
+              <h3 className="banner-title">
+                Error trying to import saved modules.
+              </h3>
+              <p>
+                The given link seems to be invalid or expired. Check the link
+                again!
+              </p>
+            </div>
+            <div className="col-md-auto import-btns-wrapper">
+              <button
+                onClick={handleBackToSavedModules}
+                className="btn btn-outline-primary"
+                type="button"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
   );
 };
 
@@ -166,7 +210,7 @@ const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
                 className="btn btn-outline-primary"
                 type="button"
               >
-                Back to saved modules
+                Back
               </button>
             </div>
           </div>
