@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import scrollIntoViewIfNeeded from "scroll-into-view-if-needed";
 import { connect } from "react-redux";
 
 import { RootState } from "../store/configureStore";
@@ -130,7 +131,8 @@ class SavedTable extends React.Component<ISavedTableProps, {}> {
     if (itemComponent) {
       const domNode = ReactDOM.findDOMNode(itemComponent);
       if (domNode instanceof Element) {
-        domNode.scrollIntoView({
+        scrollIntoViewIfNeeded(domNode, {
+          scrollMode: "if-needed",
           behavior: "smooth",
           block: "start",
           inline: "nearest",
