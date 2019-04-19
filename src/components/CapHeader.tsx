@@ -2,12 +2,11 @@ import * as React from "react";
 import { RootState } from "src/store/configureStore";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { EmptyAction, PayloadAction } from "typesafe-actions/dist/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import "../style/CapHeader.css";
 
-import { addSemester, removeSemester, setNumSemester } from "src/actions/misc";
+import { setNumSemester } from "src/actions/misc";
 import {
   setSavedModules,
   setGrade,
@@ -20,8 +19,6 @@ import { IImportedModulesState } from "src/App";
 import { resetCapCalculator } from "src/actions/capCalculator";
 
 interface ICapHeaderProps extends ICapHeaderStateProps, ICapHeaderOwnProps {
-  onAddSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  handleRemoveSemester: (event: React.MouseEvent<HTMLButtonElement>) => void;
   handleImportModules: (event: React.MouseEvent<HTMLButtonElement>) => void;
   handleBackToSavedModules: () => void;
 }
@@ -33,28 +30,20 @@ interface ICapHeaderOwnProps extends RouteComponentProps {
 }
 
 interface ICapHeaderStateProps {
-  numSemesters: number;
   totalMcs: number;
   totalGradePoint: number;
 }
 
 interface ICapHeaderDispatchProps {
-  onAddSemester: () => EmptyAction<"ADD_SEMESTER">;
-  onRemoveSemester: (
-    semester: number
-  ) => PayloadAction<"REMOVE_SEMESTER", number>;
   onImportModules: (importedModules: IImportedModulesState) => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
-  numSemesters: state.misc.numSemesters,
   totalMcs: state.capCalculator.totalMcs,
   totalGradePoint: state.capCalculator.totalGradePoint,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onAddSemester: () => dispatch(addSemester()),
-  onRemoveSemester: (semester: number) => dispatch(removeSemester(semester)),
   onImportModules: (importedModules: IImportedModulesState) => {
     const { savedModules, numSemesters } = importedModules;
 
@@ -92,19 +81,14 @@ const mergeProps = (
   dispatchProps: ICapHeaderDispatchProps,
   ownProps: ICapHeaderOwnProps
 ) => {
-  const { numSemesters } = stateProps;
   const { history } = ownProps;
-  const { onAddSemester, onRemoveSemester, onImportModules } = dispatchProps;
+  const { onImportModules } = dispatchProps;
   return {
     ...stateProps,
     ...ownProps,
-    onAddSemester,
     handleImportModules: () => {
       onImportModules(ownProps.importedModules);
       history.push("/");
-    },
-    handleRemoveSemester: () => {
-      onRemoveSemester(numSemesters);
     },
     handleBackToSavedModules: () => {
       history.push("/");
@@ -223,8 +207,6 @@ const ImportHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
 const DefaultHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
   totalGradePoint,
   totalMcs,
-  onAddSemester,
-  handleRemoveSemester,
 }) => {
   return (
     <React.Fragment>
@@ -236,24 +218,6 @@ const DefaultHeader: React.FunctionComponent<Partial<ICapHeaderProps>> = ({
           </div>
         ) : null}
       </nav>
-
-      <div className="sem-buttons-wrapper">
-        <button
-          type="button"
-          className="btn btn-outline-primary sem-btn"
-          onClick={onAddSemester}
-        >
-          add semester
-        </button>
-
-        <button
-          type="button"
-          className="btn btn-outline-primary sem-btn"
-          onClick={handleRemoveSemester}
-        >
-          delete latest semester
-        </button>
-      </div>
       <Search />
     </React.Fragment>
   );
