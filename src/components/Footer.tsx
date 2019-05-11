@@ -18,14 +18,14 @@ const Footer: React.FunctionComponent<{}> = () => {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://jars.karrui.me"
+          href="https://jars.karrui.dev"
         >
           🍯Jars
         </a>
       </div>
       <p>
         Built by{" "}
-        <a target="_blank" rel="noopener noreferrer" href="https://karrui.me/">
+        <a target="_blank" rel="noopener noreferrer" href="https://karrui.dev/">
           @karrui
         </a>
         , feel free to create PRs to make this prettier/ update the logic!
