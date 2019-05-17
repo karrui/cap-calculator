@@ -19,7 +19,7 @@ import { GRADE_DICT, Theme } from "./reducers/constants";
 
 import firestore, { FS_COLLECTION_LINKS } from "./data/firestore";
 import AddRemoveSemesterButtons from "./components/AddRemoveSemesterButtons";
-import KeyboardShortcuts from "./components/KeyboardShortcuts";
+import Settings from "./components/Settings";
 
 // follows NUSMod's API
 export interface IModule {
@@ -191,9 +191,11 @@ class App extends React.Component<IAppProps, IAppState> {
             <SavedTable />
           )}
         </div>
-        {!isImport && <Export />}
+        <div className="actions">
+          {!isImport && <Export />}
+          <Settings />
+        </div>
         <Footer />
-        <KeyboardShortcuts />
       </div>
     );
   }
