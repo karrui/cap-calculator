@@ -37,6 +37,10 @@
   transition: all 0.15s ease-in-out;
 }
 
+.DARK .sem-select {
+  color: #aaa;
+}
+
 .sem-select:hover {
   cursor: pointer;
   color: #ff5138;
