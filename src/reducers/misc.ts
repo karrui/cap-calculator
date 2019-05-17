@@ -40,7 +40,7 @@ const miscReducer = (state = defaultMiscState, action: IMiscAction) => {
       return {
         ...state,
         currSemester: action.payload.toString(),
-        numSemesters: action.payload,
+        numSemesters: Number(action.payload),
       };
     }
     case REMOVE_SEMESTER: {
