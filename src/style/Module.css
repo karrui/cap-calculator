@@ -14,3 +14,7 @@
 .mod-title a {
   color: #69707a;
 }
+
+.DARK .mod-title a {
+  color: #aaa;
+}

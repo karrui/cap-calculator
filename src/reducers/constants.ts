@@ -14,6 +14,13 @@ export const ADD_SEMESTER = "ADD_SEMESTER";
 export const REMOVE_SEMESTER = "REMOVE_SEMESTER";
 export const SET_NUM_SEMESTER = "SET_NUM_SEMESTER";
 
+export const TOGGLE_THEME = "TOGGLE THEME";
+
+export type Theme = "LIGHT" | "DARK";
+
+export const LIGHT_MODE = "LIGHT";
+export const DARK_MODE = "DARK";
+
 export const GRADE_DICT = {
   "A+": 5,
   A: 5,

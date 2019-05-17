@@ -15,10 +15,11 @@ import ImportTable from "./components/ImportTable";
 import { ISavedModuleState } from "./reducers/savedModules";
 import { RootState } from "./store/configureStore";
 import { connect } from "react-redux";
-import { GRADE_DICT } from "./reducers/constants";
+import { GRADE_DICT, Theme } from "./reducers/constants";
 
 import firestore, { FS_COLLECTION_LINKS } from "./data/firestore";
 import AddRemoveSemesterButtons from "./components/AddRemoveSemesterButtons";
+import KeyboardShortcuts from "./components/KeyboardShortcuts";
 
 // follows NUSMod's API
 export interface IModule {
@@ -42,10 +43,12 @@ interface IAppState {
 
 interface IAppProps extends RouteComponentProps {
   moduleBank: IModule[];
+  theme: Theme;
 }
 
 const mapStateToProps = (state: RootState) => ({
   moduleBank: state.moduleBank,
+  theme: state.misc.theme,
 });
 
 const defaultAppState: IAppState = {
@@ -164,8 +167,9 @@ class App extends React.Component<IAppProps, IAppState> {
 
   render() {
     const { isImport, isImportError, isLoading, importedModules } = this.state;
+    const { theme } = this.props;
     return (
-      <div className="App">
+      <div className={`App ${theme}`}>
         <CapHeader
           importedModules={importedModules}
           isImport={isImport}
@@ -189,6 +193,7 @@ class App extends React.Component<IAppProps, IAppState> {
         </div>
         {!isImport && <Export />}
         <Footer />
+        <KeyboardShortcuts />
       </div>
     );
   }

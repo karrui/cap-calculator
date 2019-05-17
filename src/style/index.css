@@ -12,6 +12,7 @@ a {
   background-color: transparent;
 }
 
+.DARK a:hover,
 a:hover {
   color: #eb1d00;
   text-decoration: none;
@@ -77,6 +78,12 @@ p {
 .form-control[readonly] {
   background-color: #fafafa;
   opacity: 1;
+}
+
+.DARK .form-control {
+  background: #222324;
+  border: 1px solid #474747;
+  color: #aaa;
 }
 
 .tippy-tooltip [x-circle] {

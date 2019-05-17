@@ -15,6 +15,10 @@
   background-color: hsla(0, -2%, 100%, 0.7);
 }
 
+.DARK.export-overlay {
+  background-color: rgba(34, 35, 36, 0.7);
+}
+
 .loading-spinner {
   margin: auto;
 }
@@ -31,6 +35,13 @@
   background: white;
   -webkit-box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+.DARK.export-modal {
+  background: #222324;
+  border: 1px solid #444;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+  color: #aaa;
 }
 
 .export-header {
@@ -78,6 +89,10 @@ button.close-btn {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+.DARK button.close-btn {
+  color: #dddcdb;
 }
 
 @media (min-width: 768px) {

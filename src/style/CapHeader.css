@@ -8,6 +8,10 @@
   padding-bottom: 1rem;
 }
 
+.DARK .App-header {
+  background: #292929;
+}
+
 .total-cap {
   font-size: 1.8rem;
 }

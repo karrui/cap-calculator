@@ -5,6 +5,7 @@ import {
   ADD_SEMESTER,
   REMOVE_SEMESTER,
   SET_NUM_SEMESTER,
+  TOGGLE_THEME,
 } from "src/reducers/constants";
 
 export const setCurrentSemester = (semNum: string) =>
@@ -17,3 +18,5 @@ export const removeSemester = (semester: number) =>
 
 export const setNumSemester = (semNum: number) =>
   action(SET_NUM_SEMESTER, semNum);
+
+export const toggleTheme = () => action(TOGGLE_THEME);

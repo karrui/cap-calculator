@@ -61,3 +61,18 @@
   color: currentColor;
   background-color: transparent;
 }
+
+.DARK .suggestions {
+  background: #222324;
+  color: #aaa;
+  border-color: #474747;
+}
+
+.DARK li {
+  color: #aaa;
+}
+
+.DARK .suggestions li.suggestion-active {
+  color: #ff5138;
+  background-color: #292929;
+}

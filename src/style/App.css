@@ -8,6 +8,11 @@
   position: relative;
 }
 
+.App.DARK {
+  background: #222324;
+  color: #aaa;
+}
+
 .app-body {
   flex: 1 1 auto;
   margin-bottom: 2rem;

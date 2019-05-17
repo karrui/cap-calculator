@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.DARK .footer {
+  background-color: #292929;
+}
+
 .footer .links a {
   padding: 0 1rem;
 }
