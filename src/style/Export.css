@@ -5,43 +5,8 @@
   justify-content: center;
 }
 
-.export-overlay {
-  z-index: 100;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  background-color: hsla(0, -2%, 100%, 0.7);
-}
-
-.DARK.export-overlay {
-  background-color: rgba(34, 35, 36, 0.7);
-}
-
 .loading-spinner {
   margin: auto;
-}
-
-.export-modal {
-  position: absolute;
-  top: 25%;
-  right: 1rem;
-  left: 1rem;
-  max-width: 40rem;
-  max-height: calc(100% - 2rem);
-  padding: 1rem;
-  margin: 0 auto;
-  background: white;
-  -webkit-box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
-}
-
-.DARK.export-modal {
-  background: #222324;
-  border: 1px solid #444;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
-  color: #aaa;
 }
 
 .export-header {
@@ -67,42 +32,6 @@
   width: 5rem;
   height: 5rem;
   color: #28a745;
-}
-
-.close-btn {
-  position: absolute;
-  cursor: pointer;
-  right: 1rem;
-}
-
-button.close-btn:hover {
-  opacity: 0.75;
-}
-
-button.close-btn {
-  font-weight: 700;
-  text-shadow: 0 1px 0 #fff;
-  opacity: 0.5;
-  padding: 0;
-  background-color: transparent;
-  border: 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-.DARK button.close-btn {
-  color: #dddcdb;
-}
-
-@media (min-width: 768px) {
-  .export-modal {
-    padding: 2rem;
-  }
-
-  .close-btn {
-    right: 2rem;
-  }
 }
 
 .ReactModal__Overlay {
@@ -132,6 +61,7 @@ button.close-btn {
   left: 0;
 }
 
+.settings-btn,
 .export-sync-btn {
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
@@ -140,6 +70,7 @@ button.close-btn {
   justify-content: center;
 }
 
+.settings-btn .settings-svg,
 .export-sync-btn .share-svg {
   width: 1.1rem;
   margin-right: 0.2rem;

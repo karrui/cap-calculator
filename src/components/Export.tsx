@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import * as CopyToClipboard from "react-copy-to-clipboard";
 
 import "../style/Export.css";
+import "../style/Modal.css";
 
 import firestore, { FS_COLLECTION_LINKS } from "../data/firestore";
 import { RootState } from "src/store/configureStore";
@@ -58,7 +59,7 @@ class Export extends React.Component<IExportProps, IExportState> {
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
-  handleOpenModal() {
+  handleOpenModal = () => {
     // activate load state
     this.setState({
       loading: true,
@@ -80,13 +81,13 @@ class Export extends React.Component<IExportProps, IExportState> {
           loading: false,
         });
       });
-  }
+  };
 
-  handleCloseModal() {
+  handleCloseModal = () => {
     this.setState({ showModal: false, copied: false });
-  }
+  };
 
-  serializeExportModules() {
+  serializeExportModules = () => {
     const { savedModules } = this.props;
     const serializedObj: ISerializedModule = {};
     serializedObj.numSemesters = this.props.numSemesters;
@@ -102,7 +103,7 @@ class Export extends React.Component<IExportProps, IExportState> {
     return qs.stringify(serializedObj, {
       arrayFormat: "bracket",
     });
-  }
+  };
 
   render() {
     const exportUrl = `${HOME_URL}import?${this.state.shortenedLink}`;
@@ -121,12 +122,12 @@ class Export extends React.Component<IExportProps, IExportState> {
         <ReactModal
           isOpen={this.state.showModal}
           contentLabel="Export modules modal"
-          overlayClassName={`${theme} export-overlay`}
-          className={`${theme} export-modal`}
+          overlayClassName={`${theme} modal-overlay`}
+          className={`${theme} my-modal`}
           onRequestClose={this.handleCloseModal}
           closeTimeoutMS={200}
         >
-          <button className="close-btn" onClick={this.handleCloseModal}>
+          <button className="modal-close-btn" onClick={this.handleCloseModal}>
             <CrossSvg />
           </button>
           <div className="export-header">

@@ -21,3 +21,13 @@
 .sem-buttons-wrapper {
   margin-top: 1rem;
 }
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.actions button:first-child {
+  margin-right: 1rem;
+}
