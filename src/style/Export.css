@@ -61,6 +61,7 @@
   left: 0;
 }
 
+.settings-btn,
 .export-sync-btn {
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
@@ -69,6 +70,7 @@
   justify-content: center;
 }
 
+.settings-btn .settings-svg,
 .export-sync-btn .share-svg {
   width: 1.1rem;
   margin-right: 0.2rem;
