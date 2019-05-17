@@ -18,6 +18,7 @@ import { HOME_URL } from "src";
 import CopySvg from "./svgs/CopySvg";
 import ShareSvg from "./svgs/ShareSvg";
 import CrossSvg from "./svgs/CrossSvg";
+import { Theme } from "src/reducers/constants";
 
 interface IExportState {
   showModal: boolean;
@@ -29,11 +30,13 @@ interface IExportState {
 interface IExportProps {
   savedModules: ISavedModuleState;
   numSemesters: number;
+  theme: Theme;
 }
 
 const mapStateToProps = (state: RootState) => ({
   savedModules: state.savedModules,
   numSemesters: state.misc.numSemesters,
+  theme: state.misc.theme,
 });
 
 interface ISerializedModule {
@@ -104,6 +107,7 @@ class Export extends React.Component<IExportProps, IExportState> {
   render() {
     const exportUrl = `${HOME_URL}import?${this.state.shortenedLink}`;
     const { loading } = this.state;
+    const { theme } = this.props;
 
     return (
       <div className="export-wrapper">
@@ -116,9 +120,9 @@ class Export extends React.Component<IExportProps, IExportState> {
         </button>
         <ReactModal
           isOpen={this.state.showModal}
-          contentLabel="Minimal Modal Example"
-          overlayClassName="export-overlay"
-          className="export-modal"
+          contentLabel="Export modules modal"
+          overlayClassName={`${theme} export-overlay`}
+          className={`${theme} export-modal`}
           onRequestClose={this.handleCloseModal}
           closeTimeoutMS={200}
         >
