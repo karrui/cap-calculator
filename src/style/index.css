@@ -67,6 +67,7 @@ p {
   box-shadow: 0 0 0 0.2rem rgba(255, 81, 56, 0.5) !important;
 }
 
+.DARK input.form-control:focus,
 .form-control:focus {
   border-color: #ff5138;
   outline: 0;
@@ -80,7 +81,7 @@ p {
   opacity: 1;
 }
 
-.DARK .form-control {
+.DARK input.form-control {
   background: #222324;
   border: 1px solid #474747;
   color: #aaa;
