@@ -48,7 +48,9 @@ class SavedTable extends React.Component<ISavedTableProps, {}> {
   }
 
   private handleClick(semNum: number) {
-    this.props.onSetSemester(semNum.toString());
+    if (this.props.currSemester !== semNum.toString()) {
+      this.props.onSetSemester(semNum.toString());
+    }
   }
 
   public render() {
