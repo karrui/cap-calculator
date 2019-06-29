@@ -7,6 +7,7 @@ import { IModule } from "src/App";
 import { IFilteredModule } from "./Search";
 
 import "../style/Suggestion.css";
+import CustomSuggestionItem from "./CustomSuggestionItem";
 
 interface ISuggestionProps {
   userInput: string;
@@ -14,7 +15,8 @@ interface ISuggestionProps {
   currentHighlighted: number;
   scroll: boolean;
   handleClick: (
-    module: IModule
+    module: IModule,
+    isCustom?: boolean
   ) => (event: React.MouseEvent<HTMLLIElement>) => void;
   handleHover: (
     index: number
@@ -30,53 +32,49 @@ class Suggestion extends React.Component<ISuggestionProps, {}> {
   }
 
   public render() {
-    return (
+    const {
+      currentHighlighted,
+      handleClick,
+      handleHover,
+      userInput,
+      filteredModules,
+    } = this.props;
+    return filteredModules.length === 0 ? (
+      <CustomSuggestionItem userInput={userInput} handleClick={handleClick} />
+    ) : (
       <ul className="suggestions">
-        {this.props.filteredModules.map(
-          (module: IFilteredModule, index: number) => {
-            const {
-              currentHighlighted,
-              handleClick,
-              handleHover,
-              userInput,
-            } = this.props;
-
-            const active = currentHighlighted === index;
-            let className = "suggestion";
-            if (active) {
-              className += " suggestion-active";
-            }
-
-            if (module.isDisabled) {
-              className += " disabled";
-            }
-
-            return (
-              <li
-                ref={active ? "activeItem" : ""}
-                className={className}
-                key={module.ModuleCode}
-                onMouseDown={
-                  module.isDisabled ? undefined : handleClick(module)
-                }
-                onMouseEnter={
-                  module.isDisabled ? undefined : handleHover(index)
-                }
-              >
-                <span>
-                  {reactStringReplace(
-                    getModuleValue(module),
-                    userInput,
-                    (match: string, i: number) => (
-                      <mark key={i}>{match}</mark>
-                    )
-                  )}
-                </span>
-                {module.isDisabled && <span className="alr-added">Added</span>}
-              </li>
-            );
+        {filteredModules.map((module: IFilteredModule, index: number) => {
+          const active = currentHighlighted === index;
+          let className = "suggestion";
+          if (active) {
+            className += " suggestion-active";
           }
-        )}
+
+          if (module.isDisabled) {
+            className += " disabled";
+          }
+
+          return (
+            <li
+              ref={active ? "activeItem" : ""}
+              className={className}
+              key={module.ModuleCode}
+              onMouseDown={module.isDisabled ? undefined : handleClick(module)}
+              onMouseEnter={module.isDisabled ? undefined : handleHover(index)}
+            >
+              <span>
+                {reactStringReplace(
+                  getModuleValue(module),
+                  userInput,
+                  (match: string, i: number) => (
+                    <mark key={i}>{match}</mark>
+                  )
+                )}
+              </span>
+              {module.isDisabled && <span className="alr-added">Added</span>}
+            </li>
+          );
+        })}
       </ul>
     );
   }

@@ -12,6 +12,7 @@ import Suggestion from "./Suggestion";
 
 import "../style/Search.css";
 import SemesterSelector from "./SemesterSelector";
+import { showCustomModuleModal } from "src/actions/misc";
 
 export interface IFilteredModule extends IModule {
   isDisabled?: boolean;
@@ -23,6 +24,7 @@ interface ISearchProps {
   savedModules: ISavedModuleState;
   onSetModuleBank: () => void;
   onAddSavedModule: (module: IModule, semNum: string) => void;
+  onShowCustomModuleModal: (customModule: IModule) => void;
 }
 
 interface ISearchState {
@@ -47,6 +49,10 @@ const mapDispatchToProps = (dispatch: any) => ({
   onAddSavedModule: (module: IFilteredModule, semNum: string) => {
     dispatch(addModule(module, semNum));
   },
+
+  onShowCustomModuleModal: (customModule: IModule) => {
+    dispatch(showCustomModuleModal(customModule));
+  },
 });
 
 class Search extends React.Component<ISearchProps, ISearchState> {
@@ -60,6 +66,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       userInput: "",
       scroll: false,
     };
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   public handleClickOutside = (event: any) => this.resetState();
@@ -156,17 +164,34 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     this.setState({
       filteredModules,
       userInput,
-      currentHighlighted: 0,
-      showSuggestion: filteredModules.length !== 0,
+      currentHighlighted: filteredModules.length === 0 ? -1 : 0,
+      // showSuggestion: filteredModules.length !== 0,
+      showSuggestion: userInput.length >= 2,
     });
   };
 
-  private handleClick = (module: IModule) => (
+  createCustomModule() {
+    const customModule: IModule = {
+      ModuleTitle: this.state.userInput,
+    };
+
+    return customModule;
+  }
+
+  private handleClick = (module?: IModule, isCustom?: boolean) => (
     event: React.MouseEvent<HTMLLIElement>
   ) => {
     if (event.button === 0) {
-      const { onAddSavedModule, currSemNum } = this.props;
-      onAddSavedModule(module, currSemNum);
+      const {
+        onAddSavedModule,
+        onShowCustomModuleModal,
+        currSemNum,
+      } = this.props;
+      if (isCustom) {
+        onShowCustomModuleModal(this.createCustomModule());
+      } else {
+        onAddSavedModule(module!, currSemNum);
+      }
       this.resetState();
     }
   };
@@ -189,10 +214,19 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
   private handleKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { currentHighlighted, filteredModules } = this.state;
-    const { onAddSavedModule, currSemNum } = this.props;
+    const {
+      onAddSavedModule,
+      currSemNum,
+      onShowCustomModuleModal,
+    } = this.props;
     const { key } = event;
 
     if (key === "Enter") {
+      if (currentHighlighted === -1) {
+        onShowCustomModuleModal(this.createCustomModule());
+        this.resetState();
+        return;
+      }
       const module = filteredModules[currentHighlighted];
       if (module && !module.isDisabled) {
         onAddSavedModule(filteredModules[currentHighlighted], currSemNum);
