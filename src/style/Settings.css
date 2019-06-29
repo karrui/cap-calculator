@@ -1,7 +1,3 @@
-.settings-modal h2 {
-  font-size: 1.25rem;
-}
-
 kbd {
   display: inline-block;
   margin: 0 0.2rem -0.1rem 0.1rem;
@@ -18,34 +14,6 @@ kbd {
   color: #aaa;
   background: #474747;
   box-shadow: 1px 1px 1px #aaa;
-}
-
-.settings-modal table tbody + tbody,
-.settings-modal table td,
-.settings-modal table th {
-  border: 0;
-}
-
-tr td:nth-child(2) {
-  display: flex;
-  align-items: center;
-}
-
-table tr:first-child th {
-  padding-top: 1rem;
-  border-bottom: 1px solid #d3d6db;
-}
-
-thead tr th:first-child,
-tbody tr td:first-child {
-  width: 3em;
-  min-width: 3em;
-  max-width: 3em;
-  word-break: break-all;
-}
-
-.DARK table tr:first-child th {
-  border-color: #474747;
 }
 
 .keybind {
