@@ -26,10 +26,23 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.DARK .custom-module-form-input {
+  background-color: #222324;
+  border-color: #474747;
+  color: #aaa;
+}
+
 .custom-module-form-input:focus {
   box-shadow: none;
   color: #69707a;
   background-color: #fff;
+  border-color: #ff5138;
+  outline: 0;
+}
+
+.DARK .custom-module-form-input:focus {
+  color: #aaa;
+  background-color: #222324;
   border-color: #ff5138;
   outline: 0;
 }
