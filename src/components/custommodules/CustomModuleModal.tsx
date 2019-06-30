@@ -48,7 +48,10 @@ const CustomModuleModal: React.FunctionComponent<
         <CrossSvg />
       </button>
       <h2>Create custom module</h2>
-      <CustomModuleForm initialModule={moduleInfo} />
+      <CustomModuleForm
+        initialModule={moduleInfo}
+        onSubmitClose={onCloseModal}
+      />
     </ReactModal>
   );
 };

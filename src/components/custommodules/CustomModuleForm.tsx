@@ -2,9 +2,25 @@ import * as React from "react";
 import { ISavedModule } from "src/reducers/savedModules";
 
 import "src/style/CustomModuleForm.css";
+import { Dispatch } from "redux";
+import {
+  IGradeObject,
+  setGrade,
+  setSU,
+  addModule,
+} from "src/actions/savedModules";
+import { RootState } from "src/store/configureStore";
+import { IModule } from "src/App";
+import { connect } from "react-redux";
 
 interface ICustomModuleFormProps {
   initialModule: ISavedModule;
+  onSubmitClose: () => void;
+
+  currSemNum: string;
+  onAddCustomModule: (module: IModule, semNum: string) => void;
+  onSetGrade: (gradeObj: IGradeObject) => void;
+  onSetSU: (gradeObj: IGradeObject) => void;
 }
 
 interface ICustomModuleFormState {
@@ -20,6 +36,18 @@ interface ICustomModuleFormState {
     // grade is optional
   };
 }
+
+const mapStateToProps = (state: RootState) => ({
+  currSemNum: state.misc.currSemester,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onAddCustomModule: (module: IModule, semNum: string) => {
+    dispatch(addModule(module, semNum));
+  },
+  onSetGrade: (gradeObj: IGradeObject) => dispatch(setGrade(gradeObj)),
+  onSetSU: (gradeObj: IGradeObject) => dispatch(setSU(gradeObj)),
+});
 
 class CustomModuleForm extends React.Component<
   ICustomModuleFormProps,
@@ -94,7 +122,20 @@ class CustomModuleForm extends React.Component<
   }
 
   handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    const { moduleCodeValue, moduleCreditValue, moduleNameValue } = this.state;
+    const {
+      moduleCodeValue,
+      moduleCreditValue,
+      moduleNameValue,
+      moduleGradeValue,
+    } = this.state;
+    const {
+      onAddCustomModule,
+      currSemNum,
+      onSetGrade,
+      onSetSU,
+      initialModule,
+      onSubmitClose,
+    } = this.props;
     if (
       moduleCodeValue === "" ||
       moduleCreditValue === "" ||
@@ -111,8 +152,35 @@ class CustomModuleForm extends React.Component<
       return;
     }
 
-    alert(`A name was submitted: ${this.state.moduleNameValue}`);
+    // Create module object to save from form
+    const customModuleObj: IModule = {
+      ModuleCode: moduleCodeValue,
+      ModuleCredit: moduleCreditValue,
+      ModuleTitle: moduleNameValue,
+    };
+
+    onAddCustomModule(customModuleObj, currSemNum);
+
+    if (moduleGradeValue !== "") {
+      const customGradeObj: IGradeObject = {
+        module: {
+          ModuleCode: customModuleObj.ModuleCode!,
+          ModuleCredit: customModuleObj.ModuleCredit!,
+          ModuleTitle: customModuleObj.ModuleTitle!,
+        },
+        semester: currSemNum,
+        grade: moduleGradeValue,
+        prevGrade: initialModule.grade || "",
+      };
+
+      onSetGrade(customGradeObj);
+
+      if (moduleGradeValue === "S" || moduleGradeValue === "U") {
+        onSetSU(customGradeObj);
+      }
+    }
     event.preventDefault();
+    onSubmitClose();
   }
   render() {
     const fieldsHaveError =
@@ -205,4 +273,7 @@ class CustomModuleForm extends React.Component<
   }
 }
 
-export default CustomModuleForm;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomModuleForm);
