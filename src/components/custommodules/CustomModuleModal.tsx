@@ -5,16 +5,17 @@ import { Dispatch } from "redux";
 import { Theme } from "src/reducers/constants";
 import { RootState } from "src/store/configureStore";
 
-import "../style/Settings.css";
-import "../style/Modal.css";
-import CrossSvg from "./svgs/CrossSvg";
+import "src/style/Settings.css";
+import "src/style/Modal.css";
+import CrossSvg from "../svgs/CrossSvg";
 import { closeCustomModuleModal } from "src/actions/misc";
-import { IModule } from "src/App";
+import CustomModuleForm from "./CustomModuleForm";
+import { ISavedModule } from "src/reducers/savedModules";
 
 interface ICustomModuleModalProp {
   theme: Theme;
   showModal: boolean;
-  moduleInfo: IModule;
+  moduleInfo: ISavedModule;
   onCloseModal: () => void;
 }
 
@@ -33,7 +34,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const CustomModuleModal: React.FunctionComponent<
   ICustomModuleModalProp
 > = props => {
-  const { theme, showModal, onCloseModal } = props;
+  const { theme, showModal, onCloseModal, moduleInfo } = props;
   return (
     <ReactModal
       isOpen={showModal}
@@ -47,7 +48,7 @@ const CustomModuleModal: React.FunctionComponent<
         <CrossSvg />
       </button>
       <h2>Create custom module</h2>
-      <div>Form here to create custom thingamagics</div>
+      <CustomModuleForm initialModule={moduleInfo} />
     </ReactModal>
   );
 };

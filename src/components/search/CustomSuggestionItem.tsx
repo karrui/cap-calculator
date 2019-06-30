@@ -27,8 +27,8 @@ class CustomSuggestionItem extends React.Component<
           onClick={handleClick(undefined, true)}
         >
           <span>
-            No results found for <mark>{userInput}</mark>. Select to add{" "}
-            <mark>{userInput}</mark> as custom module.
+            No results found for <mark>"{userInput}"</mark>. Select to add{" "}
+            <mark>"{userInput}"</mark> as custom module.
           </span>
         </li>
       </ul>

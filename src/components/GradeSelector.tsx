@@ -18,6 +18,11 @@ interface IGradeSelectorProps {
   onSetSU: (gradeObj: IGradeObject) => void;
 }
 
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onSetGrade: (gradeObj: IGradeObject) => dispatch(setGrade(gradeObj)),
+  onSetSU: (gradeObj: IGradeObject) => dispatch(setSU(gradeObj)),
+});
+
 class GradeSelector extends React.Component<
   IGradeSelectorProps,
   IGradeSelectorState
@@ -80,11 +85,6 @@ class GradeSelector extends React.Component<
     }
   };
 }
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onSetGrade: (gradeObj: IGradeObject) => dispatch(setGrade(gradeObj)),
-  onSetSU: (gradeObj: IGradeObject) => dispatch(setSU(gradeObj)),
-});
 
 export default connect(
   null,

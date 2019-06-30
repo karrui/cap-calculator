@@ -6,7 +6,7 @@ import reactStringReplace from "react-string-replace";
 import { IModule } from "src/App";
 import { IFilteredModule } from "./Search";
 
-import "../style/Suggestion.css";
+import "src/style/Suggestion.css";
 import CustomSuggestionItem from "./CustomSuggestionItem";
 
 interface ISuggestionProps {

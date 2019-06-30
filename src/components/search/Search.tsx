@@ -3,15 +3,15 @@ import * as _ from "lodash";
 import reactOnclickoutside from "react-onclickoutside";
 import { connect } from "react-redux";
 
-import { addModule } from "../actions";
-import { IModule } from "../App";
-import { ISavedModuleState } from "../reducers/savedModules";
-import { RootState } from "../store/configureStore";
-import { setModuleBank } from "../actions/moduleBank";
+import { addModule } from "../../actions";
+import { IModule } from "../../App";
+import { ISavedModuleState } from "../../reducers/savedModules";
+import { RootState } from "../../store/configureStore";
+import { setModuleBank } from "../../actions/moduleBank";
 import Suggestion from "./Suggestion";
 
-import "../style/Search.css";
-import SemesterSelector from "./SemesterSelector";
+import "src/style/Search.css";
+import SemesterSelector from "../SemesterSelector";
 import { showCustomModuleModal } from "src/actions/misc";
 
 export interface IFilteredModule extends IModule {

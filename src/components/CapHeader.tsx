@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
-import "../style/CapHeader.css";
+import "src/style/CapHeader.css";
 
 import { setNumSemester } from "src/actions/misc";
 import {
@@ -14,7 +14,7 @@ import {
   setSU,
 } from "src/actions/savedModules";
 
-import Search from "./Search";
+import Search from "./search/Search";
 import { IImportedModulesState } from "src/App";
 import { resetCapCalculator } from "src/actions/capCalculator";
 

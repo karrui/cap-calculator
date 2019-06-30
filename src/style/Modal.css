@@ -14,7 +14,8 @@
 
 .my-modal {
   position: absolute;
-  top: 25%;
+  top: 50%;
+  transform: translateY(-50%);
   right: 1rem;
   left: 1rem;
   max-width: 40rem;
