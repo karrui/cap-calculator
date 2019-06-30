@@ -9,9 +9,16 @@ interface ICustomModuleFormProps {
 
 interface ICustomModuleFormState {
   moduleCodeValue: string;
-  moduleTitleValue: string;
+  moduleNameValue: string;
   moduleCreditValue: string;
   moduleGradeValue: string;
+
+  errors: {
+    code: boolean;
+    name: boolean;
+    credit: boolean;
+    // grade is optional
+  };
 }
 
 class CustomModuleForm extends React.Component<
@@ -24,33 +31,61 @@ class CustomModuleForm extends React.Component<
     const { initialModule } = this.props;
     this.state = {
       moduleCodeValue: initialModule.ModuleCode || "",
-      moduleTitleValue: initialModule.ModuleTitle || "",
+      moduleNameValue: initialModule.ModuleTitle || "",
       moduleCreditValue: initialModule.ModuleCredit || "",
       moduleGradeValue: initialModule.grade || "",
+
+      errors: {
+        code: false,
+        name: false,
+        credit: false,
+      },
     };
 
-    this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
     this.handleCodeChange = this.handleCodeChange.bind(this);
     this.handleCreditChange = this.handleCreditChange.bind(this);
     this.handleGradeChange = this.handleGradeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ moduleTitleValue: event.target.value });
+  handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      moduleNameValue: event.target.value,
+      errors: {
+        ...this.state.errors,
+        name: false,
+      },
+    });
   }
 
   handleCodeChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ moduleCodeValue: event.target.value });
+    this.setState({
+      moduleCodeValue: event.target.value,
+      errors: {
+        ...this.state.errors,
+        code: false,
+      },
+    });
   }
 
   handleCreditChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.value === "") {
+      this.setState({
+        moduleCreditValue: "",
+      });
+      return;
+    }
     let newCreditValue = Math.abs(Number(event.target.value));
     if (newCreditValue > 100) {
       newCreditValue = 100;
     }
     this.setState({
       moduleCreditValue: newCreditValue.toString(),
+      errors: {
+        ...this.state.errors,
+        credit: false,
+      },
     });
   }
 
@@ -59,10 +94,31 @@ class CustomModuleForm extends React.Component<
   }
 
   handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    alert(`A name was submitted: ${this.state.moduleTitleValue}`);
+    const { moduleCodeValue, moduleCreditValue, moduleNameValue } = this.state;
+    if (
+      moduleCodeValue === "" ||
+      moduleCreditValue === "" ||
+      moduleNameValue === ""
+    ) {
+      this.setState({
+        errors: {
+          name: moduleNameValue === "",
+          code: moduleCodeValue === "",
+          credit: moduleCreditValue === "",
+        },
+      });
+      event.preventDefault();
+      return;
+    }
+
+    alert(`A name was submitted: ${this.state.moduleNameValue}`);
     event.preventDefault();
   }
   render() {
+    const fieldsHaveError =
+      this.state.errors.name ||
+      this.state.errors.code ||
+      this.state.errors.credit;
     return (
       <form
         className="custom-module-form container"
@@ -72,7 +128,9 @@ class CustomModuleForm extends React.Component<
           <label className="col-12 col-md-3">
             code
             <input
-              className="custom-module-form-input"
+              className={`custom-module-form-input ${
+                this.state.errors.code ? "error" : ""
+              }`}
               placeholder="CS1010"
               type="text"
               value={this.state.moduleCodeValue}
@@ -82,11 +140,13 @@ class CustomModuleForm extends React.Component<
           <label className="col-12 col-md-9">
             name
             <input
-              className="custom-module-form-input"
+              className={`custom-module-form-input ${
+                this.state.errors.name ? "error" : ""
+              }`}
               placeholder="Programming Methodology"
               type="text"
-              value={this.state.moduleTitleValue}
-              onChange={this.handleTitleChange}
+              value={this.state.moduleNameValue}
+              onChange={this.handleNameChange}
             />
           </label>
         </div>
@@ -98,7 +158,9 @@ class CustomModuleForm extends React.Component<
             min="0"
             max="100"
             placeholder="4"
-            className="custom-module-form-input mc-input"
+            className={`custom-module-form-input mc-input ${
+              this.state.errors.credit ? "error" : ""
+            }`}
             value={this.state.moduleCreditValue}
             onChange={this.handleCreditChange}
           />
@@ -133,6 +195,11 @@ class CustomModuleForm extends React.Component<
           type="submit"
           value="Done"
         />
+        {fieldsHaveError && (
+          <div className="error-msg">
+            Oops! Some fields have not been filled.
+          </div>
+        )}
       </form>
     );
   }

@@ -1,3 +1,8 @@
+.custom-module-form {
+  margin-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+
 .cm-form-label {
   display: flex;
   flex-direction: column;
@@ -32,6 +37,10 @@
   color: #aaa;
 }
 
+.custom-module-form-input.error {
+  border-color: #ff3333;
+}
+
 .custom-module-form-input:focus {
   box-shadow: none;
   color: #69707a;
@@ -51,8 +60,28 @@
   opacity: 0.5;
 }
 
+.custom-module-form-input.error::placeholder {
+  opacity: 0.9;
+  color: #ff3333;
+}
+
 .cm-modal-done-btn {
   position: absolute;
-  right: 2rem;
+  right: 1rem;
   bottom: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .cm-modal-done-btn {
+    right: 2rem;
+  }
+}
+
+.error-msg {
+  position: absolute;
+  left: 0;
+  text-align: center;
+  width: inherit;
+  color: #ff3333;
 }
