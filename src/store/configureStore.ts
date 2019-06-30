@@ -12,6 +12,7 @@ export type RootState = StateType<typeof reducers>;
 const persistConfig = {
   storage,
   key: "root",
+  blacklist: ["misc"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

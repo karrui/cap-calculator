@@ -8,18 +8,28 @@ import {
   Theme,
   TOGGLE_THEME,
   DARK_MODE,
+  SHOW_CUSTOM_MODULE_MODAL,
+  CLOSE_CUSTOM_MODULE_MODAL,
 } from "./constants";
+import { IModule } from "src/App";
 
 const defaultMiscState: IMiscState = {
   currSemester: "1",
   numSemesters: 1,
   theme: LIGHT_MODE,
+  customModuleModalInfo: {
+    isShown: false,
+  },
 };
 
 interface IMiscState {
   currSemester: string;
   numSemesters: number;
   theme: Theme;
+  customModuleModalInfo: {
+    isShown: boolean;
+    module?: IModule;
+  };
 }
 
 const miscReducer = (state = defaultMiscState, action: IMiscAction) => {
@@ -65,6 +75,26 @@ const miscReducer = (state = defaultMiscState, action: IMiscAction) => {
         theme: state.theme === LIGHT_MODE ? DARK_MODE : LIGHT_MODE,
       };
     }
+
+    case SHOW_CUSTOM_MODULE_MODAL: {
+      return {
+        ...state,
+        customModuleModalInfo: {
+          isShown: true,
+          module: action.payload,
+        },
+      };
+    }
+
+    case CLOSE_CUSTOM_MODULE_MODAL: {
+      return {
+        ...state,
+        customModuleModalInfo: {
+          isShown: false,
+        },
+      };
+    }
+
     default:
       return state;
   }

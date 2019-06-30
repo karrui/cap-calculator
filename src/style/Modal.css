@@ -14,7 +14,8 @@
 
 .my-modal {
   position: absolute;
-  top: 25%;
+  top: 50%;
+  transform: translateY(-50%);
   right: 1rem;
   left: 1rem;
   max-width: 40rem;
@@ -31,6 +32,38 @@
   border: 1px solid #444;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
   color: #aaa;
+}
+
+.my-modal h2 {
+  font-size: 1.25rem;
+}
+
+.my-modal table tbody + tbody,
+.my-modal table td,
+.my-modal table th {
+  border: 0;
+}
+
+tr td:nth-child(2) {
+  display: flex;
+  align-items: center;
+}
+
+table tr:first-child th {
+  padding-top: 1rem;
+  border-bottom: 1px solid #d3d6db;
+}
+
+thead tr th:first-child,
+tbody tr td:first-child {
+  width: 3em;
+  min-width: 3em;
+  max-width: 3em;
+  word-break: break-all;
+}
+
+.DARK table tr:first-child th {
+  border-color: #474747;
 }
 
 .modal-close-btn {

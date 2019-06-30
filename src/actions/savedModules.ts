@@ -7,7 +7,7 @@ import {
   SET_SU,
   SET_SAVED_MODULES,
 } from "src/reducers/constants";
-import { IFilteredModule } from "src/components/Search";
+import { IFilteredModule } from "src/components/search/Search";
 import { ISavedModule, ISavedModuleState } from "src/reducers/savedModules";
 
 export const addModule = (module: IFilteredModule, semNum: string) =>

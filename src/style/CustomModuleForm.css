@@ -1,0 +1,87 @@
+.custom-module-form {
+  margin-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.cm-form-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.cm-form-label .mc-input {
+  max-width: 6rem;
+}
+
+.cm-form-label .grade-input {
+  max-width: 5rem;
+}
+
+.custom-module-form-input {
+  width: inherit;
+  padding: 0.2rem 0.5rem 0.2rem 0rem;
+  border-radius: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  -webkit-appearance: none;
+  color: #69707a;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #d3d6db;
+  border-width: 0 0 1px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.DARK .custom-module-form-input {
+  background-color: #222324;
+  border-color: #474747;
+  color: #aaa;
+}
+
+.custom-module-form-input.error {
+  border-color: #ff3333;
+}
+
+.custom-module-form-input:focus {
+  box-shadow: none;
+  color: #69707a;
+  background-color: #fff;
+  border-color: #ff5138;
+  outline: 0;
+}
+
+.DARK .custom-module-form-input:focus {
+  color: #aaa;
+  background-color: #222324;
+  border-color: #ff5138;
+  outline: 0;
+}
+
+.custom-module-form-input::placeholder {
+  opacity: 0.5;
+}
+
+.custom-module-form-input.error::placeholder {
+  opacity: 0.9;
+  color: #ff3333;
+}
+
+.cm-modal-done-btn {
+  position: absolute;
+  right: 1rem;
+  bottom: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .cm-modal-done-btn {
+    right: 2rem;
+  }
+}
+
+.error-msg {
+  position: absolute;
+  left: 0;
+  text-align: center;
+  width: inherit;
+  color: #ff3333;
+}
