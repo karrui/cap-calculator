@@ -96,7 +96,10 @@ const miscReducer = (state = defaultMiscState, action: IMiscAction) => {
     }
 
     default:
-      return state;
+      return {
+        ...defaultMiscState,
+        ...state,
+      };
   }
 };
 
