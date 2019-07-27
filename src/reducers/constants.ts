@@ -17,6 +17,8 @@ export const SET_NUM_SEMESTER = "SET_NUM_SEMESTER";
 export const SHOW_CUSTOM_MODULE_MODAL = "SHOW_CUSTOM_MODULE_MODAL";
 export const CLOSE_CUSTOM_MODULE_MODAL = "CLOSE_CUSTOM_MODULE_MODAL";
 
+export const UNDO = "UNDO";
+
 export const TOGGLE_THEME = "TOGGLE THEME";
 
 export type Theme = "LIGHT" | "DARK";

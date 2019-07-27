@@ -10,6 +10,7 @@ import {
   DARK_MODE,
   SHOW_CUSTOM_MODULE_MODAL,
   CLOSE_CUSTOM_MODULE_MODAL,
+  UNDO,
 } from "./constants";
 import { IModule } from "src/App";
 
@@ -22,7 +23,7 @@ const defaultMiscState: IMiscState = {
   },
 };
 
-interface IMiscState {
+export interface IMiscState {
   currSemester: string;
   numSemesters: number;
   theme: Theme;
@@ -93,6 +94,11 @@ const miscReducer = (state = defaultMiscState, action: IMiscAction) => {
           isShown: false,
         },
       };
+    }
+
+    case UNDO: {
+      // @ts-ignore
+      return action.payload ? action.payload.misc : state;
     }
 
     default:

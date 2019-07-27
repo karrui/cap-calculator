@@ -6,13 +6,14 @@ import reduxThunk from "redux-thunk";
 import { StateType } from "typesafe-actions";
 
 import reducers from "../reducers";
+import { undoMiddleware } from "src/middlewares/undo";
 
 export type RootState = StateType<typeof reducers>;
 
 const persistConfig = {
   storage,
   key: "root",
-  blacklist: ["misc"],
+  blacklist: ["undoHistory"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -24,8 +25,8 @@ const composeEnhancers =
 
 const middleware =
   process.env.NODE_ENV !== "production"
-    ? applyMiddleware(reduxThunk, reduxLogger)
-    : applyMiddleware(reduxThunk);
+    ? applyMiddleware(reduxThunk, reduxLogger, undoMiddleware)
+    : applyMiddleware(reduxThunk, undoMiddleware);
 
 export default () => {
   const store = createStore(persistedReducer, composeEnhancers(middleware));
