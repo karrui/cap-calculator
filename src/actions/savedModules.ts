@@ -13,8 +13,11 @@ import { ISavedModule, ISavedModuleState } from "src/reducers/savedModules";
 export const addModule = (module: IFilteredModule, semNum: string) =>
   action(ADD_MOD, { module, semNum });
 
-export const removeModule = (module: IFilteredModule, semNum: string) =>
-  action(REMOVE_MOD, { module, semNum });
+export const removeModule = (
+  module: IFilteredModule,
+  semNum: string,
+  index: number
+) => action(REMOVE_MOD, { module, semNum, index });
 
 export interface IGradeObject {
   module: ISavedModule;
