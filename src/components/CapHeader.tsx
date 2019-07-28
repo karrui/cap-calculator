@@ -3,6 +3,7 @@ import { RootState } from "src/store/configureStore";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { actions as UndoActionCreators } from "redux-undo-redo";
 
 import "src/style/CapHeader.css";
 
@@ -36,6 +37,7 @@ interface ICapHeaderStateProps {
 
 interface ICapHeaderDispatchProps {
   onImportModules: (importedModules: IImportedModulesState) => void;
+  onClear: () => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -44,6 +46,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onClear: () => dispatch(UndoActionCreators.clear()),
   onImportModules: (importedModules: IImportedModulesState) => {
     const { savedModules, numSemesters } = importedModules;
 
@@ -87,6 +90,7 @@ const mergeProps = (
     ...stateProps,
     ...ownProps,
     handleImportModules: () => {
+      dispatchProps.onClear();
       onImportModules(ownProps.importedModules);
       history.push("/");
     },

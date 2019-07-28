@@ -5,6 +5,7 @@ import {
   SET_SU,
   REMOVE_SEMESTER,
   RESET_CAP_CALC,
+  UNDO,
 } from "./constants";
 
 const defaultCapCalcState: ICapCalcState = {
@@ -162,6 +163,12 @@ const capCalculatorReducer = (
         semesterMcs: restMcs,
       };
     }
+
+    case UNDO: {
+      // @ts-ignore
+      return action.payload ? action.payload.capCalculator : state;
+    }
+
     case RESET_CAP_CALC: {
       return defaultCapCalcState;
     }

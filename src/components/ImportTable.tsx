@@ -47,12 +47,13 @@ class ImportTable extends React.Component<IImportTableProps, {}> {
     semesterModules: { [ModuleCode: string]: ISavedModule },
     semester: number
   ) {
-    return Object.keys(semesterModules).map(moduleCode => (
+    return Object.keys(semesterModules).map((moduleCode, index) => (
       <Module
         isImported={true}
         key={moduleCode}
         semester={semester}
         module={semesterModules[moduleCode]}
+        index={index}
       />
     ));
   }

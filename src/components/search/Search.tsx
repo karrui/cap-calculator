@@ -2,6 +2,7 @@ import * as React from "react";
 import * as _ from "lodash";
 import reactOnclickoutside from "react-onclickoutside";
 import { connect } from "react-redux";
+import { actions as UndoActionCreators } from "redux-undo-redo";
 
 import { addModule } from "../../actions";
 import { IModule } from "../../App";
@@ -18,10 +19,18 @@ export interface IFilteredModule extends IModule {
   isDisabled?: boolean;
 }
 
-interface ISearchProps {
+interface ISearchProps extends ISearchStateProps, ISearchDispatchProps {
+  handleAddSavedModule: (module: IFilteredModule, semNum: string) => void;
+}
+
+interface ISearchStateProps {
   currSemNum: string;
   moduleBank: IModule[];
   savedModules: ISavedModuleState;
+}
+
+interface ISearchDispatchProps {
+  onClear: () => void;
   onSetModuleBank: () => void;
   onAddSavedModule: (module: IModule, semNum: string) => void;
   onShowCustomModuleModal: (customModule: IModule) => void;
@@ -46,12 +55,27 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(setModuleBank());
   },
 
+  onClear: () => dispatch(UndoActionCreators.clear()),
+
   onAddSavedModule: (module: IFilteredModule, semNum: string) => {
     dispatch(addModule(module, semNum));
   },
 
   onShowCustomModuleModal: (customModule: IModule) => {
     dispatch(showCustomModuleModal(customModule));
+  },
+});
+
+const mergeProps = (
+  stateProps: ISearchStateProps,
+  dispatchProps: ISearchDispatchProps,
+  ownProps: any
+) => ({
+  ...stateProps,
+  ...ownProps,
+  handleAddSavedModule: (module: IFilteredModule, semNum: string) => {
+    dispatchProps.onClear();
+    dispatchProps.onAddSavedModule(module, semNum);
   },
 });
 
@@ -183,14 +207,14 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   ) => {
     if (event.button === 0) {
       const {
-        onAddSavedModule,
+        handleAddSavedModule,
         onShowCustomModuleModal,
         currSemNum,
       } = this.props;
       if (isCustom) {
         onShowCustomModuleModal(this.createCustomModule());
       } else {
-        onAddSavedModule(module!, currSemNum);
+        handleAddSavedModule(module!, currSemNum);
       }
       this.resetState();
     }
@@ -215,7 +239,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   private handleKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { currentHighlighted, filteredModules } = this.state;
     const {
-      onAddSavedModule,
+      handleAddSavedModule,
       currSemNum,
       onShowCustomModuleModal,
     } = this.props;
@@ -229,7 +253,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       }
       const module = filteredModules[currentHighlighted];
       if (module && !module.isDisabled) {
-        onAddSavedModule(filteredModules[currentHighlighted], currSemNum);
+        handleAddSavedModule(filteredModules[currentHighlighted], currSemNum);
         this.resetState();
       }
     }
@@ -259,5 +283,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps
 )(reactOnclickoutside(Search));

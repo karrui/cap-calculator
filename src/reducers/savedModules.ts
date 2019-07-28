@@ -7,6 +7,7 @@ import {
   GRADE_DICT,
   REMOVE_SEMESTER,
   SET_SAVED_MODULES,
+  UNDO,
 } from "./constants";
 
 export interface ISavedModule {
@@ -83,6 +84,12 @@ const savedModuleReducer = (
       // payload itself is going to be saved modules
       return payload;
     }
+
+    case UNDO: {
+      // @ts-ignore
+      return action.payload ? action.payload.savedModules : state;
+    }
+
     default:
       return state;
   }

@@ -12,12 +12,13 @@ interface IModuleProp {
   isImported?: boolean;
   module: ISavedModule;
   semester: number;
-  onRemoveModule: (module: ISavedModule, semNum: string) => void;
+  index: number;
+  onRemoveModule: (module: ISavedModule, semNum: string, index: number) => void;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onRemoveModule: (module: ISavedModule, semNum: string) => {
-    dispatch(removeModule(module, semNum));
+  onRemoveModule: (module: ISavedModule, semNum: string, index: number) => {
+    dispatch(removeModule(module, semNum, index));
   },
 });
 
@@ -26,11 +27,12 @@ const Module: React.FunctionComponent<IModuleProp> = ({
   onRemoveModule,
   semester,
   isImported,
+  index,
 }) => {
   const handleClick = (module: ISavedModule) => (
     event: React.MouseEvent<HTMLElement>
   ) => {
-    onRemoveModule(module, semester.toString());
+    onRemoveModule(module, semester.toString(), index);
   };
   return (
     <div className="row no-gutters module-row">

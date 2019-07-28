@@ -6,6 +6,7 @@ import misc from "./misc";
 import moduleBank from "./moduleBank";
 import savedModules from "./savedModules";
 import capCalculator from "./capCalculator";
+import undoHistoryReducer from "./undoHistoryReducer";
 
 const miscPersistConfig = {
   storage,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   savedModules,
   capCalculator,
   misc: persistReducer(miscPersistConfig, misc),
+  undoHistory: undoHistoryReducer,
 });
 
 export default rootReducer;

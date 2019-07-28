@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import scrollIntoViewIfNeeded from "scroll-into-view-if-needed";
 import { connect } from "react-redux";
+import { actions as UndoActionCreators } from "redux-undo-redo";
 
 import { RootState } from "../store/configureStore";
 import { ISavedModuleState, ISavedModule } from "src/reducers/savedModules";
@@ -11,6 +12,7 @@ import { ICapCalcState } from "src/reducers/capCalculator";
 import "../style/SavedTable.css";
 import { Dispatch } from "redux";
 import { setCurrentSemester } from "src/actions";
+import { REMOVE_SEMESTER, REMOVE_MOD } from "src/reducers/constants";
 
 export const SavedTableHeader: React.FunctionComponent = () => (
   <div className="row no-gutters sem-row-header">
@@ -27,10 +29,25 @@ const mapStateToProps = (state: RootState) => ({
   savedModules: state.savedModules,
   semesterGradePoint: state.capCalculator.semesterGradePoint,
   semesterMcs: state.capCalculator.semesterMcs,
+  canUndoRemoveSemester:
+    state.undoHistory.undoQueue.length > 0 &&
+    state.undoHistory.undoQueue[0].action.type === REMOVE_SEMESTER,
+  deletedSemNum:
+    state.undoHistory.undoQueue.length > 0 &&
+    state.undoHistory.undoQueue[0].action.type === REMOVE_SEMESTER
+      ? state.undoHistory.undoQueue[0].action.payload
+      : -1,
+  deletedModuleInfo:
+    state.undoHistory.undoQueue.length > 0 &&
+    state.undoHistory.undoQueue[0].action.type === REMOVE_MOD
+      ? state.undoHistory.undoQueue[0].action.payload
+      : null,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onSetSemester: (semester: string) => dispatch(setCurrentSemester(semester)),
+  onUndo: () => dispatch(UndoActionCreators.undo()),
+  onClear: () => dispatch(UndoActionCreators.clear()),
 });
 
 interface ISavedTableProps {
@@ -39,7 +56,12 @@ interface ISavedTableProps {
   currSemester: string;
   semesterGradePoint: ICapCalcState["semesterGradePoint"];
   semesterMcs: ICapCalcState["semesterMcs"];
+  canUndoRemoveSemester: boolean;
+  deletedSemNum: number;
+  deletedModuleInfo: any;
   onSetSemester: (semNum: string) => void;
+  onUndo: () => void;
+  onClear: () => void;
 }
 
 class SavedTable extends React.Component<ISavedTableProps, {}> {
@@ -53,49 +75,109 @@ class SavedTable extends React.Component<ISavedTableProps, {}> {
     }
   }
 
-  public render() {
-    const {
-      savedModules,
-      numSemesters,
-      semesterGradePoint,
-      semesterMcs,
-      currSemester,
-    } = this.props;
-
-    const savedSemesterModules: JSX.Element[] = [];
-    for (let i = numSemesters; i > 0; i = i - 1) {
-      const isCurrSem = i.toString() === currSemester;
-      savedSemesterModules.push(
-        <div
-          className="saved-table-wrapper"
-          key={i}
-          ref={isCurrSem ? "currSemRef" : ""}
-        >
-          <div
-            className={`saved-table ${isCurrSem ? "curr-sem" : ""}`}
-            onClick={() => this.handleClick(i)}
-          >
-            <div className="sem-header-details">
-              <div className="sem-info">
-                <div>Semester {i}</div>
-                <div className="sem-cap">
-                  {semesterMcs[i]
-                    ? `SAP: ${(semesterGradePoint[i] / semesterMcs[i]).toFixed(
-                        2
-                      )}`
-                    : ""}
-                </div>
-              </div>
-              <SavedTableHeader />
-            </div>
-            <div className="sem-table-wrapper">
-              {savedModules[i]
-                ? this.showSemesterModules(savedModules[i], i)
-                : this.showEmptyTable(i)}
-            </div>
+  private getUndoSemesterComponent() {
+    const { onUndo, onClear, deletedSemNum } = this.props;
+    return (
+      <div key={`sem ${deletedSemNum}`} className="undo-table-wrapper">
+        <div className="undo-details">
+          <span>{`Semester ${deletedSemNum} deleted`}</span>
+          <div className="undo-actions">
+            <button
+              type="button"
+              className="btn btn-sm btn-link"
+              onClick={onClear}
+            >
+              Dismiss
+            </button>
+            <button
+              type="button"
+              className="btn btn-sm btn-link"
+              onClick={onUndo}
+            >
+              Undo
+            </button>
           </div>
         </div>
-      );
+      </div>
+    );
+  }
+
+  private getSavedSemesterComponent(currSem: number, isCurrSem: boolean) {
+    const { savedModules, semesterGradePoint, semesterMcs } = this.props;
+
+    return (
+      <div
+        className="saved-table-wrapper"
+        key={currSem}
+        ref={isCurrSem ? "currSemRef" : ""}
+      >
+        <div
+          className={`saved-table ${isCurrSem ? "curr-sem" : ""}`}
+          onClick={() => this.handleClick(currSem)}
+        >
+          <div className="sem-header-details">
+            <div className="sem-info">
+              <div>Semester {currSem}</div>
+              <div className="sem-cap">
+                {semesterMcs[currSem]
+                  ? `SAP: ${(
+                      semesterGradePoint[currSem] / semesterMcs[currSem]
+                    ).toFixed(2)}`
+                  : ""}
+              </div>
+            </div>
+            <SavedTableHeader />
+          </div>
+          <div className="sem-table-wrapper">
+            {savedModules[currSem] && Object.keys(savedModules[currSem]).length
+              ? this.showSemesterModules(savedModules[currSem], currSem)
+              : this.showEmptyTable(currSem)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  private getUndoModuleComponent() {
+    const { onUndo, onClear, deletedModuleInfo } = this.props;
+    return (
+      <div
+        key={deletedModuleInfo.module.ModuleCode}
+        className="row no-gutters module-row undo-details"
+      >
+        <div className="col-6 mod-title">{`${
+          deletedModuleInfo.module.ModuleCode
+        } deleted`}</div>
+        <div className="col-6 col-md-2 undo-actions">
+          <button
+            type="button"
+            className="btn btn-sm btn-link"
+            onClick={onClear}
+          >
+            Dismiss
+          </button>
+          <button
+            type="button"
+            className="btn btn-sm btn-link"
+            onClick={onUndo}
+          >
+            Undo
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  public render() {
+    const { numSemesters, currSemester, canUndoRemoveSemester } = this.props;
+
+    const savedSemesterModules: JSX.Element[] = [];
+    if (canUndoRemoveSemester) {
+      savedSemesterModules.push(this.getUndoSemesterComponent());
+    }
+    for (let i = numSemesters; i > 0; i = i - 1) {
+      const isCurrSem = i.toString() === currSemester;
+      savedSemesterModules.push(this.getSavedSemesterComponent(i, isCurrSem));
     }
 
     return <div className="saved-tables">{savedSemesterModules}</div>;
@@ -105,17 +187,34 @@ class SavedTable extends React.Component<ISavedTableProps, {}> {
     semesterModules: { [ModuleCode: string]: ISavedModule },
     semester: number
   ) {
-    return Object.keys(semesterModules).map(moduleCode => (
-      <Module
-        key={moduleCode}
-        semester={semester}
-        module={semesterModules[moduleCode]}
-      />
-    ));
+    const { deletedModuleInfo } = this.props;
+
+    const modules: JSX.Element[] = Object.keys(semesterModules).map(
+      (moduleCode, index) => (
+        <Module
+          key={moduleCode}
+          semester={semester}
+          module={semesterModules[moduleCode]}
+          index={index}
+        />
+      )
+    );
+
+    // tslint:disable-next-line: triple-equals
+    if (deletedModuleInfo && semester == deletedModuleInfo.semNum) {
+      modules.splice(deletedModuleInfo.index, 0, this.getUndoModuleComponent());
+    }
+
+    return modules;
   }
 
   showEmptyTable(semester: number) {
-    return (
+    const { deletedModuleInfo } = this.props;
+
+    // tslint:disable-next-line: triple-equals
+    return deletedModuleInfo && semester == deletedModuleInfo.semNum ? (
+      this.showSemesterModules({}, semester)
+    ) : (
       <div className="sem-empty">
         No modules added yet for Semester {semester}
       </div>
