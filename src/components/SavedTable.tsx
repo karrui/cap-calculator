@@ -133,7 +133,7 @@ class SavedTable extends React.Component<ISavedTableProps, {}> {
               <SavedTableHeader />
             </div>
             <div className="sem-table-wrapper">
-              {savedModules[i]
+              {savedModules[i] && Object.keys(savedModules[i]).length
                 ? this.showSemesterModules(savedModules[i], i)
                 : this.showEmptyTable(i)}
             </div>
