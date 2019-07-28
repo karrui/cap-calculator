@@ -1,7 +1,11 @@
 .saved-table-wrapper {
   /* for scrollIntoView hackiness */
-  padding-top: 13rem;
-  margin-top: -13rem;
+  padding-top: 14rem;
+  margin-top: -14rem;
+}
+
+.saved-tables {
+  margin-top: 2em;
 }
 
 .saved-table {
@@ -64,4 +68,41 @@
   height: 50vh;
   justify-content: center;
   align-items: center;
+}
+
+.undo-table-wrapper {
+  margin-bottom: 1em;
+}
+
+.undo-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0.3rem 0.3rem 0.9rem;
+  border-radius: 3px;
+  background: #f3f5f8;
+}
+
+.DARK .undo-details {
+  background: #292929;
+}
+
+.undo-details .undo-actions {
+  flex: 1 0 auto;
+  text-align: right;
+  float: right;
+  margin-left: 0.2rem;
+}
+
+.undo-actions .btn {
+  flex: 0 1 auto;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #ff5138;
+  text-decoration: none;
+}
+
+.undo-actions .btn:hover {
+  color: #eb1d00;
+  text-decoration: underline;
 }

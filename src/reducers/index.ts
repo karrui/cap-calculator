@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-// @ts-ignore
 import { undoHistoryReducer } from "redux-undo-redo";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
