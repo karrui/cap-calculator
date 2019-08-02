@@ -73,6 +73,7 @@ const mergeProps = (
 ) => ({
   ...stateProps,
   ...ownProps,
+  ...dispatchProps,
   handleAddSavedModule: (module: IFilteredModule, semNum: string) => {
     dispatchProps.onClear();
     dispatchProps.onAddSavedModule(module, semNum);
