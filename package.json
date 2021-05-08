@@ -20,7 +20,7 @@
     "@types/redux-logger": "^3.0.6",
     "axios": "^0.18.0",
     "firebase": ">=6.0.2-0",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.21",
     "md5": "^2.2.1",
     "mousetrap": "^1.6.3",
     "query-string": "^6.4.2",
